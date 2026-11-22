@@ -234,7 +234,24 @@ Both apps read/write the **same sales database**. Excel becomes an **export**, n
 - Assign role
 - Audit: createdBy / updatedBy / timestamps on sales
 
-### 6.8 Localization
+### 6.8 Attendance & salary *(from Excel `ATT.`)*
+
+- Daily attendance mark per field/plant worker (Present / Absent / Leave)
+- Record same-day wage / advance (`PAY` column in sheet)
+- Month summary: days present, total paid, remaining payable
+- Employees seeded from sheet: Prakash, Deepak, Himanshu, Tikesh, Pankaj, Khillu (+ invite more)
+
+### 6.9 Expenses & cash book *(from Excel `Daily Expenses`)*
+
+- Log issue/receive (EMI, diesel, electric, office exp, purchases)
+- Filter by date / category; month total for dashboard
+
+### 6.10 Purchases *(from Excel `OTH, PURCH` + P&S purchase side)*
+
+- Outside water / jar / chilled purchase entries
+- Amount, paid, balance; plant/vendor optional
+
+### 6.11 Localization
 
 - HI / EN string packs on mobile primary screens
 - Backend English-first (Hindi optional later)
@@ -396,7 +413,37 @@ Same as mobile; routes Admin/Accountant to Dashboard.
 
 #### B9 — Sidebar navigation
 
-Dashboard · Sales ledger · Dues · Customers · Products · Reports · Users
+Dashboard · Sales ledger · Dues · Customers · Products · Attendance · Salary · Expenses · Purchases · Reports · Users
+
+#### B10 — Attendance
+
+| Item | Detail |
+| --- | --- |
+| **Purpose** | Replace Excel `ATT.` daily grid |
+| **Elements** | Date picker; employee rows with Present/Absent + pay amount; Save day |
+| **Actions** | Mark attendance; record wage/advance |
+
+#### B11 — Salary / payroll
+
+| Item | Detail |
+| --- | --- |
+| **Purpose** | Month wage view from attendance pays |
+| **Elements** | Employee cards/table: days present, total paid this month, notes |
+| **Actions** | Open day detail; export month pays |
+
+#### B12 — Expenses
+
+| Item | Detail |
+| --- | --- |
+| **Purpose** | Cash issue/receive book |
+| **Elements** | Date, category, amount, remark; list + month total |
+
+#### B13 — Purchases
+
+| Item | Detail |
+| --- | --- |
+| **Purpose** | Outside purchase register |
+| **Elements** | Product qty columns or lines; amount/paid/balance |
 
 ---
 
@@ -491,7 +538,9 @@ saleId, amount, mode, paidAt, recordedBy — keeps collection history
 ### In scope (MVP)
 
 - Mobile + Backend web apps  
-- Sales, customers, products, dues, dashboard, export  
+- Sales, customers, products, dues, dashboard (with charts), export  
+- Attendance + salary/payroll (Excel `ATT.`)  
+- Expenses cash book + outside purchases  
 - Roles: Executive + Admin  
 - HI/EN on mobile  
 - Password login  
@@ -504,6 +553,7 @@ saleId, amount, mode, paidAt, recordedBy — keeps collection history
 - Delivery tracking  
 - Customer self-service portal  
 - Offline-first sync  
+- Personal loan / EMI “Challenge” tracker (`Sheet1`) — owner finance, not operations  
 - Accountant role (design now, build next)
 
 ---

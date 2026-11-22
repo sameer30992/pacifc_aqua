@@ -27,11 +27,12 @@
   </header>
 
   <main class="wrap wide">
-    <p class="eyebrow">Mockup · B0–B9</p>
+    <p class="eyebrow">Mockup · covers Excel sheets</p>
     <h1>Backend admin</h1>
     <p class="lede">
-      Desktop control room (PRD §7.2): dashboard, sales ledger, sale editor, dues, customers,
-      products, reports/export, and users. Persona: <strong>Sameer</strong> (Admin / Owner).
+      Office app aligned to <code>Pacific Aqua.xlsx</code>: sales, dues, customers, products,
+      attendance &amp; salary, expenses, purchases, charts dashboard, and export.
+      Persona: <strong>Sameer</strong> (Admin / Owner).
     </p>
 
     <div class="admin" id="adminShell">
@@ -47,11 +48,19 @@
       </div>
       <div class="admin-grid">
         <aside class="admin-side" id="sideNav">
+          <div class="nav-section">Sales</div>
           <button type="button" class="active" onclick="showTab('dashboard', this)">🏠 Dashboard</button>
           <button type="button" onclick="showTab('sales', this)">📒 Sales ledger</button>
           <button type="button" onclick="showTab('dues', this)">💰 Dues</button>
           <button type="button" onclick="showTab('customers', this)">👥 Customers</button>
           <button type="button" onclick="showTab('products', this)">💧 Products</button>
+          <div class="nav-section">Team</div>
+          <button type="button" onclick="showTab('attendance', this)">✅ Attendance</button>
+          <button type="button" onclick="showTab('salary', this)">🧾 Salary</button>
+          <div class="nav-section">Cash &amp; stock</div>
+          <button type="button" onclick="showTab('expenses', this)">💸 Expenses</button>
+          <button type="button" onclick="showTab('purchases', this)">🚛 Purchases</button>
+          <div class="nav-section">Admin</div>
           <button type="button" onclick="showTab('reports', this)">📊 Reports</button>
           <button type="button" onclick="showTab('users', this)">🔑 Users</button>
         </aside>
@@ -59,30 +68,78 @@
         <div class="admin-main">
           <!-- B1 DASHBOARD -->
           <div class="screen active" id="tab-dashboard">
-            <h2 style="margin-top:0">November overview</h2>
+            <div class="ledger-head">
+              <div>
+                <h2 style="margin:0">Today’s business pulse</h2>
+                <p class="muted" style="margin:0.25rem 0 0">Charts + KPIs for non-tech owners — from Excel SUM UP / BILL</p>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="openSaleEditor(null)">＋ New sale</button>
+            </div>
             <div class="kpi-grid">
-              <div class="kpi"><span>Revenue</span><strong>₹12,48,500</strong></div>
+              <div class="kpi"><span>Revenue (month)</span><strong>₹12,48,500</strong></div>
               <div class="kpi"><span>Collected</span><strong>₹10,84,200</strong></div>
               <div class="kpi"><span>Pending dues</span><strong>₹1,64,300</strong></div>
               <div class="kpi"><span>Invoices</span><strong>86</strong></div>
             </div>
             <div class="kpi-grid" style="margin-top:0.7rem">
-              <div class="kpi"><span>Top city</span><strong>Raipur</strong></div>
+              <div class="kpi"><span>Wage paid (YTD)</span><strong>₹9,89,279</strong></div>
+              <div class="kpi"><span>Expenses (sample mo.)</span><strong>₹2,10,400</strong></div>
               <div class="kpi"><span>Top product</span><strong>20 Ltr Jar</strong></div>
+              <div class="kpi"><span>Staff present today</span><strong>5 / 6</strong></div>
             </div>
-            <div class="card" style="margin-top:0.9rem">
-              <strong>Recent sales</strong>
-              <div class="sale-row tap-row" onclick="openSaleEditor('PA-1142')">
-                <span>PA-1142 · A R Traders, Shrinagar · Rahul</span>
-                <strong>₹400 · <span class="badge badge-paid">Paid</span></strong>
+
+            <div class="dash-grid">
+              <div class="chart-card">
+                <h3>Sales this week (₹)</h3>
+                <div class="bar-chart" aria-label="Weekly sales bar chart">
+                  <div class="bar-col"><div class="bar-fill" style="height:48%"></div><span>Mon</span></div>
+                  <div class="bar-col"><div class="bar-fill" style="height:72%"></div><span>Tue</span></div>
+                  <div class="bar-col"><div class="bar-fill" style="height:55%"></div><span>Wed</span></div>
+                  <div class="bar-col"><div class="bar-fill" style="height:88%"></div><span>Thu</span></div>
+                  <div class="bar-col"><div class="bar-fill" style="height:64%"></div><span>Fri</span></div>
+                  <div class="bar-col"><div class="bar-fill" style="height:40%"></div><span>Sat</span></div>
+                  <div class="bar-col"><div class="bar-fill" style="height:28%"></div><span>Sun</span></div>
+                </div>
               </div>
-              <div class="sale-row tap-row" onclick="openSaleEditor('PA-1141')">
-                <span>PA-1141 · Vedprakash Pandey ji · Amit</span>
-                <strong>₹1,200 · <span class="badge badge-partial">Partial</span></strong>
+              <div class="chart-card">
+                <h3>Payment status mix</h3>
+                <div class="pie-wrap">
+                  <div class="pie" role="img" aria-label="Pie chart: 42% paid, 26% partial, 18% pending, 14% other"></div>
+                  <div class="pie-legend">
+                    <div><span class="swatch" style="background:#6d28d9"></span> Paid 42%</div>
+                    <div><span class="swatch" style="background:#22c55e"></span> Collected cash/UPI 26%</div>
+                    <div><span class="swatch" style="background:#f59e0b"></span> Partial 18%</div>
+                    <div><span class="swatch" style="background:#e11d48"></span> Pending 14%</div>
+                  </div>
+                </div>
               </div>
-              <div class="sale-row tap-row" onclick="openSaleEditor('PA-1140')">
-                <span>PA-1140 · Kundan Agency · Rahul</span>
-                <strong>₹640 · <span class="badge badge-paid">Paid</span></strong>
+              <div class="chart-card">
+                <h3>Product mix (qty share)</h3>
+                <div class="pie-wrap">
+                  <div class="pie" style="background:conic-gradient(#7c3aed 0 55%, #38bdf8 55% 78%, #a3e635 78% 90%, #fb7185 90% 100%)" role="img" aria-label="Product mix pie"></div>
+                  <div class="pie-legend">
+                    <div><span class="swatch" style="background:#7c3aed"></span> 20 Ltr Jar 55%</div>
+                    <div><span class="swatch" style="background:#38bdf8"></span> Chilled 23%</div>
+                    <div><span class="swatch" style="background:#a3e635"></span> Pouch 12%</div>
+                    <div><span class="swatch" style="background:#fb7185"></span> Bottles 10%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <h3>Recent sales</h3>
+                <div class="sale-row tap-row" onclick="openSaleEditor('PA-1142')">
+                  <span>PA-1142 · A R Traders</span>
+                  <strong>₹400 · <span class="badge badge-paid">Paid</span></strong>
+                </div>
+                <div class="sale-row tap-row" onclick="openSaleEditor('PA-1141')">
+                  <span>PA-1141 · Vedprakash Pandey ji</span>
+                  <strong>₹1,200 · <span class="badge badge-partial">Partial</span></strong>
+                </div>
+                <div class="sale-row tap-row" onclick="openSaleEditor('PA-1140')">
+                  <span>PA-1140 · Kundan Agency</span>
+                  <strong>₹640 · <span class="badge badge-paid">Paid</span></strong>
+                </div>
+                <button type="button" class="btn btn-ghost" style="margin-top:0.65rem;width:100%" onclick="showTabByName('sales')">Open full sales ledger →</button>
               </div>
             </div>
           </div>
@@ -92,7 +149,7 @@
             <div class="ledger-head">
               <div>
                 <h2 style="margin:0">Sales ledger</h2>
-                <p class="muted" style="margin:0.25rem 0 0">All sales in one place — tap a card to open</p>
+                <p class="muted" style="margin:0.25rem 0 0">Dense table for large lists · scroll horizontally &amp; vertically</p>
               </div>
               <div class="row-actions">
                 <button type="button" class="btn btn-ghost" onclick="showTabByName('reports')">⬇ Download Excel</button>
@@ -101,15 +158,13 @@
             </div>
 
             <div class="ledger-legend" aria-label="Status meaning">
-              <span class="legend-pill"><span class="legend-dot paid"></span> Paid — full amount received</span>
-              <span class="legend-pill"><span class="legend-dot partial"></span> Partial — some amount pending</span>
-              <span class="legend-pill"><span class="legend-dot pending"></span> Pending — nothing paid yet</span>
+              <span class="legend-pill"><span class="legend-dot paid"></span> Paid</span>
+              <span class="legend-pill"><span class="legend-dot partial"></span> Partial (row tinted)</span>
+              <span class="legend-pill"><span class="legend-dot pending"></span> Pending (row tinted)</span>
             </div>
 
-            <p class="ledger-hint">Tip: Use filters below, then tap any sale. Green edge = paid · Orange = partial · Red = pending.</p>
-
             <div class="toolbar">
-              <label class="muted" style="width:100%;margin:0;font-size:0.78rem;font-weight:800">Find sales</label>
+              <label class="muted" style="width:100%;margin:0;font-size:0.78rem;font-weight:800">Find in big list</label>
               <input type="date" value="2026-11-01" aria-label="From date" />
               <input type="date" value="2026-11-22" aria-label="To date" />
               <input type="search" placeholder="Search name, invoice, area…" style="min-width:220px;flex:1" />
@@ -118,15 +173,12 @@
                 <option>Paid</option>
                 <option>Partial</option>
                 <option>Pending</option>
-                <option>Void</option>
               </select>
               <select aria-label="City">
                 <option>All areas</option>
                 <option>Raipur</option>
                 <option>Gudhiyari</option>
                 <option>Kota</option>
-                <option>Urla</option>
-                <option>Amanaka</option>
               </select>
               <select aria-label="Salesperson">
                 <option>All salespeople</option>
@@ -136,190 +188,272 @@
               </select>
             </div>
 
-            <div class="ledger-cards">
-              <article class="ledger-card is-paid" onclick="openSaleEditor('PA-1142')">
-                <div class="ledger-card-top">
-                  <div>
-                    <div class="ledger-invoice">PA-1142 · 22 Nov 2026</div>
-                    <h3 class="ledger-customer">A R Traders, Shrinagar</h3>
-                    <p class="ledger-meta">Shrinagar, Raipur · Sold by Rahul</p>
-                  </div>
-                  <div class="ledger-amounts">
-                    <div class="amt-block"><span>Total</span><strong>₹400</strong></div>
-                    <div class="amt-block"><span>Paid</span><strong>₹400</strong></div>
-                    <div class="amt-block due"><span>Due</span><strong>₹0</strong></div>
-                    <span class="badge badge-paid">● Paid</span>
-                  </div>
-                </div>
-                <div class="prod-chips">
-                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true"><img src="assets/products/icon-jar-20l.png" alt="" /></span> 20 Ltr Jar ×16</span>
-                </div>
-                <div class="ledger-foot">
-                  <span class="mode-pill">💵 Cash</span>
-                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1142')">Open sale →</button>
-                </div>
-              </article>
-
-              <article class="ledger-card is-partial" onclick="openSaleEditor('PA-1141')">
-                <div class="ledger-card-top">
-                  <div>
-                    <div class="ledger-invoice">PA-1141 · 22 Nov 2026</div>
-                    <h3 class="ledger-customer">Vedprakash Pandey ji</h3>
-                    <p class="ledger-meta">Kota, Raipur · 9827166259 · Sold by Amit</p>
-                  </div>
-                  <div class="ledger-amounts">
-                    <div class="amt-block"><span>Total</span><strong>₹1,200</strong></div>
-                    <div class="amt-block"><span>Paid</span><strong>₹500</strong></div>
-                    <div class="amt-block due"><span>Due</span><strong>₹700</strong></div>
-                    <span class="badge badge-partial">◐ Partial</span>
-                  </div>
-                </div>
-                <div class="prod-chips">
-                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true"><img src="assets/products/icon-jar-20l.png" alt="" /></span> 20 Ltr Jar ×20</span>
-                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true"><img src="assets/products/icon-jar-chilled.png" alt="" /></span> Chilled Jar ×8</span>
-                </div>
-                <div class="ledger-foot">
-                  <span class="mode-pill">📝 Credit · Monthly</span>
-                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1141')">Collect / edit →</button>
-                </div>
-              </article>
-
-              <article class="ledger-card is-paid" onclick="openSaleEditor('PA-1140')">
-                <div class="ledger-card-top">
-                  <div>
-                    <div class="ledger-invoice">PA-1140 · 21 Nov 2026</div>
-                    <h3 class="ledger-customer">Kundan Agency</h3>
-                    <p class="ledger-meta">Gudhiyari, Raipur · Sold by Rahul</p>
-                  </div>
-                  <div class="ledger-amounts">
-                    <div class="amt-block"><span>Total</span><strong>₹640</strong></div>
-                    <div class="amt-block"><span>Paid</span><strong>₹640</strong></div>
-                    <div class="amt-block due"><span>Due</span><strong>₹0</strong></div>
-                    <span class="badge badge-paid">● Paid</span>
-                  </div>
-                </div>
-                <div class="prod-chips">
-                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true"><img src="assets/products/icon-jar-20l.png" alt="" /></span> 20 Ltr Jar ×8</span>
-                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true"><img src="assets/products/icon-jar-chilled.png" alt="" /></span> Chilled Jar ×8</span>
-                </div>
-                <div class="ledger-foot">
-                  <span class="mode-pill">📱 UPI</span>
-                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1140')">Open sale →</button>
-                </div>
-              </article>
-
-              <article class="ledger-card is-pending" onclick="openSaleEditor('PA-1139')">
-                <div class="ledger-card-top">
-                  <div>
-                    <div class="ledger-invoice">PA-1139 · 21 Nov 2026</div>
-                    <h3 class="ledger-customer">Yogesh traders, Gudhiyari</h3>
-                    <p class="ledger-meta">Gudhiyari, Raipur · Sold by Priya</p>
-                  </div>
-                  <div class="ledger-amounts">
-                    <div class="amt-block"><span>Total</span><strong>₹940</strong></div>
-                    <div class="amt-block"><span>Paid</span><strong>₹0</strong></div>
-                    <div class="amt-block due"><span>Due</span><strong>₹940</strong></div>
-                    <span class="badge badge-pending">○ Pending</span>
-                  </div>
-                </div>
-                <div class="prod-chips">
-                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true"><img src="assets/products/icon-jar-chilled.png" alt="" /></span> Chilled Jar ×21</span>
-                </div>
-                <div class="ledger-foot">
-                  <span class="mode-pill">📝 Credit · Follow up</span>
-                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1139')">Collect now →</button>
-                </div>
-              </article>
+            <div class="ledger-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Invoice</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Area</th>
+                    <th>Salesperson</th>
+                    <th>Products</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Balance</th>
+                    <th>Mode</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="tap-row" onclick="openSaleEditor('PA-1142')">
+                    <td>2026-11-22</td>
+                    <td>PA-1142</td>
+                    <td>A R Traders, Shrinagar</td>
+                    <td>—</td>
+                    <td>Shrinagar</td>
+                    <td>Rahul</td>
+                    <td><span class="prod-cell"><img src="assets/products/icon-jar-20l.png" alt="" />Jar ×16</span></td>
+                    <td>₹400</td>
+                    <td>₹400</td>
+                    <td>₹0</td>
+                    <td>Cash</td>
+                    <td><span class="badge badge-paid">Paid</span></td>
+                    <td>—</td>
+                    <td><button type="button" class="link-btn" onclick="event.stopPropagation();openSaleEditor('PA-1142')">Open</button></td>
+                  </tr>
+                  <tr class="tap-row is-partial" onclick="openSaleEditor('PA-1141')">
+                    <td>2026-11-22</td>
+                    <td>PA-1141</td>
+                    <td>Vedprakash Pandey ji</td>
+                    <td>9827166259</td>
+                    <td>Kota</td>
+                    <td>Amit</td>
+                    <td>
+                      <span class="prod-cell"><img src="assets/products/icon-jar-20l.png" alt="" />Jar ×20</span>
+                      <span class="prod-cell"><img src="assets/products/icon-jar-chilled.png" alt="" />CH ×8</span>
+                    </td>
+                    <td>₹1,200</td>
+                    <td>₹500</td>
+                    <td>₹700</td>
+                    <td>Credit</td>
+                    <td><span class="badge badge-partial">Partial</span></td>
+                    <td>Monthly</td>
+                    <td><button type="button" class="link-btn" onclick="event.stopPropagation();openSaleEditor('PA-1141')">Collect</button></td>
+                  </tr>
+                  <tr class="tap-row" onclick="openSaleEditor('PA-1140')">
+                    <td>2026-11-21</td>
+                    <td>PA-1140</td>
+                    <td>Kundan Agency</td>
+                    <td>—</td>
+                    <td>Gudhiyari</td>
+                    <td>Rahul</td>
+                    <td>
+                      <span class="prod-cell"><img src="assets/products/icon-jar-20l.png" alt="" />Jar ×8</span>
+                      <span class="prod-cell"><img src="assets/products/icon-jar-chilled.png" alt="" />CH ×8</span>
+                    </td>
+                    <td>₹640</td>
+                    <td>₹640</td>
+                    <td>₹0</td>
+                    <td>UPI</td>
+                    <td><span class="badge badge-paid">Paid</span></td>
+                    <td>—</td>
+                    <td><button type="button" class="link-btn" onclick="event.stopPropagation();openSaleEditor('PA-1140')">Open</button></td>
+                  </tr>
+                  <tr class="tap-row is-pending" onclick="openSaleEditor('PA-1139')">
+                    <td>2026-11-21</td>
+                    <td>PA-1139</td>
+                    <td>Yogesh traders, Gudhiyari</td>
+                    <td>—</td>
+                    <td>Gudhiyari</td>
+                    <td>Priya</td>
+                    <td><span class="prod-cell"><img src="assets/products/icon-jar-chilled.png" alt="" />CH ×21</span></td>
+                    <td>₹940</td>
+                    <td>₹0</td>
+                    <td>₹940</td>
+                    <td>Credit</td>
+                    <td><span class="badge badge-pending">Pending</span></td>
+                    <td>Follow up</td>
+                    <td><button type="button" class="link-btn" onclick="event.stopPropagation();openSaleEditor('PA-1139')">Collect</button></td>
+                  </tr>
+                  <tr class="tap-row" onclick="openSaleEditor('PA-1138')">
+                    <td>2026-11-20</td>
+                    <td>PA-1138</td>
+                    <td>Agrawal Marketing, Ramnagar</td>
+                    <td>—</td>
+                    <td>Ramnagar</td>
+                    <td>Amit</td>
+                    <td>
+                      <span class="prod-cell"><img src="assets/products/icon-jar-20l.png" alt="" />Jar ×15</span>
+                      <span class="prod-cell"><img src="assets/products/icon-jar-chilled.png" alt="" />CH ×27</span>
+                    </td>
+                    <td>₹1,470</td>
+                    <td>₹1,470</td>
+                    <td>₹0</td>
+                    <td>Bank</td>
+                    <td><span class="badge badge-paid">Paid</span></td>
+                    <td>—</td>
+                    <td><button type="button" class="link-btn" onclick="event.stopPropagation();openSaleEditor('PA-1138')">Open</button></td>
+                  </tr>
+                  <tr class="tap-row is-pending" onclick="openSaleEditor('PA-1137')">
+                    <td>2026-11-20</td>
+                    <td>PA-1137</td>
+                    <td>Top Up Petrol Pump, Amanaka</td>
+                    <td>—</td>
+                    <td>Amanaka</td>
+                    <td>Rahul</td>
+                    <td><span class="prod-cell"><img src="assets/products/icon-jar-20l.png" alt="" />Jar ×12</span></td>
+                    <td>₹420</td>
+                    <td>₹0</td>
+                    <td>₹420</td>
+                    <td>Credit</td>
+                    <td><span class="badge badge-pending">Pending</span></td>
+                    <td>—</td>
+                    <td><button type="button" class="link-btn" onclick="event.stopPropagation();openSaleEditor('PA-1137')">Collect</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="ledger-pager">
+              <span>Showing 1–6 of 4,541 bills (Excel BILL size)</span>
+              <div class="row-actions">
+                <button type="button" class="btn btn-ghost">← Prev</button>
+                <button type="button" class="btn btn-ghost">Next →</button>
+              </div>
             </div>
           </div>
 
           <!-- B3 SALE CREATE / EDIT -->
           <div class="screen" id="tab-sale-edit">
-            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;align-items:center">
+            <div class="ledger-head">
               <div>
-                <button type="button" class="back-link" onclick="showTabByName('sales')">← Sales ledger</button>
-                <h2 style="margin:0.35rem 0 0" id="saleEditTitle">Edit sale · PA-1141</h2>
+                <button type="button" class="back-link" onclick="showTabByName('sales')">← Back to ledger</button>
+                <h2 style="margin:0.35rem 0 0" id="saleEditTitle">New sale · PA-1144</h2>
+                <p class="muted" style="margin:0.2rem 0 0">3 simple steps — customer → quantities → payment</p>
               </div>
-              <button type="button" class="danger-btn" onclick="alert('Void with reason (mock): retained in audit, excluded from KPIs')">Void sale…</button>
+              <button type="button" class="danger-btn" onclick="alert('Void with reason (mock)')">Void sale…</button>
             </div>
-            <div class="admin-form">
-              <div class="form-grid two">
-                <div>
-                  <label>Date</label>
-                  <input type="date" value="2026-11-22" />
+
+            <div class="sale-wizard">
+              <section class="sale-step">
+                <h3><span class="step-num">1</span> Who is buying?</h3>
+                <div class="form-grid two">
+                  <div>
+                    <label>Customer</label>
+                    <select>
+                      <option>Vedprakash Pandey ji · Kota, Raipur</option>
+                      <option>Kundan Agency · Gudhiyari</option>
+                      <option>Yogesh traders, Gudhiyari</option>
+                      <option>A R Traders, Shrinagar</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>Salesperson</label>
+                    <select>
+                      <option>Amit</option>
+                      <option>Rahul</option>
+                      <option>Priya</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>Date</label>
+                    <input type="date" value="2026-11-22" />
+                  </div>
+                  <div>
+                    <label>Invoice</label>
+                    <input type="text" value="PA-1144 (auto)" readonly />
+                  </div>
                 </div>
-                <div>
-                  <label>Invoice</label>
-                  <input type="text" value="PA-1141" readonly />
+                <button type="button" class="link-btn" style="margin-top:0.55rem">＋ Quick-add new customer</button>
+              </section>
+
+              <section class="sale-step">
+                <h3><span class="step-num">2</span> Enter quantities (like Excel columns)</h3>
+                <div class="qty-grid">
+                  <div class="qty-card">
+                    <img src="assets/products/icon-jar-20l.png" alt="" />
+                    <strong>20 Ltr Jar</strong>
+                    <small class="muted">₹40</small>
+                    <input type="number" value="20" min="0" aria-label="Jar qty" />
+                  </div>
+                  <div class="qty-card">
+                    <img src="assets/products/icon-jar-chilled.png" alt="" />
+                    <strong>Chilled</strong>
+                    <small class="muted">₹50</small>
+                    <input type="number" value="8" min="0" aria-label="Chilled qty" />
+                  </div>
+                  <div class="qty-card">
+                    <img src="assets/products/icon-pouch.png" alt="" />
+                    <strong>Pouch</strong>
+                    <small class="muted">₹35</small>
+                    <input type="number" value="0" min="0" aria-label="Pouch qty" />
+                  </div>
+                  <div class="qty-card">
+                    <img src="assets/products/icon-bottle-1l.png" alt="" />
+                    <strong>1 Ltr</strong>
+                    <small class="muted">₹90</small>
+                    <input type="number" value="0" min="0" aria-label="1L qty" />
+                  </div>
+                  <div class="qty-card">
+                    <img src="assets/products/icon-bottle-500ml.png" alt="" />
+                    <strong>500 ml</strong>
+                    <small class="muted">₹120</small>
+                    <input type="number" value="0" min="0" aria-label="500ml qty" />
+                  </div>
+                  <div class="qty-card">
+                    <img src="assets/products/icon-bottle-250ml.png" alt="" />
+                    <strong>250 ml</strong>
+                    <small class="muted">₹120</small>
+                    <input type="number" value="0" min="0" aria-label="250ml qty" />
+                  </div>
+                  <div class="qty-card">
+                    <img src="assets/products/icon-dispenser.png" alt="" />
+                    <strong>Dispenser</strong>
+                    <small class="muted">₹0</small>
+                    <input type="number" value="0" min="0" aria-label="Dispenser qty" />
+                  </div>
                 </div>
-                <div>
-                  <label>Customer</label>
-                  <select>
-                    <option>Vedprakash Pandey ji · Kota, Raipur</option>
-                    <option>Kundan Agency · Gudhiyari, Raipur</option>
-                    <option>Yogesh traders, Gudhiyari</option>
-                    <option>A R Traders, Shrinagar</option>
-                    <option>Agrawal Marketing, Ramnagar</option>
-                  </select>
+              </section>
+
+              <section class="sale-step">
+                <h3><span class="step-num">3</span> Payment</h3>
+                <div class="form-grid two">
+                  <div>
+                    <label>Payment mode</label>
+                    <div class="modes" style="margin-top:0.35rem">
+                      <button type="button">Cash</button>
+                      <button type="button">UPI</button>
+                      <button type="button">Bank</button>
+                      <button type="button" class="active">Credit</button>
+                    </div>
+                  </div>
+                  <div>
+                    <label>Amount paid now</label>
+                    <input type="number" value="500" />
+                  </div>
+                  <div>
+                    <label>Remarks</label>
+                    <input type="text" value="Monthly" />
+                  </div>
+                  <div>
+                    <label>Status (auto)</label>
+                    <input type="text" value="Partial · balance ₹700" readonly />
+                  </div>
                 </div>
+              </section>
+
+              <div class="sale-total-bar">
                 <div>
-                  <label>Salesperson</label>
-                  <select>
-                    <option>Amit</option>
-                    <option>Rahul</option>
-                    <option>Priya</option>
-                  </select>
+                  <div style="font-size:0.8rem;opacity:0.9">Bill total</div>
+                  <strong>₹1,200</strong>
                 </div>
-              </div>
-              <h3 style="margin-top:1rem">Lines</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>Product</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>20 Ltr Jar</td>
-                      <td><input type="number" value="20" min="1" style="width:4.5rem" /></td>
-                      <td><input type="number" value="40" style="width:5.5rem" /></td>
-                      <td>₹800</td>
-                    </tr>
-                    <tr>
-                      <td>Chilled Jar</td>
-                      <td><input type="number" value="8" min="1" style="width:4.5rem" /></td>
-                      <td><input type="number" value="50" style="width:5.5rem" /></td>
-                      <td>₹400</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <button type="button" class="link-btn" style="margin-top:0.4rem">+ Add line</button>
-              <div class="form-grid two" style="margin-top:1rem">
-                <div>
-                  <label>Payment mode</label>
-                  <select>
-                    <option>Credit</option>
-                    <option>Cash</option>
-                    <option>UPI</option>
-                    <option>Bank</option>
-                  </select>
+                <div class="row-actions">
+                  <button type="button" class="btn btn-ghost" style="background:#fff" onclick="showTabByName('sales')">Cancel</button>
+                  <button type="button" class="btn btn-primary" style="background:#fff;color:#4c1d95;box-shadow:none" onclick="showTabByName('sales')">Save sale</button>
                 </div>
-                <div>
-                  <label>Amount paid</label>
-                  <input type="number" value="500" />
-                </div>
-                <div>
-                  <label>Status (derived)</label>
-                  <input type="text" value="Partial · balance ₹700" readonly />
-                </div>
-                <div>
-                  <label>Remarks</label>
-                  <input type="text" value="Monthly" />
-                </div>
-              </div>
-              <div class="row-actions" style="margin-top:1rem">
-                <button type="button" class="btn btn-primary" onclick="showTabByName('sales')">Save</button>
-                <button type="button" class="btn btn-ghost" onclick="showTabByName('sales')">Cancel</button>
               </div>
             </div>
           </div>
@@ -551,6 +685,193 @@
             </div>
           </div>
 
+          <!-- ATTENDANCE -->
+          <div class="screen" id="tab-attendance">
+            <div class="ledger-head">
+              <div>
+                <h2 style="margin:0">Attendance</h2>
+                <p class="muted" style="margin:0.25rem 0 0">From Excel <code>ATT.</code> — mark Present/Absent + day’s wage</p>
+              </div>
+              <input type="date" value="2026-11-22" aria-label="Attendance date" style="border:1px solid var(--line);border-radius:0.65rem;padding:0.55rem 0.7rem;font:inherit" />
+            </div>
+            <p class="ledger-hint">Tip: Tap <strong>P</strong> if the person came to work. Enter how much cash you gave today in Pay.</p>
+            <div class="att-grid">
+              <div class="att-row">
+                <div><strong>Prakash</strong><div class="muted">Plant / delivery</div></div>
+                <div class="att-toggle">
+                  <button type="button" class="on-p">P Present</button>
+                  <button type="button">A Absent</button>
+                </div>
+                <div><label class="muted">Pay ₹</label><input type="number" value="470" style="width:100%;border:1px solid var(--line);border-radius:0.55rem;padding:0.45rem;font:inherit;font-weight:800" /></div>
+              </div>
+              <div class="att-row">
+                <div><strong>Deepak</strong><div class="muted">Plant / delivery</div></div>
+                <div class="att-toggle">
+                  <button type="button" class="on-p">P Present</button>
+                  <button type="button">A Absent</button>
+                </div>
+                <div><label class="muted">Pay ₹</label><input type="number" value="200" style="width:100%;border:1px solid var(--line);border-radius:0.55rem;padding:0.45rem;font:inherit;font-weight:800" /></div>
+              </div>
+              <div class="att-row">
+                <div><strong>Himanshu</strong><div class="muted">Plant / delivery</div></div>
+                <div class="att-toggle">
+                  <button type="button" class="on-p">P Present</button>
+                  <button type="button">A Absent</button>
+                </div>
+                <div><label class="muted">Pay ₹</label><input type="number" value="0" style="width:100%;border:1px solid var(--line);border-radius:0.55rem;padding:0.45rem;font:inherit;font-weight:800" /></div>
+              </div>
+              <div class="att-row">
+                <div><strong>Tikesh</strong><div class="muted">Plant / delivery</div></div>
+                <div class="att-toggle">
+                  <button type="button" class="on-p">P Present</button>
+                  <button type="button">A Absent</button>
+                </div>
+                <div><label class="muted">Pay ₹</label><input type="number" value="0" style="width:100%;border:1px solid var(--line);border-radius:0.55rem;padding:0.45rem;font:inherit;font-weight:800" /></div>
+              </div>
+              <div class="att-row">
+                <div><strong>Pankaj</strong><div class="muted">Plant / delivery</div></div>
+                <div class="att-toggle">
+                  <button type="button">P Present</button>
+                  <button type="button" class="on-a">A Absent</button>
+                </div>
+                <div><label class="muted">Pay ₹</label><input type="number" value="0" style="width:100%;border:1px solid var(--line);border-radius:0.55rem;padding:0.45rem;font:inherit;font-weight:800" /></div>
+              </div>
+              <div class="att-row">
+                <div><strong>Khillu</strong><div class="muted">Plant / delivery</div></div>
+                <div class="att-toggle">
+                  <button type="button" class="on-p">P Present</button>
+                  <button type="button">A Absent</button>
+                </div>
+                <div><label class="muted">Pay ₹</label><input type="number" value="0" style="width:100%;border:1px solid var(--line);border-radius:0.55rem;padding:0.45rem;font:inherit;font-weight:800" /></div>
+              </div>
+            </div>
+            <div class="sale-total-bar" style="margin-top:0.85rem">
+              <div><div style="font-size:0.8rem;opacity:0.9">Today’s wage total</div><strong>₹670</strong></div>
+              <button type="button" class="btn btn-primary" style="background:#fff;color:#4c1d95;box-shadow:none">Save attendance</button>
+            </div>
+          </div>
+
+          <!-- SALARY -->
+          <div class="screen" id="tab-salary">
+            <div class="ledger-head">
+              <div>
+                <h2 style="margin:0">Salary / wages</h2>
+                <p class="muted" style="margin:0.25rem 0 0">Month roll-up from attendance PAY columns</p>
+              </div>
+              <select aria-label="Month" style="border:1px solid var(--line);border-radius:0.65rem;padding:0.55rem 0.7rem;font:inherit;font-weight:700">
+                <option>November 2026</option>
+                <option>October 2026</option>
+                <option>YTD 2026</option>
+              </select>
+            </div>
+            <div class="salary-grid">
+              <div class="salary-card">
+                <h3>Prakash</h3>
+                <p class="muted">214 present days (YTD)</p>
+                <div class="big">₹72,333</div>
+                <p class="muted">Total paid</p>
+              </div>
+              <div class="salary-card">
+                <h3>Deepak</h3>
+                <p class="muted">190 present days (YTD)</p>
+                <div class="big">₹36,796</div>
+                <p class="muted">Total paid</p>
+              </div>
+              <div class="salary-card">
+                <h3>Himanshu</h3>
+                <p class="muted">194 present days (YTD)</p>
+                <div class="big">₹3,61,663</div>
+                <p class="muted">Total paid</p>
+              </div>
+              <div class="salary-card">
+                <h3>Tikesh</h3>
+                <p class="muted">214 present days (YTD)</p>
+                <div class="big">₹2,06,998</div>
+                <p class="muted">Total paid</p>
+              </div>
+              <div class="salary-card">
+                <h3>Pankaj</h3>
+                <p class="muted">138 present days (YTD)</p>
+                <div class="big">₹2,14,664</div>
+                <p class="muted">Total paid</p>
+              </div>
+              <div class="salary-card">
+                <h3>Khillu</h3>
+                <p class="muted">186 present days (YTD)</p>
+                <div class="big">₹96,825</div>
+                <p class="muted">Total paid</p>
+              </div>
+            </div>
+            <p class="note">Figures taken from Excel <code>ATT.</code> PAY totals. Formal monthly salary vs daily wage policy can be confirmed from the meeting recording.</p>
+          </div>
+
+          <!-- EXPENSES -->
+          <div class="screen" id="tab-expenses">
+            <div class="ledger-head">
+              <div>
+                <h2 style="margin:0">Expenses</h2>
+                <p class="muted" style="margin:0.25rem 0 0">Cash book from Excel <code>Daily Expenses</code></p>
+              </div>
+              <button type="button" class="btn btn-primary">＋ Add expense</button>
+            </div>
+            <div class="toolbar">
+              <input type="date" value="2026-11-01" />
+              <input type="date" value="2026-11-22" />
+              <select>
+                <option>All categories</option>
+                <option>EMI's</option>
+                <option>Office Exp</option>
+                <option>Diesel</option>
+                <option>Electric Bill</option>
+              </select>
+            </div>
+            <div class="ledger-table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Date</th><th>Category</th><th>Amount</th><th>Remark</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>2026-11-22</td><td>EMI's</td><td>₹6,296</td><td>ALFA EMI</td></tr>
+                  <tr><td>2026-11-22</td><td>Loan EMI</td><td>₹798</td><td>Union bank</td></tr>
+                  <tr><td>2026-11-21</td><td>Tata Ace Diesel</td><td>₹1,250</td><td>Route fill</td></tr>
+                  <tr><td>2026-11-20</td><td>Electric Bill</td><td>₹8,400</td><td>Plant</td></tr>
+                  <tr><td>2026-11-18</td><td>Office Exp</td><td>₹2,150</td><td>Misc</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PURCHASES -->
+          <div class="screen" id="tab-purchases">
+            <div class="ledger-head">
+              <div>
+                <h2 style="margin:0">Purchases</h2>
+                <p class="muted" style="margin:0.25rem 0 0">Outside water / stock — Excel <code>OTH, PURCH</code></p>
+              </div>
+              <button type="button" class="btn btn-primary">＋ Add purchase</button>
+            </div>
+            <div class="ledger-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th><th>Plant / vendor</th><th>Jar</th><th>Chilled</th><th>Pouch</th>
+                    <th>1L</th><th>500</th><th>250</th><th>Amount</th><th>Paid</th><th>Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2026-01-01</td><td>JMD</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>3</td>
+                    <td>₹270</td><td>₹0</td><td>₹270</td>
+                  </tr>
+                  <tr>
+                    <td>2026-01-05</td><td>Outside plant</td><td>40</td><td>20</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                    <td>₹2,800</td><td>₹2,800</td><td>₹0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- B7 REPORTS -->
           <div class="screen" id="tab-reports">
             <h2 style="margin-top:0">Reports / export</h2>
@@ -674,8 +995,9 @@
       <button type="button" class="btn btn-ghost" onclick="showTabByName('login')">Show login (B0)</button>
     </p>
     <p class="note">
-      Sidebar = PRD B9: Dashboard · Sales ledger · Dues · Customers · Products · Reports · Users.
-      Click ledger rows or dues CTAs to open the sale editor (B3).
+      Excel coverage: BILL/P&amp;S → Sales · Customers → Customers · ATT. → Attendance/Salary ·
+      Daily Expenses → Expenses · OTH PURCH → Purchases · SUM UP → Dashboard charts.
+      Personal loan tracker (Sheet1) stays out of MVP.
     </p>
   </main>
 
@@ -702,11 +1024,34 @@
         dues: "dues",
         customers: "customers",
         products: "products",
+        attendance: "attendance",
+        salary: "salary",
+        expenses: "expenses",
+        purchases: "purchases",
         reports: "reports",
         users: "users",
       };
       return map[name] || name;
     }
+
+    document.querySelectorAll(".att-toggle").forEach((group) => {
+      group.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          group.querySelectorAll("button").forEach((b) => b.classList.remove("on-p", "on-a"));
+          if (btn.textContent.includes("Present")) btn.classList.add("on-p");
+          else btn.classList.add("on-a");
+        });
+      });
+    });
+
+    document.querySelectorAll(".sale-step .modes").forEach((group) => {
+      group.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          group.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+    });
 
     function showTabByName(name) {
       const side = document.getElementById("sideNav");
