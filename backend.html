@@ -65,21 +65,21 @@
             </div>
             <div class="kpi-grid" style="margin-top:0.7rem">
               <div class="kpi"><span>Top city</span><strong>Raipur</strong></div>
-              <div class="kpi"><span>Top product</span><strong>Aqua Feed Grower 5kg</strong></div>
+              <div class="kpi"><span>Top product</span><strong>20 Ltr Jar</strong></div>
             </div>
             <div class="card" style="margin-top:0.9rem">
               <strong>Recent sales</strong>
               <div class="sale-row tap-row" onclick="openSaleEditor('PA-1142')">
                 <span>PA-1142 · Gogaon Aqua Mart · Rahul</span>
-                <strong>₹11,060 · <span class="badge badge-paid">Paid</span></strong>
+                <strong>₹840 · <span class="badge badge-paid">Paid</span></strong>
               </div>
               <div class="sale-row tap-row" onclick="openSaleEditor('PA-1141')">
                 <span>PA-1141 · Green Valley Farm · Amit</span>
-                <strong>₹32,920 · <span class="badge badge-partial">Partial</span></strong>
+                <strong>₹2,480 · <span class="badge badge-partial">Partial</span></strong>
               </div>
               <div class="sale-row tap-row" onclick="openSaleEditor('PA-1140')">
                 <span>PA-1140 · Shree Pets &amp; Fish · Rahul</span>
-                <strong>₹6,920 · <span class="badge badge-paid">Paid</span></strong>
+                <strong>₹580 · <span class="badge badge-paid">Paid</span></strong>
               </div>
             </div>
           </div>
@@ -148,9 +148,9 @@
                     <td>9876543210</td>
                     <td>Raipur</td>
                     <td>Rahul</td>
-                    <td>RO Membrane ×8, UV ×1…</td>
-                    <td>₹11,060</td>
-                    <td>₹11,060</td>
+                    <td>20 Ltr Jar ×16, Chilled ×4</td>
+                    <td>₹840</td>
+                    <td>₹840</td>
                     <td>₹0</td>
                     <td>UPI</td>
                     <td><span class="badge badge-paid">Paid</span></td>
@@ -163,13 +163,13 @@
                     <td>9988776655</td>
                     <td>Rajnandgaon</td>
                     <td>Amit</td>
-                    <td>Feed Grower ×20, Bio Media ×12</td>
-                    <td>₹32,840</td>
-                    <td>₹15,000</td>
-                    <td>₹17,840</td>
+                    <td>20 Ltr Jar ×40, Chilled ×12, Pouch ×8</td>
+                    <td>₹2,480</td>
+                    <td>₹1,000</td>
+                    <td>₹1,480</td>
                     <td>Credit</td>
                     <td><span class="badge badge-partial">Partial</span></td>
-                    <td>Farm order</td>
+                    <td>Monthly order</td>
                   </tr>
                   <tr class="tap-row" onclick="openSaleEditor('PA-1140')">
                     <td>2026-11-21</td>
@@ -178,9 +178,9 @@
                     <td>9827012345</td>
                     <td>Durg</td>
                     <td>Rahul</td>
-                    <td>Air Pump ×4, Bio Media ×5…</td>
-                    <td>₹6,920</td>
-                    <td>₹6,920</td>
+                    <td>20 Ltr Jar ×10, 1 Ltr ×2</td>
+                    <td>₹580</td>
+                    <td>₹580</td>
                     <td>₹0</td>
                     <td>Cash</td>
                     <td><span class="badge badge-paid">Paid</span></td>
@@ -193,10 +193,10 @@
                     <td>9001122334</td>
                     <td>Bhilai</td>
                     <td>Priya</td>
-                    <td>RO Membrane ×4</td>
-                    <td>₹3,400</td>
+                    <td>20 Ltr Jar ×8, 250 ml ×1</td>
+                    <td>₹440</td>
                     <td>₹0</td>
-                    <td>₹3,400</td>
+                    <td>₹440</td>
                     <td>Credit</td>
                     <td><span class="badge badge-pending">Pending</span></td>
                     <td>Call Mon</td>
@@ -250,16 +250,22 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Aqua Feed Grower 5kg</td>
-                      <td><input type="number" value="20" min="1" style="width:4.5rem" /></td>
-                      <td><input type="number" value="1450" style="width:5.5rem" /></td>
-                      <td>₹29,000</td>
+                      <td>20 Ltr Jar</td>
+                      <td><input type="number" value="40" min="1" style="width:4.5rem" /></td>
+                      <td><input type="number" value="40" style="width:5.5rem" /></td>
+                      <td>₹1,600</td>
                     </tr>
                     <tr>
-                      <td>Bio Media 1L</td>
+                      <td>Chilled Jar</td>
                       <td><input type="number" value="12" min="1" style="width:4.5rem" /></td>
-                      <td><input type="number" value="320" style="width:5.5rem" /></td>
-                      <td>₹3,840</td>
+                      <td><input type="number" value="50" style="width:5.5rem" /></td>
+                      <td>₹600</td>
+                    </tr>
+                    <tr>
+                      <td>Pouch</td>
+                      <td><input type="number" value="8" min="1" style="width:4.5rem" /></td>
+                      <td><input type="number" value="35" style="width:5.5rem" /></td>
+                      <td>₹280</td>
                     </tr>
                   </tbody>
                 </table>
@@ -277,15 +283,15 @@
                 </div>
                 <div>
                   <label>Amount paid</label>
-                  <input type="number" value="15000" />
+                  <input type="number" value="1000" />
                 </div>
                 <div>
                   <label>Status (derived)</label>
-                  <input type="text" value="Partial · balance ₹17,840" readonly />
+                  <input type="text" value="Partial · balance ₹1,480" readonly />
                 </div>
                 <div>
                   <label>Remarks</label>
-                  <input type="text" value="Farm order" />
+                  <input type="text" value="Monthly order" />
                 </div>
               </div>
               <div class="row-actions" style="margin-top:1rem">
@@ -322,14 +328,14 @@
             <div class="dues-row">
               <div>
                 <strong>Green Valley Farm</strong> · PA-1141
-                <div class="muted">Rajnandgaon · Amit · Credit · Balance ₹17,840 · 9988776655</div>
+                <div class="muted">Rajnandgaon · Amit · Credit · Balance ₹1,480 · 9988776655</div>
               </div>
               <button type="button" class="btn btn-primary" onclick="openSaleEditor('PA-1141')">Record payment</button>
             </div>
             <div class="dues-row">
               <div>
                 <strong>City Aquarium</strong> · PA-1139
-                <div class="muted">Bhilai · Priya · Credit · Balance ₹3,400 · 9001122334</div>
+                <div class="muted">Bhilai · Priya · Credit · Balance ₹440 · 9001122334</div>
               </div>
               <button type="button" class="btn btn-primary" onclick="openSaleEditor('PA-1139')">Record payment</button>
             </div>
@@ -409,11 +415,11 @@
             <div class="admin-form" id="productForm" style="display:none;margin-top:0.85rem">
               <h3>Add / edit product</h3>
               <div class="form-grid two">
-                <div><label>Name</label><input type="text" placeholder="Product name" /></div>
-                <div><label>Category</label><input type="text" placeholder="Filter / Feed / Equipment" /></div>
-                <div><label>Unit</label><input type="text" value="pcs" /></div>
-                <div><label>Default rate (₹)</label><input type="number" value="850" /></div>
-                <div><label>Stock</label><input type="number" value="42" /></div>
+                <div><label>Name</label><input type="text" placeholder="e.g. 20 Ltr Jar" /></div>
+                <div><label>Category</label><input type="text" placeholder="Jar / Bottle / Accessory" /></div>
+                <div><label>Unit</label><input type="text" value="jar" /></div>
+                <div><label>Default rate (₹)</label><input type="number" value="40" /></div>
+                <div><label>Stock</label><input type="number" value="1200" /></div>
                 <div>
                   <label>Active</label>
                   <select><option>Active</option><option>Deactivated</option></select>
@@ -424,34 +430,39 @@
                 <button type="button" class="btn btn-ghost" onclick="toggleProductForm()">Cancel</button>
               </div>
             </div>
-            <div class="table-wrap" style="margin-top:0.9rem">
+            <p class="muted" style="margin:0.75rem 0 0">From <code>Pacific Aqua.xlsx</code> sale columns (P&amp;S / BILL).</p>
+            <div class="table-wrap" style="margin-top:0.5rem">
               <table>
                 <thead>
-                  <tr><th>Name</th><th>Category</th><th>Unit</th><th>Rate</th><th>Stock</th><th>Status</th><th></th></tr>
+                  <tr><th>Name</th><th>Excel code</th><th>Category</th><th>Unit</th><th>Default rate</th><th>Stock</th><th>Status</th><th></th></tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>RO Membrane 80 GPD</td><td>Filter</td><td>pcs</td><td>₹850</td><td>42</td><td>Active</td>
+                    <td>20 Ltr Jar</td><td>N / Jar</td><td>Jar</td><td>jar</td><td>₹40</td><td>1,240</td><td>Active</td>
                     <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
                   </tr>
                   <tr>
-                    <td>Aqua Feed Grower 5kg</td><td>Feed</td><td>bag</td><td>₹1,450</td><td>65</td><td>Active</td>
+                    <td>Chilled Jar</td><td>CH / Chilled</td><td>Jar</td><td>jar</td><td>₹50</td><td>860</td><td>Active</td>
                     <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
                   </tr>
                   <tr>
-                    <td>UV Sterilizer 11W</td><td>Equipment</td><td>pcs</td><td>₹2,200</td><td>18</td><td>Active</td>
+                    <td>Pouch</td><td>P / Pouch / Bori</td><td>Pouch</td><td>pouch</td><td>₹35</td><td>420</td><td>Active</td>
                     <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
                   </tr>
                   <tr>
-                    <td>Air Pump AP-880</td><td>Equipment</td><td>pcs</td><td>₹980</td><td>31</td><td>Active</td>
+                    <td>1 Ltr</td><td>01l / 1LTR</td><td>Bottle</td><td>pack</td><td>₹90</td><td>180</td><td>Active</td>
                     <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
                   </tr>
                   <tr>
-                    <td>Test Kit 5-in-1</td><td>Accessories</td><td>kit</td><td>₹420</td><td>54</td><td>Active</td>
+                    <td>500 ml</td><td>0.5L / 500ML</td><td>Bottle</td><td>pack</td><td>₹120</td><td>210</td><td>Active</td>
                     <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
                   </tr>
                   <tr>
-                    <td>Bio Media 1L</td><td>Filter</td><td>L</td><td>₹320</td><td>90</td><td>Active</td>
+                    <td>250 ml</td><td>0.25L / 250Ml</td><td>Bottle</td><td>pack</td><td>₹120</td><td>260</td><td>Active</td>
+                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>Dispenser</td><td>Dispenser</td><td>Accessory</td><td>pcs</td><td>₹0</td><td>45</td><td>Active</td>
                     <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
                   </tr>
                 </tbody>

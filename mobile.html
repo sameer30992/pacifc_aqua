@@ -66,8 +66,8 @@
             <div class="screen active" id="screen-home">
               <div class="stats">
                 <div class="stat"><span data-i18n="sales">Sales</span><strong>2</strong></div>
-                <div class="stat"><span data-i18n="collected">Collected</span><strong>₹26,060</strong></div>
-                <div class="stat"><span data-i18n="pending">Pending</span><strong>₹17,860</strong></div>
+                <div class="stat"><span data-i18n="collected">Collected</span><strong>₹1,420</strong></div>
+                <div class="stat"><span data-i18n="pending">Pending</span><strong>₹1,480</strong></div>
                 <div class="stat"><span data-i18n="today">Today</span><strong>22 Nov</strong></div>
               </div>
               <button type="button" class="full-btn" onclick="showScreen('new')" data-i18n="newSale">+ New Sale</button>
@@ -79,7 +79,7 @@
                     <small>PA-1142</small>
                   </div>
                   <div style="text-align:right">
-                    <strong>₹11,060</strong><br />
+                    <strong>₹840</strong><br />
                     <span class="badge badge-paid">Paid</span>
                   </div>
                 </div>
@@ -89,7 +89,7 @@
                     <small>PA-1141</small>
                   </div>
                   <div style="text-align:right">
-                    <strong>₹32,920</strong><br />
+                    <strong>₹2,480</strong><br />
                     <span class="badge badge-partial">Partial</span>
                   </div>
                 </div>
@@ -99,7 +99,7 @@
                     <small>PA-1140</small>
                   </div>
                   <div style="text-align:right">
-                    <strong>₹6,920</strong><br />
+                    <strong>₹580</strong><br />
                     <span class="badge badge-paid">Paid</span>
                   </div>
                 </div>
@@ -129,28 +129,32 @@
                 </div>
                 <div class="line-item">
                   <div>
-                    <strong>RO Membrane 80 GPD</strong>
-                    <div class="line-meta">2 × ₹850</div>
+                    <strong>20 Ltr Jar</strong>
+                    <div class="line-meta">10 × ₹40</div>
                   </div>
-                  <strong>₹1,700</strong>
+                  <strong>₹400</strong>
                 </div>
                 <div class="line-item">
                   <div>
-                    <strong>Aqua Feed Grower 5kg</strong>
-                    <div class="line-meta">1 × ₹1,450 · rate editable</div>
+                    <strong>Chilled Jar</strong>
+                    <div class="line-meta">4 × ₹50 · rate editable</div>
                   </div>
-                  <strong>₹1,450</strong>
+                  <strong>₹200</strong>
                 </div>
                 <div style="margin-top:0.55rem;display:flex;gap:0.4rem">
                   <select style="flex:1">
-                    <option>UV Sterilizer 11W — ₹2,200</option>
-                    <option>Air Pump AP-880 — ₹980</option>
-                    <option>Test Kit 5-in-1 — ₹420</option>
+                    <option>20 Ltr Jar — ₹40</option>
+                    <option>Chilled Jar — ₹50</option>
+                    <option>Pouch — ₹35</option>
+                    <option>1 Ltr — ₹90</option>
+                    <option>500 ml — ₹120</option>
+                    <option>250 ml — ₹120</option>
+                    <option>Dispenser — ₹0</option>
                   </select>
                   <input type="number" value="1" min="1" aria-label="Quantity" style="width:4rem" />
                 </div>
                 <p style="margin:0.65rem 0 0;display:flex;justify-content:space-between;font-weight:700">
-                  <span data-i18n="total">Total</span><span>₹3,150</span>
+                  <span data-i18n="total">Total</span><span>₹600</span>
                 </p>
               </div>
               <div class="field">
@@ -162,8 +166,8 @@
                   <button type="button">Credit</button>
                 </div>
                 <label style="margin-top:0.6rem" data-i18n="amountPaid">Amount paid</label>
-                <input type="number" value="1500" min="0" />
-                <p class="muted" style="margin:0.4rem 0 0;font-size:0.72rem" data-i18n="statusHint">Status → Partial (₹1,650 balance)</p>
+                <input type="number" value="300" min="0" />
+                <p class="muted" style="margin:0.4rem 0 0;font-size:0.72rem" data-i18n="statusHint">Status → Partial (₹300 balance)</p>
               </div>
               <div class="field">
                 <label data-i18n="remarks">Remarks</label>
@@ -178,7 +182,7 @@
                 <div class="ok">✓</div>
                 <h2 data-i18n="successTitle">Sale saved</h2>
                 <p style="color:var(--muted);margin:0.35rem 0 0.15rem">PA-1143 · Gogaon Aqua Mart</p>
-                <p style="margin:0 0 1rem"><strong>₹3,150</strong> · <span class="badge badge-partial">Partial</span></p>
+                <p style="margin:0 0 1rem"><strong>₹600</strong> · <span class="badge badge-partial">Partial</span></p>
                 <button type="button" class="full-btn" style="background:var(--deep)" data-i18n="share">Share on WhatsApp</button>
                 <button type="button" class="ghost-full" onclick="showScreen('home')" data-i18n="backHome">Back to Home</button>
               </div>
@@ -201,15 +205,15 @@
               <div class="list-card" style="margin-top:0">
                 <div class="sale-row tap-row" onclick="openDetail('paid')">
                   <div><strong>Gogaon Aqua Mart</strong><br /><small>PA-1142 · Raipur</small></div>
-                  <div style="text-align:right"><strong>₹11,060</strong><br /><span class="badge badge-paid">Paid · UPI</span></div>
+                  <div style="text-align:right"><strong>₹840</strong><br /><span class="badge badge-paid">Paid · UPI</span></div>
                 </div>
                 <div class="sale-row tap-row" onclick="openDetail('partial')">
                   <div><strong>Green Valley Farm</strong><br /><small>PA-1141 · Rajnandgaon</small></div>
-                  <div style="text-align:right"><strong>₹32,920</strong><br /><span class="badge badge-partial">Partial · Credit</span></div>
+                  <div style="text-align:right"><strong>₹2,480</strong><br /><span class="badge badge-partial">Partial · Credit</span></div>
                 </div>
                 <div class="sale-row tap-row" onclick="openDetail('pending')">
                   <div><strong>City Aquarium</strong><br /><small>PA-1139 · Bhilai</small></div>
-                  <div style="text-align:right"><strong>₹3,400</strong><br /><span class="badge badge-pending">Pending · Credit</span></div>
+                  <div style="text-align:right"><strong>₹440</strong><br /><span class="badge badge-pending">Pending · Credit</span></div>
                 </div>
               </div>
             </div>
@@ -228,17 +232,21 @@
                 <h3 data-i18n="addLine">Line items</h3>
                 <div id="detailLines">
                   <div class="line-item">
-                    <div><strong>Aqua Feed Grower 5kg</strong><div class="line-meta">20 × ₹1,450</div></div>
-                    <strong>₹29,000</strong>
+                    <div><strong>20 Ltr Jar</strong><div class="line-meta">40 × ₹40</div></div>
+                    <strong>₹1,600</strong>
                   </div>
                   <div class="line-item">
-                    <div><strong>Bio Media 1L</strong><div class="line-meta">12 × ₹320</div></div>
-                    <strong>₹3,840</strong>
+                    <div><strong>Chilled Jar</strong><div class="line-meta">12 × ₹50</div></div>
+                    <strong>₹600</strong>
+                  </div>
+                  <div class="line-item">
+                    <div><strong>Pouch</strong><div class="line-meta">8 × ₹35</div></div>
+                    <strong>₹280</strong>
                   </div>
                 </div>
-                <div class="detail-kv" style="margin-top:0.5rem;font-weight:700"><span data-i18n="total">Total</span><span id="detailTotal">₹32,840</span></div>
-                <div class="detail-kv"><span data-i18n="amountPaid">Paid</span><span id="detailPaid">₹15,000</span></div>
-                <div class="detail-kv"><span data-i18n="balance">Balance</span><strong id="detailBalance" style="color:var(--partial)">₹17,840</strong></div>
+                <div class="detail-kv" style="margin-top:0.5rem;font-weight:700"><span data-i18n="total">Total</span><span id="detailTotal">₹2,480</span></div>
+                <div class="detail-kv"><span data-i18n="amountPaid">Paid</span><span id="detailPaid">₹1,000</span></div>
+                <div class="detail-kv"><span data-i18n="balance">Balance</span><strong id="detailBalance" style="color:var(--partial)">₹1,480</strong></div>
               </div>
               <div class="field" id="paymentPanel">
                 <label data-i18n="recordPayment">Record payment</label>
@@ -247,7 +255,7 @@
                   <button type="button">UPI</button>
                   <button type="button">Bank</button>
                 </div>
-                <input type="number" value="17840" min="1" aria-label="Payment amount" />
+                <input type="number" value="1480" min="1" aria-label="Payment amount" />
                 <button type="button" class="full-btn" style="background:var(--deep)" onclick="markPaid()" data-i18n="savePayment">Save payment</button>
               </div>
               <p class="muted" id="paidNote" style="display:none;text-align:center" data-i18n="fullyPaid">Fully paid — no balance left.</p>
@@ -313,11 +321,13 @@
               <p class="muted" style="margin:-0.35rem 0 0.65rem" data-i18n="productsHint">Rate reference · read-only</p>
               <div class="field"><input type="search" placeholder="Search product" data-i18n-placeholder="searchProduct" /></div>
               <div class="list-card" style="margin-top:0">
-                <div class="sale-row"><div><strong>RO Membrane 80 GPD</strong><br /><small>Filter · Stock 42</small></div><strong>₹850</strong></div>
-                <div class="sale-row"><div><strong>Aqua Feed Grower 5kg</strong><br /><small>Feed · Stock 65</small></div><strong>₹1,450</strong></div>
-                <div class="sale-row"><div><strong>UV Sterilizer 11W</strong><br /><small>Equipment · Stock 18</small></div><strong>₹2,200</strong></div>
-                <div class="sale-row"><div><strong>Air Pump AP-880</strong><br /><small>Equipment · Stock 31</small></div><strong>₹980</strong></div>
-                <div class="sale-row"><div><strong>Test Kit 5-in-1</strong><br /><small>Accessories · Stock 54</small></div><strong>₹420</strong></div>
+                <div class="sale-row"><div><strong>20 Ltr Jar</strong><br /><small>N / Jar · Stock 1,240</small></div><strong>₹40</strong></div>
+                <div class="sale-row"><div><strong>Chilled Jar</strong><br /><small>CH / Chilled · Stock 860</small></div><strong>₹50</strong></div>
+                <div class="sale-row"><div><strong>Pouch</strong><br /><small>P / Bori · Stock 420</small></div><strong>₹35</strong></div>
+                <div class="sale-row"><div><strong>1 Ltr</strong><br /><small>01l / 1LTR · Stock 180</small></div><strong>₹90</strong></div>
+                <div class="sale-row"><div><strong>500 ml</strong><br /><small>0.5L / 500ML · Stock 210</small></div><strong>₹120</strong></div>
+                <div class="sale-row"><div><strong>250 ml</strong><br /><small>0.25L / 250Ml · Stock 260</small></div><strong>₹120</strong></div>
+                <div class="sale-row"><div><strong>Dispenser</strong><br /><small>Dispenser · Stock 45</small></div><strong>₹0</strong></div>
               </div>
             </div>
           </div>
@@ -371,7 +381,7 @@
         addProduct: "+ Product",
         payment: "Payment mode",
         amountPaid: "Amount paid",
-        statusHint: "Status → Partial (₹1,650 balance)",
+        statusHint: "Status → Partial (₹300 balance)",
         remarks: "Remarks",
         total: "Total",
         save: "Save sale",
@@ -423,7 +433,7 @@
         addProduct: "+ प्रोडक्ट",
         payment: "पेमेंट मोड",
         amountPaid: "जमा राशि",
-        statusHint: "स्थिति → आंशिक (₹1,650 बाकी)",
+        statusHint: "स्थिति → आंशिक (₹300 बाकी)",
         remarks: "नोट",
         total: "कुल",
         save: "सेव करें",
@@ -467,15 +477,14 @@
         mode: "UPI",
         status: "Paid",
         statusClass: "badge badge-paid",
-        total: "₹11,060",
-        paid: "₹11,060",
+        total: "₹840",
+        paid: "₹840",
         balance: "₹0",
         balanceColor: "var(--paid)",
         canPay: false,
         lines: [
-          ["RO Membrane 80 GPD", "8 × ₹850", "₹6,800"],
-          ["UV Sterilizer 11W", "1 × ₹2,200", "₹2,200"],
-          ["Test Kit 5-in-1", "5 × ₹420", "₹2,100"],
+          ["20 Ltr Jar", "16 × ₹40", "₹640"],
+          ["Chilled Jar", "4 × ₹50", "₹200"],
         ],
       },
       paid2: {
@@ -485,15 +494,14 @@
         mode: "Cash",
         status: "Paid",
         statusClass: "badge badge-paid",
-        total: "₹6,920",
-        paid: "₹6,920",
+        total: "₹580",
+        paid: "₹580",
         balance: "₹0",
         balanceColor: "var(--paid)",
         canPay: false,
         lines: [
-          ["Air Pump AP-880", "4 × ₹980", "₹3,920"],
-          ["Bio Media 1L", "5 × ₹320", "₹1,600"],
-          ["Test Kit 5-in-1", "4 × ₹350", "₹1,400"],
+          ["20 Ltr Jar", "10 × ₹40", "₹400"],
+          ["1 Ltr", "2 × ₹90", "₹180"],
         ],
       },
       partial: {
@@ -503,14 +511,15 @@
         mode: "Credit",
         status: "Partial",
         statusClass: "badge badge-partial",
-        total: "₹32,840",
-        paid: "₹15,000",
-        balance: "₹17,840",
+        total: "₹2,480",
+        paid: "₹1,000",
+        balance: "₹1,480",
         balanceColor: "var(--partial)",
         canPay: true,
         lines: [
-          ["Aqua Feed Grower 5kg", "20 × ₹1,450", "₹29,000"],
-          ["Bio Media 1L", "12 × ₹320", "₹3,840"],
+          ["20 Ltr Jar", "40 × ₹40", "₹1,600"],
+          ["Chilled Jar", "12 × ₹50", "₹600"],
+          ["Pouch", "8 × ₹35", "₹280"],
         ],
       },
       pending: {
@@ -520,13 +529,14 @@
         mode: "Credit",
         status: "Pending",
         statusClass: "badge badge-pending",
-        total: "₹3,400",
+        total: "₹440",
         paid: "₹0",
-        balance: "₹3,400",
+        balance: "₹440",
         balanceColor: "var(--pending)",
         canPay: true,
         lines: [
-          ["RO Membrane 80 GPD", "4 × ₹850", "₹3,400"],
+          ["20 Ltr Jar", "8 × ₹40", "₹320"],
+          ["250 ml", "1 × ₹120", "₹120"],
         ],
       },
     };
