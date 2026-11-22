@@ -1178,14 +1178,23 @@ th {
 }
 
 .prod-icon {
-  width: 1.35rem;
-  height: 1.35rem;
-  border-radius: 0.4rem;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 0.45rem;
   display: inline-grid;
   place-items: center;
   font-size: 0.85rem;
   background: #fff;
   box-shadow: 0 1px 3px rgba(76, 29, 149, 0.12);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.prod-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .ledger-foot {
@@ -1241,14 +1250,43 @@ th {
 }
 
 .product-card .icon-hero {
-  width: 2.6rem;
-  height: 2.6rem;
-  border-radius: 0.85rem;
+  width: 4.2rem;
+  height: 4.2rem;
+  border-radius: 1rem;
   display: grid;
   place-items: center;
   font-size: 1.35rem;
-  background: linear-gradient(145deg, #ede9fe, #ddd6fe);
+  background: linear-gradient(145deg, #f8f5ff, #ede9fe);
   margin-bottom: 0.65rem;
+  overflow: hidden;
+  border: 1px solid rgba(124, 58, 237, 0.12);
+}
+
+.product-card .icon-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mobile-prod-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.55rem;
+  object-fit: cover;
+  background: #fff;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.sale-row.has-icon {
+  align-items: center;
+}
+
+.sale-row.has-icon > div:first-child {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
 }
 
 .product-card h3 {
