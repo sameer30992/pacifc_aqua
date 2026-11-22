@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Backend mockup — Pacific Aqua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -37,20 +40,20 @@
           <small>Pacific Aqua</small>
           <strong>Backend Admin</strong>
         </div>
-        <div style="font-size:0.85rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+        <div style="font-size:0.85rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;font-weight:700">
           Owner · Sameer
-          <button type="button" class="lang-btn" onclick="showTabByName('reports')">Export</button>
+          <button type="button" class="btn-on-dark" onclick="showTabByName('reports')">⬇ Export Excel</button>
         </div>
       </div>
       <div class="admin-grid">
         <aside class="admin-side" id="sideNav">
-          <button type="button" class="active" onclick="showTab('dashboard', this)">Dashboard</button>
-          <button type="button" onclick="showTab('sales', this)">Sales ledger</button>
-          <button type="button" onclick="showTab('dues', this)">Dues</button>
-          <button type="button" onclick="showTab('customers', this)">Customers</button>
-          <button type="button" onclick="showTab('products', this)">Products</button>
-          <button type="button" onclick="showTab('reports', this)">Reports</button>
-          <button type="button" onclick="showTab('users', this)">Users</button>
+          <button type="button" class="active" onclick="showTab('dashboard', this)">🏠 Dashboard</button>
+          <button type="button" onclick="showTab('sales', this)">📒 Sales ledger</button>
+          <button type="button" onclick="showTab('dues', this)">💰 Dues</button>
+          <button type="button" onclick="showTab('customers', this)">👥 Customers</button>
+          <button type="button" onclick="showTab('products', this)">💧 Products</button>
+          <button type="button" onclick="showTab('reports', this)">📊 Reports</button>
+          <button type="button" onclick="showTab('users', this)">🔑 Users</button>
         </aside>
 
         <div class="admin-main">
@@ -86,20 +89,30 @@
 
           <!-- B2 SALES LEDGER -->
           <div class="screen" id="tab-sales">
-            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;align-items:end">
+            <div class="ledger-head">
               <div>
                 <h2 style="margin:0">Sales ledger</h2>
-                <p class="muted" style="margin:0.25rem 0 0">Excel replacement · full register</p>
+                <p class="muted" style="margin:0.25rem 0 0">All sales in one place — tap a card to open</p>
               </div>
               <div class="row-actions">
-                <button type="button" class="btn btn-ghost" onclick="showTabByName('reports')">Export</button>
-                <button type="button" class="btn btn-primary" onclick="openSaleEditor(null)">+ New sale</button>
+                <button type="button" class="btn btn-ghost" onclick="showTabByName('reports')">⬇ Download Excel</button>
+                <button type="button" class="btn btn-primary" onclick="openSaleEditor(null)">＋ New sale</button>
               </div>
             </div>
+
+            <div class="ledger-legend" aria-label="Status meaning">
+              <span class="legend-pill"><span class="legend-dot paid"></span> Paid — full amount received</span>
+              <span class="legend-pill"><span class="legend-dot partial"></span> Partial — some amount pending</span>
+              <span class="legend-pill"><span class="legend-dot pending"></span> Pending — nothing paid yet</span>
+            </div>
+
+            <p class="ledger-hint">Tip: Use filters below, then tap any sale. Green edge = paid · Orange = partial · Red = pending.</p>
+
             <div class="toolbar">
+              <label class="muted" style="width:100%;margin:0;font-size:0.78rem;font-weight:800">Find sales</label>
               <input type="date" value="2026-11-01" aria-label="From date" />
               <input type="date" value="2026-11-22" aria-label="To date" />
-              <input type="search" placeholder="Search invoice, customer, city…" style="min-width:200px" />
+              <input type="search" placeholder="Search name, invoice, area…" style="min-width:220px;flex:1" />
               <select aria-label="Status">
                 <option>All statuses</option>
                 <option>Paid</option>
@@ -108,7 +121,7 @@
                 <option>Void</option>
               </select>
               <select aria-label="City">
-                <option>All cities</option>
+                <option>All areas</option>
                 <option>Raipur</option>
                 <option>Gudhiyari</option>
                 <option>Kota</option>
@@ -122,88 +135,101 @@
                 <option>Priya</option>
               </select>
             </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Invoice</th>
-                    <th>Customer</th>
-                    <th>Phone</th>
-                    <th>City</th>
-                    <th>Salesperson</th>
-                    <th>Products</th>
-                    <th>Total</th>
-                    <th>Paid</th>
-                    <th>Balance</th>
-                    <th>Mode</th>
-                    <th>Status</th>
-                    <th>Remarks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="tap-row" onclick="openSaleEditor('PA-1142')">
-                    <td>2026-11-22</td>
-                    <td>PA-1142</td>
-                    <td>A R Traders, Shrinagar</td>
-                    <td>—</td>
-                    <td>Shrinagar, Raipur</td>
-                    <td>Rahul</td>
-                    <td>20 Ltr Jar ×16</td>
-                    <td>₹400</td>
-                    <td>₹400</td>
-                    <td>₹0</td>
-                    <td>Cash</td>
-                    <td><span class="badge badge-paid">Paid</span></td>
-                    <td>—</td>
-                  </tr>
-                  <tr class="tap-row" onclick="openSaleEditor('PA-1141')">
-                    <td>2026-11-22</td>
-                    <td>PA-1141</td>
-                    <td>Vedprakash Pandey ji</td>
-                    <td>9827166259</td>
-                    <td>Kota, Raipur</td>
-                    <td>Amit</td>
-                    <td>20 Ltr Jar ×20, Chilled ×8</td>
-                    <td>₹1,200</td>
-                    <td>₹500</td>
-                    <td>₹700</td>
-                    <td>Credit</td>
-                    <td><span class="badge badge-partial">Partial</span></td>
-                    <td>Monthly</td>
-                  </tr>
-                  <tr class="tap-row" onclick="openSaleEditor('PA-1140')">
-                    <td>2026-11-21</td>
-                    <td>PA-1140</td>
-                    <td>Kundan Agency</td>
-                    <td>—</td>
-                    <td>Gudhiyari, Raipur</td>
-                    <td>Rahul</td>
-                    <td>20 Ltr Jar ×8, Chilled ×8</td>
-                    <td>₹640</td>
-                    <td>₹640</td>
-                    <td>₹0</td>
-                    <td>UPI</td>
-                    <td><span class="badge badge-paid">Paid</span></td>
-                    <td>—</td>
-                  </tr>
-                  <tr class="tap-row" onclick="openSaleEditor('PA-1139')">
-                    <td>2026-11-21</td>
-                    <td>PA-1139</td>
-                    <td>Yogesh traders, Gudhiyari</td>
-                    <td>—</td>
-                    <td>Gudhiyari, Raipur</td>
-                    <td>Priya</td>
-                    <td>Chilled Jar ×21</td>
-                    <td>₹940</td>
-                    <td>₹0</td>
-                    <td>₹940</td>
-                    <td>Credit</td>
-                    <td><span class="badge badge-pending">Pending</span></td>
-                    <td>Follow up</td>
-                  </tr>
-                </tbody>
-              </table>
+
+            <div class="ledger-cards">
+              <article class="ledger-card is-paid" onclick="openSaleEditor('PA-1142')">
+                <div class="ledger-card-top">
+                  <div>
+                    <div class="ledger-invoice">PA-1142 · 22 Nov 2026</div>
+                    <h3 class="ledger-customer">A R Traders, Shrinagar</h3>
+                    <p class="ledger-meta">Shrinagar, Raipur · Sold by Rahul</p>
+                  </div>
+                  <div class="ledger-amounts">
+                    <div class="amt-block"><span>Total</span><strong>₹400</strong></div>
+                    <div class="amt-block"><span>Paid</span><strong>₹400</strong></div>
+                    <div class="amt-block due"><span>Due</span><strong>₹0</strong></div>
+                    <span class="badge badge-paid">● Paid</span>
+                  </div>
+                </div>
+                <div class="prod-chips">
+                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true">🫙</span> 20 Ltr Jar ×16</span>
+                </div>
+                <div class="ledger-foot">
+                  <span class="mode-pill">💵 Cash</span>
+                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1142')">Open sale →</button>
+                </div>
+              </article>
+
+              <article class="ledger-card is-partial" onclick="openSaleEditor('PA-1141')">
+                <div class="ledger-card-top">
+                  <div>
+                    <div class="ledger-invoice">PA-1141 · 22 Nov 2026</div>
+                    <h3 class="ledger-customer">Vedprakash Pandey ji</h3>
+                    <p class="ledger-meta">Kota, Raipur · 9827166259 · Sold by Amit</p>
+                  </div>
+                  <div class="ledger-amounts">
+                    <div class="amt-block"><span>Total</span><strong>₹1,200</strong></div>
+                    <div class="amt-block"><span>Paid</span><strong>₹500</strong></div>
+                    <div class="amt-block due"><span>Due</span><strong>₹700</strong></div>
+                    <span class="badge badge-partial">◐ Partial</span>
+                  </div>
+                </div>
+                <div class="prod-chips">
+                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true">🫙</span> 20 Ltr Jar ×20</span>
+                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true">❄️</span> Chilled Jar ×8</span>
+                </div>
+                <div class="ledger-foot">
+                  <span class="mode-pill">📝 Credit · Monthly</span>
+                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1141')">Collect / edit →</button>
+                </div>
+              </article>
+
+              <article class="ledger-card is-paid" onclick="openSaleEditor('PA-1140')">
+                <div class="ledger-card-top">
+                  <div>
+                    <div class="ledger-invoice">PA-1140 · 21 Nov 2026</div>
+                    <h3 class="ledger-customer">Kundan Agency</h3>
+                    <p class="ledger-meta">Gudhiyari, Raipur · Sold by Rahul</p>
+                  </div>
+                  <div class="ledger-amounts">
+                    <div class="amt-block"><span>Total</span><strong>₹640</strong></div>
+                    <div class="amt-block"><span>Paid</span><strong>₹640</strong></div>
+                    <div class="amt-block due"><span>Due</span><strong>₹0</strong></div>
+                    <span class="badge badge-paid">● Paid</span>
+                  </div>
+                </div>
+                <div class="prod-chips">
+                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true">🫙</span> 20 Ltr Jar ×8</span>
+                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true">❄️</span> Chilled Jar ×8</span>
+                </div>
+                <div class="ledger-foot">
+                  <span class="mode-pill">📱 UPI</span>
+                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1140')">Open sale →</button>
+                </div>
+              </article>
+
+              <article class="ledger-card is-pending" onclick="openSaleEditor('PA-1139')">
+                <div class="ledger-card-top">
+                  <div>
+                    <div class="ledger-invoice">PA-1139 · 21 Nov 2026</div>
+                    <h3 class="ledger-customer">Yogesh traders, Gudhiyari</h3>
+                    <p class="ledger-meta">Gudhiyari, Raipur · Sold by Priya</p>
+                  </div>
+                  <div class="ledger-amounts">
+                    <div class="amt-block"><span>Total</span><strong>₹940</strong></div>
+                    <div class="amt-block"><span>Paid</span><strong>₹0</strong></div>
+                    <div class="amt-block due"><span>Due</span><strong>₹940</strong></div>
+                    <span class="badge badge-pending">○ Pending</span>
+                  </div>
+                </div>
+                <div class="prod-chips">
+                  <span class="prod-chip"><span class="prod-icon" aria-hidden="true">❄️</span> Chilled Jar ×21</span>
+                </div>
+                <div class="ledger-foot">
+                  <span class="mode-pill">📝 Credit · Follow up</span>
+                  <button type="button" class="ledger-action" onclick="event.stopPropagation(); openSaleEditor('PA-1139')">Collect now →</button>
+                </div>
+              </article>
             </div>
           </div>
 
@@ -448,8 +474,11 @@
           <!-- B6 PRODUCTS -->
           <div class="screen" id="tab-products">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:0.75rem;flex-wrap:wrap">
-              <h2 style="margin:0">Products</h2>
-              <button type="button" class="btn btn-ghost" onclick="toggleProductForm()">+ Add product</button>
+              <div>
+                <h2 style="margin:0">Products</h2>
+                <p class="muted" style="margin:0.25rem 0 0">Tap a card to edit rate or stock</p>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="toggleProductForm()">＋ Add product</button>
             </div>
             <div class="admin-form" id="productForm" style="display:none;margin-top:0.85rem">
               <h3>Add / edit product</h3>
@@ -465,47 +494,60 @@
                 </div>
               </div>
               <div class="row-actions">
-                <button type="button" class="btn btn-primary" onclick="toggleProductForm()">Save</button>
+                <button type="button" class="btn btn-primary" onclick="toggleProductForm()">Save product</button>
                 <button type="button" class="btn btn-ghost" onclick="toggleProductForm()">Cancel</button>
               </div>
             </div>
-            <p class="muted" style="margin:0.75rem 0 0">From <code>Pacific Aqua.xlsx</code> sale columns (P&amp;S / BILL).</p>
-            <div class="table-wrap" style="margin-top:0.5rem">
-              <table>
-                <thead>
-                  <tr><th>Name</th><th>Excel code</th><th>Category</th><th>Unit</th><th>Default rate</th><th>Stock</th><th>Status</th><th></th></tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>20 Ltr Jar</td><td>N / Jar</td><td>Jar</td><td>jar</td><td>₹40</td><td>1,240</td><td>Active</td>
-                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>Chilled Jar</td><td>CH / Chilled</td><td>Jar</td><td>jar</td><td>₹50</td><td>860</td><td>Active</td>
-                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>Pouch</td><td>P / Pouch / Bori</td><td>Pouch</td><td>pouch</td><td>₹35</td><td>420</td><td>Active</td>
-                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>1 Ltr</td><td>01l / 1LTR</td><td>Bottle</td><td>pack</td><td>₹90</td><td>180</td><td>Active</td>
-                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>500 ml</td><td>0.5L / 500ML</td><td>Bottle</td><td>pack</td><td>₹120</td><td>210</td><td>Active</td>
-                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>250 ml</td><td>0.25L / 250Ml</td><td>Bottle</td><td>pack</td><td>₹120</td><td>260</td><td>Active</td>
-                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
-                  </tr>
-                  <tr>
-                    <td>Dispenser</td><td>Dispenser</td><td>Accessory</td><td>pcs</td><td>₹0</td><td>45</td><td>Active</td>
-                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="product-grid">
+              <div class="product-card">
+                <div class="icon-hero" aria-hidden="true">🫙</div>
+                <h3>20 Ltr Jar</h3>
+                <p>N / Jar · Stock 1,240</p>
+                <div class="rate">₹40</div>
+                <button type="button" class="link-btn" style="margin-top:0.55rem" onclick="toggleProductForm()">Edit</button>
+              </div>
+              <div class="product-card">
+                <div class="icon-hero" aria-hidden="true">❄️</div>
+                <h3>Chilled Jar</h3>
+                <p>CH / Chilled · Stock 860</p>
+                <div class="rate">₹50</div>
+                <button type="button" class="link-btn" style="margin-top:0.55rem" onclick="toggleProductForm()">Edit</button>
+              </div>
+              <div class="product-card">
+                <div class="icon-hero" aria-hidden="true">📦</div>
+                <h3>Pouch</h3>
+                <p>P / Bori · Stock 420</p>
+                <div class="rate">₹35</div>
+                <button type="button" class="link-btn" style="margin-top:0.55rem" onclick="toggleProductForm()">Edit</button>
+              </div>
+              <div class="product-card">
+                <div class="icon-hero" aria-hidden="true">🧴</div>
+                <h3>1 Ltr</h3>
+                <p>01l / 1LTR · Stock 180</p>
+                <div class="rate">₹90</div>
+                <button type="button" class="link-btn" style="margin-top:0.55rem" onclick="toggleProductForm()">Edit</button>
+              </div>
+              <div class="product-card">
+                <div class="icon-hero" aria-hidden="true">💧</div>
+                <h3>500 ml</h3>
+                <p>0.5L / 500ML · Stock 210</p>
+                <div class="rate">₹120</div>
+                <button type="button" class="link-btn" style="margin-top:0.55rem" onclick="toggleProductForm()">Edit</button>
+              </div>
+              <div class="product-card">
+                <div class="icon-hero" aria-hidden="true">💧</div>
+                <h3>250 ml</h3>
+                <p>0.25L / 250Ml · Stock 260</p>
+                <div class="rate">₹120</div>
+                <button type="button" class="link-btn" style="margin-top:0.55rem" onclick="toggleProductForm()">Edit</button>
+              </div>
+              <div class="product-card">
+                <div class="icon-hero" aria-hidden="true">🚰</div>
+                <h3>Dispenser</h3>
+                <p>Accessory · Stock 45</p>
+                <div class="rate">₹0</div>
+                <button type="button" class="link-btn" style="margin-top:0.55rem" onclick="toggleProductForm()">Edit</button>
+              </div>
             </div>
           </div>
 
