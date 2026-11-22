@@ -66,8 +66,8 @@
             <div class="screen active" id="screen-home">
               <div class="stats">
                 <div class="stat"><span data-i18n="sales">Sales</span><strong>2</strong></div>
-                <div class="stat"><span data-i18n="collected">Collected</span><strong>₹1,420</strong></div>
-                <div class="stat"><span data-i18n="pending">Pending</span><strong>₹1,480</strong></div>
+                <div class="stat"><span data-i18n="collected">Collected</span><strong>₹1,040</strong></div>
+                <div class="stat"><span data-i18n="pending">Pending</span><strong>₹700</strong></div>
                 <div class="stat"><span data-i18n="today">Today</span><strong>22 Nov</strong></div>
               </div>
               <button type="button" class="full-btn" onclick="showScreen('new')" data-i18n="newSale">+ New Sale</button>
@@ -75,31 +75,31 @@
                 <span data-i18n="recentSales">Recent sales</span>
                 <div class="sale-row tap-row" onclick="openDetail('paid')">
                   <div>
-                    <strong>Gogaon Aqua Mart</strong><br />
+                    <strong>A R Traders, Shrinagar</strong><br />
                     <small>PA-1142</small>
                   </div>
                   <div style="text-align:right">
-                    <strong>₹840</strong><br />
+                    <strong>₹400</strong><br />
                     <span class="badge badge-paid">Paid</span>
                   </div>
                 </div>
                 <div class="sale-row tap-row" onclick="openDetail('partial')">
                   <div>
-                    <strong>Green Valley Farm</strong><br />
+                    <strong>Vedprakash Pandey ji</strong><br />
                     <small>PA-1141</small>
                   </div>
                   <div style="text-align:right">
-                    <strong>₹2,480</strong><br />
+                    <strong>₹1,200</strong><br />
                     <span class="badge badge-partial">Partial</span>
                   </div>
                 </div>
                 <div class="sale-row tap-row" onclick="openDetail('paid2')">
                   <div>
-                    <strong>Shree Pets &amp; Fish</strong><br />
+                    <strong>Kundan Agency</strong><br />
                     <small>PA-1140</small>
                   </div>
                   <div style="text-align:right">
-                    <strong>₹580</strong><br />
+                    <strong>₹640</strong><br />
                     <span class="badge badge-paid">Paid</span>
                   </div>
                 </div>
@@ -116,10 +116,12 @@
                   <button type="button" class="link-btn" onclick="showScreen('customer-form')" data-i18n="addCustomer">+ Add</button>
                 </div>
                 <select>
-                  <option>Gogaon Aqua Mart · Raipur · Dealer</option>
-                  <option>Shree Pets &amp; Fish · Durg · Dealer</option>
-                  <option>Green Valley Farm · Rajnandgaon · Institution</option>
-                  <option>City Aquarium · Bhilai · Retail</option>
+                  <option>Vedprakash Pandey ji · Kota · Retail</option>
+                  <option>Kundan Agency · Gudhiyari · Dealer</option>
+                  <option>Yogesh traders, Gudhiyari · Dealer</option>
+                  <option>A R Traders, Shrinagar · Dealer</option>
+                  <option>Komal Ji, Shivanand nagar · Retail</option>
+                  <option>Agrawal Marketing, Ramnagar · Dealer</option>
                 </select>
               </div>
               <div class="field">
@@ -181,7 +183,7 @@
               <div class="success">
                 <div class="ok">✓</div>
                 <h2 data-i18n="successTitle">Sale saved</h2>
-                <p style="color:var(--muted);margin:0.35rem 0 0.15rem">PA-1143 · Gogaon Aqua Mart</p>
+                <p style="color:var(--muted);margin:0.35rem 0 0.15rem">PA-1143 · Vedprakash Pandey ji</p>
                 <p style="margin:0 0 1rem"><strong>₹600</strong> · <span class="badge badge-partial">Partial</span></p>
                 <button type="button" class="full-btn" style="background:var(--deep)" data-i18n="share">Share on WhatsApp</button>
                 <button type="button" class="ghost-full" onclick="showScreen('home')" data-i18n="backHome">Back to Home</button>
@@ -204,16 +206,16 @@
               </div>
               <div class="list-card" style="margin-top:0">
                 <div class="sale-row tap-row" onclick="openDetail('paid')">
-                  <div><strong>Gogaon Aqua Mart</strong><br /><small>PA-1142 · Raipur</small></div>
-                  <div style="text-align:right"><strong>₹840</strong><br /><span class="badge badge-paid">Paid · UPI</span></div>
+                  <div><strong>A R Traders, Shrinagar</strong><br /><small>PA-1142 · Shrinagar</small></div>
+                  <div style="text-align:right"><strong>₹400</strong><br /><span class="badge badge-paid">Paid · Cash</span></div>
                 </div>
                 <div class="sale-row tap-row" onclick="openDetail('partial')">
-                  <div><strong>Green Valley Farm</strong><br /><small>PA-1141 · Rajnandgaon</small></div>
-                  <div style="text-align:right"><strong>₹2,480</strong><br /><span class="badge badge-partial">Partial · Credit</span></div>
+                  <div><strong>Vedprakash Pandey ji</strong><br /><small>PA-1141 · Kota</small></div>
+                  <div style="text-align:right"><strong>₹1,200</strong><br /><span class="badge badge-partial">Partial · Credit</span></div>
                 </div>
                 <div class="sale-row tap-row" onclick="openDetail('pending')">
-                  <div><strong>City Aquarium</strong><br /><small>PA-1139 · Bhilai</small></div>
-                  <div style="text-align:right"><strong>₹440</strong><br /><span class="badge badge-pending">Pending · Credit</span></div>
+                  <div><strong>Yogesh traders, Gudhiyari</strong><br /><small>PA-1139 · Gudhiyari</small></div>
+                  <div style="text-align:right"><strong>₹940</strong><br /><span class="badge badge-pending">Pending · Credit</span></div>
                 </div>
               </div>
             </div>
@@ -223,8 +225,8 @@
               <button type="button" class="back-link" onclick="showScreen('sales')">← <span data-i18n="mySales">My Sales</span></button>
               <h2 class="screen-title" id="detailInvoice">PA-1141</h2>
               <div class="detail-block">
-                <div class="detail-kv"><span data-i18n="customer">Customer</span><strong id="detailCustomer">Green Valley Farm</strong></div>
-                <div class="detail-kv"><span data-i18n="city">City</span><span id="detailCity">Rajnandgaon</span></div>
+                <div class="detail-kv"><span data-i18n="customer">Customer</span><strong id="detailCustomer">Vedprakash Pandey ji</strong></div>
+                <div class="detail-kv"><span data-i18n="city">City</span><span id="detailCity">Kota, Raipur</span></div>
                 <div class="detail-kv"><span data-i18n="mode">Mode</span><span id="detailMode">Credit</span></div>
                 <div class="detail-kv"><span data-i18n="status">Status</span><span id="detailStatus" class="badge badge-partial">Partial</span></div>
               </div>
@@ -232,21 +234,17 @@
                 <h3 data-i18n="addLine">Line items</h3>
                 <div id="detailLines">
                   <div class="line-item">
-                    <div><strong>20 Ltr Jar</strong><div class="line-meta">40 × ₹40</div></div>
-                    <strong>₹1,600</strong>
+                    <div><strong>20 Ltr Jar</strong><div class="line-meta">20 × ₹40</div></div>
+                    <strong>₹800</strong>
                   </div>
                   <div class="line-item">
-                    <div><strong>Chilled Jar</strong><div class="line-meta">12 × ₹50</div></div>
-                    <strong>₹600</strong>
-                  </div>
-                  <div class="line-item">
-                    <div><strong>Pouch</strong><div class="line-meta">8 × ₹35</div></div>
-                    <strong>₹280</strong>
+                    <div><strong>Chilled Jar</strong><div class="line-meta">8 × ₹50</div></div>
+                    <strong>₹400</strong>
                   </div>
                 </div>
-                <div class="detail-kv" style="margin-top:0.5rem;font-weight:700"><span data-i18n="total">Total</span><span id="detailTotal">₹2,480</span></div>
-                <div class="detail-kv"><span data-i18n="amountPaid">Paid</span><span id="detailPaid">₹1,000</span></div>
-                <div class="detail-kv"><span data-i18n="balance">Balance</span><strong id="detailBalance" style="color:var(--partial)">₹1,480</strong></div>
+                <div class="detail-kv" style="margin-top:0.5rem;font-weight:700"><span data-i18n="total">Total</span><span id="detailTotal">₹1,200</span></div>
+                <div class="detail-kv"><span data-i18n="amountPaid">Paid</span><span id="detailPaid">₹500</span></div>
+                <div class="detail-kv"><span data-i18n="balance">Balance</span><strong id="detailBalance" style="color:var(--partial)">₹700</strong></div>
               </div>
               <div class="field" id="paymentPanel">
                 <label data-i18n="recordPayment">Record payment</label>
@@ -255,7 +253,7 @@
                   <button type="button">UPI</button>
                   <button type="button">Bank</button>
                 </div>
-                <input type="number" value="1480" min="1" aria-label="Payment amount" />
+                <input type="number" value="700" min="1" aria-label="Payment amount" />
                 <button type="button" class="full-btn" style="background:var(--deep)" onclick="markPaid()" data-i18n="savePayment">Save payment</button>
               </div>
               <p class="muted" id="paidNote" style="display:none;text-align:center" data-i18n="fullyPaid">Fully paid — no balance left.</p>
@@ -270,20 +268,36 @@
               <div class="field"><input type="search" placeholder="Search name, phone, city" data-i18n-placeholder="searchCustomer" /></div>
               <div class="list-card" style="margin-top:0">
                 <div class="sale-row tap-row" onclick="showScreen('customer-form')">
-                  <div><strong>Gogaon Aqua Mart</strong><br /><small>Raipur · Dealer · 9876543210</small></div>
-                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹12,400</div>
+                  <div><strong>Vedprakash Pandey ji</strong><br /><small>Kota, Raipur · Retail · 9827166259</small></div>
+                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹1,11,675</div>
                 </div>
                 <div class="sale-row">
-                  <div><strong>Shree Pets &amp; Fish</strong><br /><small>Durg · Dealer · 9827012345</small></div>
+                  <div><strong>Saurabh Flanges Pvt. Ltd.</strong><br /><small>Urla Industrial · Institution</small></div>
+                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹75,530</div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>Agrawal Marketing, Ramnagar</strong><br /><small>Ramnagar · Dealer</small></div>
+                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹21,675</div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>Kundan Agency</strong><br /><small>Gudhiyari · Dealer</small></div>
+                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹16,958</div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>Komal Ji, Shivanand nagar</strong><br /><small>Shivanandnagar · Retail · 9713738999</small></div>
                   <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
                 </div>
                 <div class="sale-row">
-                  <div><strong>Green Valley Farm</strong><br /><small>Rajnandgaon · Institution · 9988776655</small></div>
-                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹18,500</div>
+                  <div><strong>Sanjay kumar ji, RPF</strong><br /><small>RPF Colony · Institution · 7225009844</small></div>
+                  <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
                 </div>
                 <div class="sale-row">
-                  <div><strong>City Aquarium</strong><br /><small>Bhilai · Retail · 9001122334</small></div>
-                  <div style="text-align:right;color:var(--pending);font-size:0.8rem">₹3,400</div>
+                  <div><strong>Sahil tiwari, saraswati nagar</strong><br /><small>Kota · Retail · 8770783809</small></div>
+                  <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>Shanti Kiraya Bhandar</strong><br /><small>Gudhiyari · Dealer</small></div>
+                  <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
                 </div>
               </div>
             </div>
@@ -472,71 +486,68 @@
     const details = {
       paid: {
         invoice: "PA-1142",
-        customer: "Gogaon Aqua Mart",
-        city: "Raipur",
-        mode: "UPI",
+        customer: "A R Traders, Shrinagar",
+        city: "Shrinagar, Raipur",
+        mode: "Cash",
         status: "Paid",
         statusClass: "badge badge-paid",
-        total: "₹840",
-        paid: "₹840",
+        total: "₹400",
+        paid: "₹400",
         balance: "₹0",
         balanceColor: "var(--paid)",
         canPay: false,
         lines: [
-          ["20 Ltr Jar", "16 × ₹40", "₹640"],
-          ["Chilled Jar", "4 × ₹50", "₹200"],
+          ["20 Ltr Jar", "16 × ₹25", "₹400"],
         ],
       },
       paid2: {
         invoice: "PA-1140",
-        customer: "Shree Pets & Fish",
-        city: "Durg",
-        mode: "Cash",
+        customer: "Kundan Agency",
+        city: "Gudhiyari, Raipur",
+        mode: "UPI",
         status: "Paid",
         statusClass: "badge badge-paid",
-        total: "₹580",
-        paid: "₹580",
+        total: "₹640",
+        paid: "₹640",
         balance: "₹0",
         balanceColor: "var(--paid)",
         canPay: false,
         lines: [
-          ["20 Ltr Jar", "10 × ₹40", "₹400"],
-          ["1 Ltr", "2 × ₹90", "₹180"],
+          ["20 Ltr Jar", "8 × ₹40", "₹320"],
+          ["Chilled Jar", "8 × ₹40", "₹320"],
         ],
       },
       partial: {
         invoice: "PA-1141",
-        customer: "Green Valley Farm",
-        city: "Rajnandgaon",
+        customer: "Vedprakash Pandey ji",
+        city: "Kota, Raipur",
         mode: "Credit",
         status: "Partial",
         statusClass: "badge badge-partial",
-        total: "₹2,480",
-        paid: "₹1,000",
-        balance: "₹1,480",
+        total: "₹1,200",
+        paid: "₹500",
+        balance: "₹700",
         balanceColor: "var(--partial)",
         canPay: true,
         lines: [
-          ["20 Ltr Jar", "40 × ₹40", "₹1,600"],
-          ["Chilled Jar", "12 × ₹50", "₹600"],
-          ["Pouch", "8 × ₹35", "₹280"],
+          ["20 Ltr Jar", "20 × ₹40", "₹800"],
+          ["Chilled Jar", "8 × ₹50", "₹400"],
         ],
       },
       pending: {
         invoice: "PA-1139",
-        customer: "City Aquarium",
-        city: "Bhilai",
+        customer: "Yogesh traders, Gudhiyari",
+        city: "Gudhiyari, Raipur",
         mode: "Credit",
         status: "Pending",
         statusClass: "badge badge-pending",
-        total: "₹440",
+        total: "₹940",
         paid: "₹0",
-        balance: "₹440",
+        balance: "₹940",
         balanceColor: "var(--pending)",
         canPay: true,
         lines: [
-          ["20 Ltr Jar", "8 × ₹40", "₹320"],
-          ["250 ml", "1 × ₹120", "₹120"],
+          ["Chilled Jar", "21 × ₹45", "₹945"],
         ],
       },
     };
