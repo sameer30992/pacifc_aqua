@@ -24,20 +24,23 @@
   </header>
 
   <main class="wrap">
-    <p class="eyebrow">Mockup</p>
+    <p class="eyebrow">Mockup · B0–B9</p>
     <h1>Backend admin</h1>
     <p class="lede">
-      Desktop control room for the owner — dashboard, sales ledger (Excel replacement), dues,
-      customers, and products. Persona: <strong>Sameer</strong> (Admin).
+      Desktop control room (PRD §7.2): dashboard, sales ledger, sale editor, dues, customers,
+      products, reports/export, and users. Persona: <strong>Sameer</strong> (Admin / Owner).
     </p>
 
-    <div class="admin">
+    <div class="admin" id="adminShell">
       <div class="admin-top">
         <div>
           <small>Pacific Aqua</small>
           <strong>Backend Admin</strong>
         </div>
-        <div style="font-size:0.85rem">Owner · Sameer · <button type="button" class="lang-btn">Export</button></div>
+        <div style="font-size:0.85rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+          Owner · Sameer
+          <button type="button" class="lang-btn" onclick="showTabByName('reports')">Export</button>
+        </div>
       </div>
       <div class="admin-grid">
         <aside class="admin-side" id="sideNav">
@@ -46,9 +49,12 @@
           <button type="button" onclick="showTab('dues', this)">Dues</button>
           <button type="button" onclick="showTab('customers', this)">Customers</button>
           <button type="button" onclick="showTab('products', this)">Products</button>
+          <button type="button" onclick="showTab('reports', this)">Reports</button>
+          <button type="button" onclick="showTab('users', this)">Users</button>
         </aside>
 
         <div class="admin-main">
+          <!-- B1 DASHBOARD -->
           <div class="screen active" id="tab-dashboard">
             <h2 style="margin-top:0">November overview</h2>
             <div class="kpi-grid">
@@ -63,130 +69,589 @@
             </div>
             <div class="card" style="margin-top:0.9rem">
               <strong>Recent sales</strong>
-              <div class="sale-row"><span>PA-1142 · Gogaon Aqua Mart</span><strong>₹11,060</strong></div>
-              <div class="sale-row"><span>PA-1141 · Green Valley Farm</span><strong>₹32,920</strong></div>
-              <div class="sale-row"><span>PA-1140 · Shree Pets &amp; Fish</span><strong>₹6,920</strong></div>
+              <div class="sale-row tap-row" onclick="openSaleEditor('PA-1142')">
+                <span>PA-1142 · Gogaon Aqua Mart · Rahul</span>
+                <strong>₹11,060 · <span class="badge badge-paid">Paid</span></strong>
+              </div>
+              <div class="sale-row tap-row" onclick="openSaleEditor('PA-1141')">
+                <span>PA-1141 · Green Valley Farm · Amit</span>
+                <strong>₹32,920 · <span class="badge badge-partial">Partial</span></strong>
+              </div>
+              <div class="sale-row tap-row" onclick="openSaleEditor('PA-1140')">
+                <span>PA-1140 · Shree Pets &amp; Fish · Rahul</span>
+                <strong>₹6,920 · <span class="badge badge-paid">Paid</span></strong>
+              </div>
             </div>
           </div>
 
+          <!-- B2 SALES LEDGER -->
           <div class="screen" id="tab-sales">
             <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;align-items:end">
               <div>
                 <h2 style="margin:0">Sales ledger</h2>
-                <p style="margin:0.25rem 0 0;color:var(--muted);font-size:0.9rem">Excel replacement view</p>
+                <p class="muted" style="margin:0.25rem 0 0">Excel replacement · full register</p>
               </div>
-              <button type="button" class="btn btn-primary">+ New sale</button>
+              <div class="row-actions">
+                <button type="button" class="btn btn-ghost" onclick="showTabByName('reports')">Export</button>
+                <button type="button" class="btn btn-primary" onclick="openSaleEditor(null)">+ New sale</button>
+              </div>
             </div>
             <div class="toolbar">
-              <input type="search" placeholder="Search invoice, customer, city…" style="min-width:220px" />
-              <select>
+              <input type="date" value="2026-11-01" aria-label="From date" />
+              <input type="date" value="2026-11-22" aria-label="To date" />
+              <input type="search" placeholder="Search invoice, customer, city…" style="min-width:200px" />
+              <select aria-label="Status">
                 <option>All statuses</option>
                 <option>Paid</option>
                 <option>Partial</option>
                 <option>Pending</option>
+                <option>Void</option>
+              </select>
+              <select aria-label="City">
+                <option>All cities</option>
+                <option>Raipur</option>
+                <option>Durg</option>
+                <option>Bhilai</option>
+                <option>Rajnandgaon</option>
+              </select>
+              <select aria-label="Salesperson">
+                <option>All salespeople</option>
+                <option>Rahul</option>
+                <option>Amit</option>
+                <option>Priya</option>
               </select>
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Date</th><th>Invoice</th><th>Customer</th><th>City</th>
-                    <th>Salesperson</th><th>Total</th><th>Paid</th><th>Status</th>
+                    <th>Date</th>
+                    <th>Invoice</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>Salesperson</th>
+                    <th>Products</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Balance</th>
+                    <th>Mode</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>2026-11-22</td><td>PA-1142</td><td>Gogaon Aqua Mart</td><td>Raipur</td>
-                    <td>Rahul</td><td>₹11,060</td><td>₹11,060</td>
+                  <tr class="tap-row" onclick="openSaleEditor('PA-1142')">
+                    <td>2026-11-22</td>
+                    <td>PA-1142</td>
+                    <td>Gogaon Aqua Mart</td>
+                    <td>9876543210</td>
+                    <td>Raipur</td>
+                    <td>Rahul</td>
+                    <td>RO Membrane ×8, UV ×1…</td>
+                    <td>₹11,060</td>
+                    <td>₹11,060</td>
+                    <td>₹0</td>
+                    <td>UPI</td>
                     <td><span class="badge badge-paid">Paid</span></td>
+                    <td>—</td>
                   </tr>
-                  <tr>
-                    <td>2026-11-22</td><td>PA-1141</td><td>Green Valley Farm</td><td>Rajnandgaon</td>
-                    <td>Amit</td><td>₹32,920</td><td>₹15,000</td>
+                  <tr class="tap-row" onclick="openSaleEditor('PA-1141')">
+                    <td>2026-11-22</td>
+                    <td>PA-1141</td>
+                    <td>Green Valley Farm</td>
+                    <td>9988776655</td>
+                    <td>Rajnandgaon</td>
+                    <td>Amit</td>
+                    <td>Feed Grower ×20, Bio Media ×12</td>
+                    <td>₹32,840</td>
+                    <td>₹15,000</td>
+                    <td>₹17,840</td>
+                    <td>Credit</td>
                     <td><span class="badge badge-partial">Partial</span></td>
+                    <td>Farm order</td>
                   </tr>
-                  <tr>
-                    <td>2026-11-21</td><td>PA-1140</td><td>Shree Pets &amp; Fish</td><td>Durg</td>
-                    <td>Rahul</td><td>₹6,920</td><td>₹6,920</td>
+                  <tr class="tap-row" onclick="openSaleEditor('PA-1140')">
+                    <td>2026-11-21</td>
+                    <td>PA-1140</td>
+                    <td>Shree Pets &amp; Fish</td>
+                    <td>9827012345</td>
+                    <td>Durg</td>
+                    <td>Rahul</td>
+                    <td>Air Pump ×4, Bio Media ×5…</td>
+                    <td>₹6,920</td>
+                    <td>₹6,920</td>
+                    <td>₹0</td>
+                    <td>Cash</td>
                     <td><span class="badge badge-paid">Paid</span></td>
+                    <td>—</td>
                   </tr>
-                  <tr>
-                    <td>2026-11-21</td><td>PA-1139</td><td>City Aquarium</td><td>Bhilai</td>
-                    <td>Priya</td><td>₹3,400</td><td>₹0</td>
+                  <tr class="tap-row" onclick="openSaleEditor('PA-1139')">
+                    <td>2026-11-21</td>
+                    <td>PA-1139</td>
+                    <td>City Aquarium</td>
+                    <td>9001122334</td>
+                    <td>Bhilai</td>
+                    <td>Priya</td>
+                    <td>RO Membrane ×4</td>
+                    <td>₹3,400</td>
+                    <td>₹0</td>
+                    <td>₹3,400</td>
+                    <td>Credit</td>
                     <td><span class="badge badge-pending">Pending</span></td>
+                    <td>Call Mon</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
+          <!-- B3 SALE CREATE / EDIT -->
+          <div class="screen" id="tab-sale-edit">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;align-items:center">
+              <div>
+                <button type="button" class="back-link" onclick="showTabByName('sales')">← Sales ledger</button>
+                <h2 style="margin:0.35rem 0 0" id="saleEditTitle">Edit sale · PA-1141</h2>
+              </div>
+              <button type="button" class="danger-btn" onclick="alert('Void with reason (mock): retained in audit, excluded from KPIs')">Void sale…</button>
+            </div>
+            <div class="admin-form">
+              <div class="form-grid two">
+                <div>
+                  <label>Date</label>
+                  <input type="date" value="2026-11-22" />
+                </div>
+                <div>
+                  <label>Invoice</label>
+                  <input type="text" value="PA-1141" readonly />
+                </div>
+                <div>
+                  <label>Customer</label>
+                  <select>
+                    <option>Green Valley Farm · Rajnandgaon</option>
+                    <option>Gogaon Aqua Mart · Raipur</option>
+                    <option>City Aquarium · Bhilai</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Salesperson</label>
+                  <select>
+                    <option>Amit</option>
+                    <option>Rahul</option>
+                    <option>Priya</option>
+                  </select>
+                </div>
+              </div>
+              <h3 style="margin-top:1rem">Lines</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Product</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Aqua Feed Grower 5kg</td>
+                      <td><input type="number" value="20" min="1" style="width:4.5rem" /></td>
+                      <td><input type="number" value="1450" style="width:5.5rem" /></td>
+                      <td>₹29,000</td>
+                    </tr>
+                    <tr>
+                      <td>Bio Media 1L</td>
+                      <td><input type="number" value="12" min="1" style="width:4.5rem" /></td>
+                      <td><input type="number" value="320" style="width:5.5rem" /></td>
+                      <td>₹3,840</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="button" class="link-btn" style="margin-top:0.4rem">+ Add line</button>
+              <div class="form-grid two" style="margin-top:1rem">
+                <div>
+                  <label>Payment mode</label>
+                  <select>
+                    <option>Credit</option>
+                    <option>Cash</option>
+                    <option>UPI</option>
+                    <option>Bank</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Amount paid</label>
+                  <input type="number" value="15000" />
+                </div>
+                <div>
+                  <label>Status (derived)</label>
+                  <input type="text" value="Partial · balance ₹17,840" readonly />
+                </div>
+                <div>
+                  <label>Remarks</label>
+                  <input type="text" value="Farm order" />
+                </div>
+              </div>
+              <div class="row-actions" style="margin-top:1rem">
+                <button type="button" class="btn btn-primary" onclick="showTabByName('sales')">Save</button>
+                <button type="button" class="btn btn-ghost" onclick="showTabByName('sales')">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- B4 DUES -->
           <div class="screen" id="tab-dues">
             <h2 style="margin-top:0">Dues &amp; collections</h2>
+            <p class="muted" style="margin-top:-0.35rem">Work queue · Partial + Pending only</p>
+            <div class="toolbar">
+              <select aria-label="City filter">
+                <option>All cities</option>
+                <option>Raipur</option>
+                <option>Bhilai</option>
+                <option>Rajnandgaon</option>
+              </select>
+              <select aria-label="Salesperson filter">
+                <option>All salespeople</option>
+                <option>Amit</option>
+                <option>Priya</option>
+                <option>Rahul</option>
+              </select>
+              <select aria-label="Ageing">
+                <option>Any age</option>
+                <option>0–7 days</option>
+                <option>8–30 days</option>
+                <option>30+ days</option>
+              </select>
+            </div>
             <div class="dues-row">
               <div>
                 <strong>Green Valley Farm</strong> · PA-1141
-                <div style="font-size:0.82rem;color:var(--muted)">Rajnandgaon · Credit · Balance ₹17,920</div>
+                <div class="muted">Rajnandgaon · Amit · Credit · Balance ₹17,840 · 9988776655</div>
               </div>
-              <button type="button" class="btn btn-primary">Record payment</button>
+              <button type="button" class="btn btn-primary" onclick="openSaleEditor('PA-1141')">Record payment</button>
             </div>
             <div class="dues-row">
               <div>
                 <strong>City Aquarium</strong> · PA-1139
-                <div style="font-size:0.82rem;color:var(--muted)">Bhilai · UPI · Balance ₹3,400</div>
+                <div class="muted">Bhilai · Priya · Credit · Balance ₹3,400 · 9001122334</div>
               </div>
-              <button type="button" class="btn btn-primary">Record payment</button>
+              <button type="button" class="btn btn-primary" onclick="openSaleEditor('PA-1139')">Record payment</button>
             </div>
             <div class="dues-row">
               <div>
-                <strong>Maa Durga Traders</strong> · older dues
-                <div style="font-size:0.82rem;color:var(--muted)">Raipur · Balance ₹7,600</div>
+                <strong>Maa Durga Traders</strong> · PA-1098
+                <div class="muted">Raipur · Rahul · Bank · Balance ₹7,600 · ageing 32d</div>
               </div>
-              <button type="button" class="btn btn-primary">Record payment</button>
+              <button type="button" class="btn btn-primary" onclick="openSaleEditor('PA-1098')">Record payment</button>
             </div>
           </div>
 
+          <!-- B5 CUSTOMERS -->
           <div class="screen" id="tab-customers">
-            <h2 style="margin-top:0">Customers</h2>
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;align-items:end">
+              <h2 style="margin:0">Customers</h2>
+              <button type="button" class="btn btn-primary" onclick="toggleCustomerForm()">+ Add customer</button>
+            </div>
+            <div class="toolbar">
+              <input type="search" placeholder="Search name, phone, city…" style="min-width:240px" />
+              <select>
+                <option>All types</option>
+                <option>Dealer</option>
+                <option>Retail</option>
+                <option>Institution</option>
+              </select>
+            </div>
+            <div class="admin-form" id="customerForm" style="display:none;margin-bottom:0.85rem">
+              <h3>Add / edit customer</h3>
+              <div class="form-grid two">
+                <div><label>Name</label><input type="text" placeholder="Shop / farm name" /></div>
+                <div><label>Phone</label><input type="tel" placeholder="10-digit" /></div>
+                <div><label>City</label><input type="text" placeholder="Raipur" /></div>
+                <div>
+                  <label>Type</label>
+                  <select><option>Dealer</option><option>Retail</option><option>Institution</option></select>
+                </div>
+              </div>
+              <div class="row-actions">
+                <button type="button" class="btn btn-primary" onclick="toggleCustomerForm()">Save</button>
+                <button type="button" class="btn btn-ghost" onclick="toggleCustomerForm()">Cancel</button>
+              </div>
+            </div>
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>Name</th><th>Phone</th><th>City</th><th>Type</th><th>Outstanding</th></tr>
+                  <tr><th>Name</th><th>Phone</th><th>City</th><th>Type</th><th>Outstanding</th><th></th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Gogaon Aqua Mart</td><td>9876543210</td><td>Raipur</td><td>Dealer</td><td>₹12,400</td></tr>
-                  <tr><td>Shree Pets &amp; Fish</td><td>9827012345</td><td>Durg</td><td>Dealer</td><td>₹0</td></tr>
-                  <tr><td>City Aquarium</td><td>9001122334</td><td>Bhilai</td><td>Retail</td><td>₹3,200</td></tr>
-                  <tr><td>Green Valley Farm</td><td>9988776655</td><td>Rajnandgaon</td><td>Institution</td><td>₹18,500</td></tr>
+                  <tr>
+                    <td>Gogaon Aqua Mart</td><td>9876543210</td><td>Raipur</td><td>Dealer</td><td>₹12,400</td>
+                    <td><button type="button" class="link-btn" onclick="toggleCustomerForm()">Edit</button> · <button type="button" class="link-btn">Statement</button></td>
+                  </tr>
+                  <tr>
+                    <td>Shree Pets &amp; Fish</td><td>9827012345</td><td>Durg</td><td>Dealer</td><td>₹0</td>
+                    <td><button type="button" class="link-btn" onclick="toggleCustomerForm()">Edit</button> · <button type="button" class="link-btn">Statement</button></td>
+                  </tr>
+                  <tr>
+                    <td>City Aquarium</td><td>9001122334</td><td>Bhilai</td><td>Retail</td><td>₹3,400</td>
+                    <td><button type="button" class="link-btn" onclick="toggleCustomerForm()">Edit</button> · <button type="button" class="link-btn">Statement</button></td>
+                  </tr>
+                  <tr>
+                    <td>Green Valley Farm</td><td>9988776655</td><td>Rajnandgaon</td><td>Institution</td><td>₹18,500</td>
+                    <td><button type="button" class="link-btn" onclick="toggleCustomerForm()">Edit</button> · <button type="button" class="link-btn">Statement</button></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
+          <!-- B6 PRODUCTS -->
           <div class="screen" id="tab-products">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:0.75rem;flex-wrap:wrap">
               <h2 style="margin:0">Products</h2>
-              <button type="button" class="btn btn-ghost">+ Add product</button>
+              <button type="button" class="btn btn-ghost" onclick="toggleProductForm()">+ Add product</button>
             </div>
-            <div class="grid-3" style="margin-top:0.9rem">
-              <div class="card"><h2>RO Membrane 80 GPD</h2><p>Filter · Stock 42</p><p><strong>₹850</strong></p></div>
-              <div class="card"><h2>Aqua Feed Grower 5kg</h2><p>Feed · Stock 65</p><p><strong>₹1,450</strong></p></div>
-              <div class="card"><h2>UV Sterilizer 11W</h2><p>Equipment · Stock 18</p><p><strong>₹2,200</strong></p></div>
-              <div class="card"><h2>Air Pump AP-880</h2><p>Equipment · Stock 31</p><p><strong>₹980</strong></p></div>
-              <div class="card"><h2>Test Kit 5-in-1</h2><p>Accessories · Stock 54</p><p><strong>₹420</strong></p></div>
-              <div class="card"><h2>Bio Media 1L</h2><p>Filter · Stock 90</p><p><strong>₹320</strong></p></div>
+            <div class="admin-form" id="productForm" style="display:none;margin-top:0.85rem">
+              <h3>Add / edit product</h3>
+              <div class="form-grid two">
+                <div><label>Name</label><input type="text" placeholder="Product name" /></div>
+                <div><label>Category</label><input type="text" placeholder="Filter / Feed / Equipment" /></div>
+                <div><label>Unit</label><input type="text" value="pcs" /></div>
+                <div><label>Default rate (₹)</label><input type="number" value="850" /></div>
+                <div><label>Stock</label><input type="number" value="42" /></div>
+                <div>
+                  <label>Active</label>
+                  <select><option>Active</option><option>Deactivated</option></select>
+                </div>
+              </div>
+              <div class="row-actions">
+                <button type="button" class="btn btn-primary" onclick="toggleProductForm()">Save</button>
+                <button type="button" class="btn btn-ghost" onclick="toggleProductForm()">Cancel</button>
+              </div>
+            </div>
+            <div class="table-wrap" style="margin-top:0.9rem">
+              <table>
+                <thead>
+                  <tr><th>Name</th><th>Category</th><th>Unit</th><th>Rate</th><th>Stock</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>RO Membrane 80 GPD</td><td>Filter</td><td>pcs</td><td>₹850</td><td>42</td><td>Active</td>
+                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>Aqua Feed Grower 5kg</td><td>Feed</td><td>bag</td><td>₹1,450</td><td>65</td><td>Active</td>
+                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>UV Sterilizer 11W</td><td>Equipment</td><td>pcs</td><td>₹2,200</td><td>18</td><td>Active</td>
+                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>Air Pump AP-880</td><td>Equipment</td><td>pcs</td><td>₹980</td><td>31</td><td>Active</td>
+                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>Test Kit 5-in-1</td><td>Accessories</td><td>kit</td><td>₹420</td><td>54</td><td>Active</td>
+                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
+                  </tr>
+                  <tr>
+                    <td>Bio Media 1L</td><td>Filter</td><td>L</td><td>₹320</td><td>90</td><td>Active</td>
+                    <td><button type="button" class="link-btn" onclick="toggleProductForm()">Edit</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- B7 REPORTS -->
+          <div class="screen" id="tab-reports">
+            <h2 style="margin-top:0">Reports / export</h2>
+            <p class="muted" style="margin-top:-0.35rem">Month close · Excel parity download</p>
+            <div class="admin-form">
+              <div class="form-grid two">
+                <div>
+                  <label>From</label>
+                  <input type="date" value="2026-11-01" />
+                </div>
+                <div>
+                  <label>To</label>
+                  <input type="date" value="2026-11-22" />
+                </div>
+                <div>
+                  <label>Column preset</label>
+                  <select>
+                    <option>Excel parity (Pacific Aqua.xlsx)</option>
+                    <option>Ledger dense</option>
+                    <option>Dues only</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Format</label>
+                  <select>
+                    <option>XLSX</option>
+                    <option>CSV</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row-actions">
+                <button type="button" class="btn btn-primary" onclick="alert('Mock download: Pacific_Aqua_Nov2026.xlsx')">Download</button>
+              </div>
+              <p class="muted" style="margin:0.85rem 0 0">
+                Headers include Date, Invoice, Customer, Phone, City, Salesperson, Products,
+                Total, Paid, Balance, Mode, Status, Remarks — aligned with PRD ledger columns.
+              </p>
+            </div>
+          </div>
+
+          <!-- B8 USERS -->
+          <div class="screen" id="tab-users">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;align-items:end">
+              <div>
+                <h2 style="margin:0">Users &amp; roles</h2>
+                <p class="muted" style="margin:0.25rem 0 0">Invite executives · deactivate access</p>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="toggleInviteForm()">+ Invite user</button>
+            </div>
+            <div class="admin-form" id="inviteForm" style="display:none;margin-bottom:0.85rem">
+              <h3>Invite user</h3>
+              <div class="form-grid two">
+                <div><label>Name</label><input type="text" placeholder="Full name" /></div>
+                <div><label>Phone</label><input type="tel" placeholder="Login phone" /></div>
+                <div><label>Email</label><input type="email" placeholder="optional" /></div>
+                <div>
+                  <label>Role</label>
+                  <select>
+                    <option>Sales Executive</option>
+                    <option>Admin / Owner</option>
+                    <option disabled>Accountant (phase 2)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row-actions">
+                <button type="button" class="btn btn-primary" onclick="toggleInviteForm()">Create</button>
+                <button type="button" class="btn btn-ghost" onclick="toggleInviteForm()">Cancel</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Name</th><th>Phone</th><th>Role</th><th>App</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sameer</td><td>9800011111</td><td>Admin / Owner</td><td>Backend (+ mobile)</td><td>Active</td>
+                    <td><span class="muted">—</span></td>
+                  </tr>
+                  <tr>
+                    <td>Rahul</td><td>9876501234</td><td>Sales Executive</td><td>Mobile</td><td>Active</td>
+                    <td><button type="button" class="link-btn">Deactivate</button></td>
+                  </tr>
+                  <tr>
+                    <td>Amit</td><td>9876505678</td><td>Sales Executive</td><td>Mobile</td><td>Active</td>
+                    <td><button type="button" class="link-btn">Deactivate</button></td>
+                  </tr>
+                  <tr>
+                    <td>Priya</td><td>9876509999</td><td>Sales Executive</td><td>Mobile</td><td>Active</td>
+                    <td><button type="button" class="link-btn">Deactivate</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- B0 LOGIN (optional overlay panel) -->
+          <div class="screen" id="tab-login">
+            <div class="login-card" style="max-width:360px;margin:1rem auto">
+              <div class="brand-mark">PA</div>
+              <h2>Admin sign in</h2>
+              <p class="sub">Owner / office · backend</p>
+              <div class="form-grid">
+                <div>
+                  <label>Phone or email</label>
+                  <input type="text" value="sameer@pacificaqua.in" />
+                </div>
+                <div>
+                  <label>Password</label>
+                  <input type="password" value="••••••••" />
+                </div>
+              </div>
+              <button type="button" class="full-btn" style="margin-top:0.85rem;background:var(--deep)" onclick="showTabByName('dashboard')">Login → Dashboard</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <p class="row-actions" style="margin-top:1rem">
+      <button type="button" class="btn btn-ghost" onclick="showTabByName('login')">Show login (B0)</button>
+    </p>
+    <p class="note">
+      Sidebar = PRD B9: Dashboard · Sales ledger · Dues · Customers · Products · Reports · Users.
+      Click ledger rows or dues CTAs to open the sale editor (B3).
+    </p>
   </main>
 
   <script>
     function showTab(name, btn) {
       document.querySelectorAll(".admin-main .screen").forEach((s) => s.classList.remove("active"));
       document.getElementById("tab-" + name).classList.add("active");
-      [...btn.parentElement.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
+      const side = document.getElementById("sideNav");
+      if (btn) {
+        [...side.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      } else if (name !== "sale-edit" && name !== "login") {
+        [...side.querySelectorAll("button")].forEach((b) => {
+          b.classList.toggle("active", b.textContent.toLowerCase().includes(labelFor(name)));
+        });
+      }
+      side.style.display = name === "login" ? "none" : "";
+    }
+
+    function labelFor(name) {
+      const map = {
+        dashboard: "dashboard",
+        sales: "sales ledger",
+        dues: "dues",
+        customers: "customers",
+        products: "products",
+        reports: "reports",
+        users: "users",
+      };
+      return map[name] || name;
+    }
+
+    function showTabByName(name) {
+      const side = document.getElementById("sideNav");
+      const btn = [...side.querySelectorAll("button")].find((b) =>
+        b.textContent.toLowerCase().includes(labelFor(name))
+      );
+      showTab(name, btn || null);
+      if (name === "sale-edit" || name === "login") {
+        [...side.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
+        if (name === "sale-edit") {
+          const salesBtn = [...side.querySelectorAll("button")].find((b) =>
+            b.textContent.toLowerCase().includes("sales ledger")
+          );
+          if (salesBtn) salesBtn.classList.add("active");
+        }
+      }
+    }
+
+    function openSaleEditor(invoice) {
+      const title = document.getElementById("saleEditTitle");
+      title.textContent = invoice ? "Edit sale · " + invoice : "New sale · PA-1144 (next)";
+      showTabByName("sale-edit");
+    }
+
+    function toggleCustomerForm() {
+      const el = document.getElementById("customerForm");
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+
+    function toggleProductForm() {
+      const el = document.getElementById("productForm");
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+
+    function toggleInviteForm() {
+      const el = document.getElementById("inviteForm");
+      el.style.display = el.style.display === "none" ? "block" : "none";
     }
   </script>
 </body>

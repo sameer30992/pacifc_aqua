@@ -24,17 +24,17 @@
   </header>
 
   <main class="wrap">
-    <p class="eyebrow">Mockup</p>
+    <p class="eyebrow">Mockup · M0–M9</p>
     <h1>Mobile sales app</h1>
     <p class="lede">
-      Phone-first screens for field executives: home, new sale, my sales, customers, products.
-      Tap through the phone UI (sample data only).
+      Phone-first screens for field executives (PRD §7.1): login, home, new sale, success,
+      my sales, sale detail, customers, add customer, products. Tap through with sample data.
     </p>
 
     <div class="mock-layout">
       <div class="phone">
         <div class="phone-inner">
-          <div class="phone-header">
+          <div class="phone-header" id="phoneHeader">
             <div>
               <small>Pacific Aqua</small>
               <strong id="greeting">Namaste, Rahul</strong>
@@ -43,7 +43,26 @@
           </div>
 
           <div class="phone-body">
-            <!-- HOME -->
+            <!-- M0 LOGIN -->
+            <div class="screen" id="screen-login">
+              <div class="login-card">
+                <div class="brand-mark">PA</div>
+                <h2 data-i18n="loginTitle">Sign in</h2>
+                <p class="sub" data-i18n="loginSub">Sales executive · mobile</p>
+                <div class="field" style="padding:0;background:transparent;margin:0 0 0.55rem">
+                  <label data-i18n="phoneEmail">Phone or email</label>
+                  <input type="text" value="9876501234" autocomplete="username" />
+                </div>
+                <div class="field" style="padding:0;background:transparent;margin:0 0 0.55rem">
+                  <label data-i18n="password">Password</label>
+                  <input type="password" value="••••••••" autocomplete="current-password" />
+                </div>
+                <button type="button" class="full-btn" style="margin-top:0.35rem" onclick="enterApp()" data-i18n="loginCta">Login</button>
+                <p class="muted" style="text-align:center;margin:0.75rem 0 0;font-size:0.72rem" data-i18n="langHint">Language: use हिंदी / EN after login</p>
+              </div>
+            </div>
+
+            <!-- M1 HOME -->
             <div class="screen active" id="screen-home">
               <div class="stats">
                 <div class="stat"><span data-i18n="sales">Sales</span><strong>2</strong></div>
@@ -53,8 +72,8 @@
               </div>
               <button type="button" class="full-btn" onclick="showScreen('new')" data-i18n="newSale">+ New Sale</button>
               <div class="list-card">
-                <span data-i18n="mySales">My Sales</span>
-                <div class="sale-row">
+                <span data-i18n="recentSales">Recent sales</span>
+                <div class="sale-row tap-row" onclick="openDetail('paid')">
                   <div>
                     <strong>Gogaon Aqua Mart</strong><br />
                     <small>PA-1142</small>
@@ -64,7 +83,7 @@
                     <span class="badge badge-paid">Paid</span>
                   </div>
                 </div>
-                <div class="sale-row">
+                <div class="sale-row tap-row" onclick="openDetail('partial')">
                   <div>
                     <strong>Green Valley Farm</strong><br />
                     <small>PA-1141</small>
@@ -74,7 +93,7 @@
                     <span class="badge badge-partial">Partial</span>
                   </div>
                 </div>
-                <div class="sale-row">
+                <div class="sale-row tap-row" onclick="openDetail('paid2')">
                   <div>
                     <strong>Shree Pets &amp; Fish</strong><br />
                     <small>PA-1140</small>
@@ -87,93 +106,218 @@
               </div>
             </div>
 
-            <!-- NEW SALE -->
+            <!-- M2 NEW SALE -->
             <div class="screen" id="screen-new">
-              <button type="button" class="lang-btn" style="color:var(--mid);border-color:var(--line);margin-bottom:0.5rem" onclick="showScreen('home')">← <span data-i18n="home">Home</span></button>
-              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="newSaleTitle">New Sale</h2>
+              <button type="button" class="back-link" onclick="showScreen('home')">← <span data-i18n="home">Home</span></button>
+              <h2 class="screen-title" data-i18n="newSaleTitle">New Sale</h2>
               <div class="field">
-                <label data-i18n="customer">Customer</label>
+                <div class="inline-add">
+                  <label style="margin:0" data-i18n="customer">Customer</label>
+                  <button type="button" class="link-btn" onclick="showScreen('customer-form')" data-i18n="addCustomer">+ Add</button>
+                </div>
                 <select>
-                  <option>Gogaon Aqua Mart · Raipur</option>
-                  <option>Shree Pets &amp; Fish · Durg</option>
-                  <option>Green Valley Farm · Rajnandgaon</option>
+                  <option>Gogaon Aqua Mart · Raipur · Dealer</option>
+                  <option>Shree Pets &amp; Fish · Durg · Dealer</option>
+                  <option>Green Valley Farm · Rajnandgaon · Institution</option>
+                  <option>City Aquarium · Bhilai · Retail</option>
                 </select>
               </div>
               <div class="field">
-                <label data-i18n="addLine">Products</label>
-                <select style="margin-bottom:0.4rem">
-                  <option>RO Membrane 80 GPD — ₹850</option>
-                  <option>Aqua Feed Grower 5kg — ₹1,450</option>
-                  <option>UV Sterilizer 11W — ₹2,200</option>
-                </select>
-                <input type="number" value="2" min="1" aria-label="Quantity" />
-                <p style="margin:0.55rem 0 0;display:flex;justify-content:space-between;font-weight:700">
-                  <span>Total</span><span>₹1,700</span>
+                <div class="inline-add">
+                  <label style="margin:0" data-i18n="addLine">Line items</label>
+                  <button type="button" class="link-btn" data-i18n="addProduct">+ Product</button>
+                </div>
+                <div class="line-item">
+                  <div>
+                    <strong>RO Membrane 80 GPD</strong>
+                    <div class="line-meta">2 × ₹850</div>
+                  </div>
+                  <strong>₹1,700</strong>
+                </div>
+                <div class="line-item">
+                  <div>
+                    <strong>Aqua Feed Grower 5kg</strong>
+                    <div class="line-meta">1 × ₹1,450 · rate editable</div>
+                  </div>
+                  <strong>₹1,450</strong>
+                </div>
+                <div style="margin-top:0.55rem;display:flex;gap:0.4rem">
+                  <select style="flex:1">
+                    <option>UV Sterilizer 11W — ₹2,200</option>
+                    <option>Air Pump AP-880 — ₹980</option>
+                    <option>Test Kit 5-in-1 — ₹420</option>
+                  </select>
+                  <input type="number" value="1" min="1" aria-label="Quantity" style="width:4rem" />
+                </div>
+                <p style="margin:0.65rem 0 0;display:flex;justify-content:space-between;font-weight:700">
+                  <span data-i18n="total">Total</span><span>₹3,150</span>
                 </p>
               </div>
               <div class="field">
-                <label data-i18n="payment">Payment</label>
+                <label data-i18n="payment">Payment mode</label>
                 <div class="modes">
-                  <button type="button" class="active">Cash</button>
-                  <button type="button" onclick="setMode(this)">UPI</button>
-                  <button type="button" onclick="setMode(this)">Bank</button>
-                  <button type="button" onclick="setMode(this)">Credit</button>
+                  <button type="button">Cash</button>
+                  <button type="button" class="active">UPI</button>
+                  <button type="button">Bank</button>
+                  <button type="button">Credit</button>
                 </div>
                 <label style="margin-top:0.6rem" data-i18n="amountPaid">Amount paid</label>
-                <input type="number" value="1700" />
+                <input type="number" value="1500" min="0" />
+                <p class="muted" style="margin:0.4rem 0 0;font-size:0.72rem" data-i18n="statusHint">Status → Partial (₹1,650 balance)</p>
+              </div>
+              <div class="field">
+                <label data-i18n="remarks">Remarks</label>
+                <input type="text" placeholder="Optional note" data-i18n-placeholder="remarksPh" />
               </div>
               <button type="button" class="full-btn" style="background:var(--deep)" onclick="showScreen('success')" data-i18n="save">Save sale</button>
             </div>
 
-            <!-- SUCCESS -->
+            <!-- M3 SUCCESS -->
             <div class="screen" id="screen-success">
               <div class="success">
                 <div class="ok">✓</div>
                 <h2 data-i18n="successTitle">Sale saved</h2>
-                <p style="color:var(--muted)">PA-1143 · Gogaon Aqua Mart · ₹1,700</p>
+                <p style="color:var(--muted);margin:0.35rem 0 0.15rem">PA-1143 · Gogaon Aqua Mart</p>
+                <p style="margin:0 0 1rem"><strong>₹3,150</strong> · <span class="badge badge-partial">Partial</span></p>
                 <button type="button" class="full-btn" style="background:var(--deep)" data-i18n="share">Share on WhatsApp</button>
-                <button type="button" class="full-btn" style="background:white;color:var(--ink);border:1px solid var(--line)" onclick="showScreen('home')" data-i18n="home">Home</button>
+                <button type="button" class="ghost-full" onclick="showScreen('home')" data-i18n="backHome">Back to Home</button>
               </div>
             </div>
 
-            <!-- SALES -->
+            <!-- M4 MY SALES -->
             <div class="screen" id="screen-sales">
-              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="mySales">My Sales</h2>
-              <div class="list-card">
-                <div class="sale-row">
+              <h2 class="screen-title" data-i18n="mySales">My Sales</h2>
+              <div class="filter-chips" id="rangeChips">
+                <button type="button" class="active" data-i18n="filterToday">Today</button>
+                <button type="button" data-i18n="filterWeek">Week</button>
+                <button type="button" data-i18n="filterAll">All</button>
+              </div>
+              <div class="filter-chips" id="statusChips">
+                <button type="button" class="active" data-i18n="filterAllStatus">All</button>
+                <button type="button">Paid</button>
+                <button type="button">Partial</button>
+                <button type="button">Pending</button>
+              </div>
+              <div class="list-card" style="margin-top:0">
+                <div class="sale-row tap-row" onclick="openDetail('paid')">
                   <div><strong>Gogaon Aqua Mart</strong><br /><small>PA-1142 · Raipur</small></div>
                   <div style="text-align:right"><strong>₹11,060</strong><br /><span class="badge badge-paid">Paid · UPI</span></div>
                 </div>
-                <div class="sale-row">
+                <div class="sale-row tap-row" onclick="openDetail('partial')">
                   <div><strong>Green Valley Farm</strong><br /><small>PA-1141 · Rajnandgaon</small></div>
                   <div style="text-align:right"><strong>₹32,920</strong><br /><span class="badge badge-partial">Partial · Credit</span></div>
                 </div>
-                <div class="sale-row">
+                <div class="sale-row tap-row" onclick="openDetail('pending')">
                   <div><strong>City Aquarium</strong><br /><small>PA-1139 · Bhilai</small></div>
-                  <div style="text-align:right"><strong>₹3,400</strong><br /><span class="badge badge-pending">Pending · UPI</span></div>
+                  <div style="text-align:right"><strong>₹3,400</strong><br /><span class="badge badge-pending">Pending · Credit</span></div>
                 </div>
               </div>
             </div>
 
-            <!-- CUSTOMERS -->
+            <!-- M5 SALE DETAIL -->
+            <div class="screen" id="screen-detail">
+              <button type="button" class="back-link" onclick="showScreen('sales')">← <span data-i18n="mySales">My Sales</span></button>
+              <h2 class="screen-title" id="detailInvoice">PA-1141</h2>
+              <div class="detail-block">
+                <div class="detail-kv"><span data-i18n="customer">Customer</span><strong id="detailCustomer">Green Valley Farm</strong></div>
+                <div class="detail-kv"><span data-i18n="city">City</span><span id="detailCity">Rajnandgaon</span></div>
+                <div class="detail-kv"><span data-i18n="mode">Mode</span><span id="detailMode">Credit</span></div>
+                <div class="detail-kv"><span data-i18n="status">Status</span><span id="detailStatus" class="badge badge-partial">Partial</span></div>
+              </div>
+              <div class="detail-block">
+                <h3 data-i18n="addLine">Line items</h3>
+                <div id="detailLines">
+                  <div class="line-item">
+                    <div><strong>Aqua Feed Grower 5kg</strong><div class="line-meta">20 × ₹1,450</div></div>
+                    <strong>₹29,000</strong>
+                  </div>
+                  <div class="line-item">
+                    <div><strong>Bio Media 1L</strong><div class="line-meta">12 × ₹320</div></div>
+                    <strong>₹3,840</strong>
+                  </div>
+                </div>
+                <div class="detail-kv" style="margin-top:0.5rem;font-weight:700"><span data-i18n="total">Total</span><span id="detailTotal">₹32,840</span></div>
+                <div class="detail-kv"><span data-i18n="amountPaid">Paid</span><span id="detailPaid">₹15,000</span></div>
+                <div class="detail-kv"><span data-i18n="balance">Balance</span><strong id="detailBalance" style="color:var(--partial)">₹17,840</strong></div>
+              </div>
+              <div class="field" id="paymentPanel">
+                <label data-i18n="recordPayment">Record payment</label>
+                <div class="modes" style="margin-bottom:0.5rem">
+                  <button type="button" class="active">Cash</button>
+                  <button type="button">UPI</button>
+                  <button type="button">Bank</button>
+                </div>
+                <input type="number" value="17840" min="1" aria-label="Payment amount" />
+                <button type="button" class="full-btn" style="background:var(--deep)" onclick="markPaid()" data-i18n="savePayment">Save payment</button>
+              </div>
+              <p class="muted" id="paidNote" style="display:none;text-align:center" data-i18n="fullyPaid">Fully paid — no balance left.</p>
+            </div>
+
+            <!-- M6 CUSTOMERS -->
             <div class="screen" id="screen-customers">
-              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="customers">Customers</h2>
-              <div class="field"><input type="search" placeholder="Search customer" data-i18n-placeholder="searchCustomer" /></div>
-              <div class="list-card">
-                <div class="sale-row"><div><strong>Gogaon Aqua Mart</strong><br /><small>Raipur · Dealer</small></div><div style="text-align:right;color:var(--partial);font-size:0.8rem">₹12,400 due</div></div>
-                <div class="sale-row"><div><strong>Shree Pets &amp; Fish</strong><br /><small>Durg · Dealer</small></div><div style="text-align:right;font-size:0.8rem;color:var(--muted)">Clear</div></div>
-                <div class="sale-row"><div><strong>Green Valley Farm</strong><br /><small>Rajnandgaon · Institution</small></div><div style="text-align:right;color:var(--partial);font-size:0.8rem">₹18,500 due</div></div>
+              <div class="inline-add" style="margin-bottom:0.65rem">
+                <h2 class="screen-title" style="margin:0" data-i18n="customers">Customers</h2>
+                <button type="button" class="link-btn" onclick="showScreen('customer-form')" data-i18n="addCustomer">+ Add</button>
+              </div>
+              <div class="field"><input type="search" placeholder="Search name, phone, city" data-i18n-placeholder="searchCustomer" /></div>
+              <div class="list-card" style="margin-top:0">
+                <div class="sale-row tap-row" onclick="showScreen('customer-form')">
+                  <div><strong>Gogaon Aqua Mart</strong><br /><small>Raipur · Dealer · 9876543210</small></div>
+                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹12,400</div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>Shree Pets &amp; Fish</strong><br /><small>Durg · Dealer · 9827012345</small></div>
+                  <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>Green Valley Farm</strong><br /><small>Rajnandgaon · Institution · 9988776655</small></div>
+                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹18,500</div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>City Aquarium</strong><br /><small>Bhilai · Retail · 9001122334</small></div>
+                  <div style="text-align:right;color:var(--pending);font-size:0.8rem">₹3,400</div>
+                </div>
               </div>
             </div>
 
-            <!-- PRODUCTS -->
+            <!-- M7 ADD / EDIT CUSTOMER -->
+            <div class="screen" id="screen-customer-form">
+              <button type="button" class="back-link" onclick="showScreen('customers')">← <span data-i18n="customers">Customers</span></button>
+              <h2 class="screen-title" data-i18n="customerFormTitle">Add customer</h2>
+              <div class="field">
+                <label data-i18n="name">Name</label>
+                <input type="text" placeholder="Dealer / shop name" />
+              </div>
+              <div class="field">
+                <label data-i18n="phone">Phone</label>
+                <input type="tel" placeholder="10-digit mobile" />
+              </div>
+              <div class="field">
+                <label data-i18n="city">City</label>
+                <input type="text" placeholder="Raipur" />
+              </div>
+              <div class="field">
+                <label data-i18n="type">Type</label>
+                <select>
+                  <option>Dealer</option>
+                  <option>Retail</option>
+                  <option>Institution</option>
+                </select>
+              </div>
+              <button type="button" class="full-btn" style="background:var(--deep)" onclick="showScreen('customers')" data-i18n="saveCustomer">Save customer</button>
+            </div>
+
+            <!-- M8 PRODUCTS -->
             <div class="screen" id="screen-products">
-              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="products">Products</h2>
-              <div class="field"><input type="search" placeholder="Search product" /></div>
-              <div class="list-card">
+              <h2 class="screen-title" data-i18n="products">Products</h2>
+              <p class="muted" style="margin:-0.35rem 0 0.65rem" data-i18n="productsHint">Rate reference · read-only</p>
+              <div class="field"><input type="search" placeholder="Search product" data-i18n-placeholder="searchProduct" /></div>
+              <div class="list-card" style="margin-top:0">
                 <div class="sale-row"><div><strong>RO Membrane 80 GPD</strong><br /><small>Filter · Stock 42</small></div><strong>₹850</strong></div>
                 <div class="sale-row"><div><strong>Aqua Feed Grower 5kg</strong><br /><small>Feed · Stock 65</small></div><strong>₹1,450</strong></div>
                 <div class="sale-row"><div><strong>UV Sterilizer 11W</strong><br /><small>Equipment · Stock 18</small></div><strong>₹2,200</strong></div>
+                <div class="sale-row"><div><strong>Air Pump AP-880</strong><br /><small>Equipment · Stock 31</small></div><strong>₹980</strong></div>
+                <div class="sale-row"><div><strong>Test Kit 5-in-1</strong><br /><small>Accessories · Stock 54</small></div><strong>₹420</strong></div>
               </div>
             </div>
           </div>
@@ -190,12 +334,18 @@
       <div class="help card">
         <h2 style="margin-top:0">How to try it</h2>
         <ol>
-          <li>Toggle हिंदी / EN in the phone header.</li>
-          <li>Tap <strong>New Sale</strong>, then <strong>Save sale</strong>.</li>
-          <li>Use bottom tabs for My Sales, Customers, Products.</li>
+          <li>Optional: open Login via reset below, then Login → Home.</li>
+          <li>Toggle हिंदी / EN in the phone header (UC-11).</li>
+          <li>Tap <strong>New Sale</strong> → multi-line invoice → <strong>Save sale</strong> → WhatsApp share.</li>
+          <li>From My Sales, open a Partial sale → <strong>Record payment</strong>.</li>
+          <li>Customers → <strong>+ Add</strong> for quick-add form (UC-03).</li>
         </ol>
+        <p class="row-actions">
+          <button type="button" class="btn btn-ghost" onclick="showLogin()">Show login (M0)</button>
+        </p>
         <p class="note" style="margin-bottom:0">
-          Persona: <strong>Rahul</strong> (Sales Executive). See <a href="prd.html">PRD</a> for use cases UC-02 to UC-05.
+          Persona: <strong>Rahul</strong> (Sales Executive). Screens map to PRD M0–M9 /
+          UC-01–05, UC-11. See <a href="prd.html">PRD</a>.
         </p>
       </div>
     </div>
@@ -213,16 +363,47 @@
         newSale: "+ New Sale",
         newSaleTitle: "New Sale",
         mySales: "My Sales",
+        recentSales: "Recent sales",
         home: "Home",
         customer: "Customer",
-        addLine: "Products",
-        payment: "Payment",
+        addCustomer: "+ Add",
+        addLine: "Line items",
+        addProduct: "+ Product",
+        payment: "Payment mode",
         amountPaid: "Amount paid",
+        statusHint: "Status → Partial (₹1,650 balance)",
+        remarks: "Remarks",
+        total: "Total",
         save: "Save sale",
         successTitle: "Sale saved",
         share: "Share on WhatsApp",
+        backHome: "Back to Home",
         customers: "Customers",
         products: "Products",
+        productsHint: "Rate reference · read-only",
+        loginTitle: "Sign in",
+        loginSub: "Sales executive · mobile",
+        phoneEmail: "Phone or email",
+        password: "Password",
+        loginCta: "Login",
+        langHint: "Language: use हिंदी / EN after login",
+        filterToday: "Today",
+        filterWeek: "Week",
+        filterAll: "All",
+        filterAllStatus: "All",
+        city: "City",
+        mode: "Mode",
+        status: "Status",
+        balance: "Balance",
+        recordPayment: "Record payment",
+        savePayment: "Save payment",
+        fullyPaid: "Fully paid — no balance left.",
+        clear: "Clear",
+        customerFormTitle: "Add customer",
+        name: "Name",
+        phone: "Phone",
+        type: "Type",
+        saveCustomer: "Save customer",
       },
       hi: {
         greeting: "नमस्ते, राहुल",
@@ -234,20 +415,124 @@
         newSale: "+ नई बिक्री",
         newSaleTitle: "नई बिक्री",
         mySales: "मेरी बिक्री",
+        recentSales: "हाल की बिक्री",
         home: "होम",
         customer: "ग्राहक",
-        addLine: "प्रोडक्ट",
-        payment: "पेमेंट",
+        addCustomer: "+ जोड़ें",
+        addLine: "प्रोडक्ट लाइन",
+        addProduct: "+ प्रोडक्ट",
+        payment: "पेमेंट मोड",
         amountPaid: "जमा राशि",
+        statusHint: "स्थिति → आंशिक (₹1,650 बाकी)",
+        remarks: "नोट",
+        total: "कुल",
         save: "सेव करें",
         successTitle: "बिक्री सेव हो गई",
         share: "WhatsApp पर भेजें",
+        backHome: "होम पर जाएँ",
         customers: "ग्राहक",
         products: "प्रोडक्ट",
+        productsHint: "रेट लिस्ट · केवल देखने के लिए",
+        loginTitle: "साइन इन",
+        loginSub: "सेल्स एग्जीक्यूटिव · मोबाइल",
+        phoneEmail: "फोन या ईमेल",
+        password: "पासवर्ड",
+        loginCta: "लॉगिन",
+        langHint: "भाषा: लॉगिन के बाद हिंदी / EN",
+        filterToday: "आज",
+        filterWeek: "सप्ताह",
+        filterAll: "सभी",
+        filterAllStatus: "सभी",
+        city: "शहर",
+        mode: "मोड",
+        status: "स्थिति",
+        balance: "बाकी",
+        recordPayment: "पेमेंट दर्ज करें",
+        savePayment: "पेमेंट सेव",
+        fullyPaid: "पूरा भुगतान हो गया — कोई बाकी नहीं।",
+        clear: "क्लियर",
+        customerFormTitle: "ग्राहक जोड़ें",
+        name: "नाम",
+        phone: "फोन",
+        type: "प्रकार",
+        saveCustomer: "ग्राहक सेव",
+      },
+    };
+
+    const details = {
+      paid: {
+        invoice: "PA-1142",
+        customer: "Gogaon Aqua Mart",
+        city: "Raipur",
+        mode: "UPI",
+        status: "Paid",
+        statusClass: "badge badge-paid",
+        total: "₹11,060",
+        paid: "₹11,060",
+        balance: "₹0",
+        balanceColor: "var(--paid)",
+        canPay: false,
+        lines: [
+          ["RO Membrane 80 GPD", "8 × ₹850", "₹6,800"],
+          ["UV Sterilizer 11W", "1 × ₹2,200", "₹2,200"],
+          ["Test Kit 5-in-1", "5 × ₹420", "₹2,100"],
+        ],
+      },
+      paid2: {
+        invoice: "PA-1140",
+        customer: "Shree Pets & Fish",
+        city: "Durg",
+        mode: "Cash",
+        status: "Paid",
+        statusClass: "badge badge-paid",
+        total: "₹6,920",
+        paid: "₹6,920",
+        balance: "₹0",
+        balanceColor: "var(--paid)",
+        canPay: false,
+        lines: [
+          ["Air Pump AP-880", "4 × ₹980", "₹3,920"],
+          ["Bio Media 1L", "5 × ₹320", "₹1,600"],
+          ["Test Kit 5-in-1", "4 × ₹350", "₹1,400"],
+        ],
+      },
+      partial: {
+        invoice: "PA-1141",
+        customer: "Green Valley Farm",
+        city: "Rajnandgaon",
+        mode: "Credit",
+        status: "Partial",
+        statusClass: "badge badge-partial",
+        total: "₹32,840",
+        paid: "₹15,000",
+        balance: "₹17,840",
+        balanceColor: "var(--partial)",
+        canPay: true,
+        lines: [
+          ["Aqua Feed Grower 5kg", "20 × ₹1,450", "₹29,000"],
+          ["Bio Media 1L", "12 × ₹320", "₹3,840"],
+        ],
+      },
+      pending: {
+        invoice: "PA-1139",
+        customer: "City Aquarium",
+        city: "Bhilai",
+        mode: "Credit",
+        status: "Pending",
+        statusClass: "badge badge-pending",
+        total: "₹3,400",
+        paid: "₹0",
+        balance: "₹3,400",
+        balanceColor: "var(--pending)",
+        canPay: true,
+        lines: [
+          ["RO Membrane 80 GPD", "4 × ₹850", "₹3,400"],
+        ],
       },
     };
 
     let lang = "en";
+    let loggedIn = true;
 
     function applyLang() {
       const t = copy[lang];
@@ -257,6 +542,14 @@
         const key = el.getAttribute("data-i18n");
         if (t[key]) el.textContent = t[key];
       });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        const map = {
+          en: { searchCustomer: "Search name, phone, city", searchProduct: "Search product", remarksPh: "Optional note" },
+          hi: { searchCustomer: "नाम, फोन, शहर खोजें", searchProduct: "प्रोडक्ट खोजें", remarksPh: "वैकल्पिक नोट" },
+        };
+        if (map[lang][key]) el.placeholder = map[lang][key];
+      });
     }
 
     function toggleLang() {
@@ -264,17 +557,34 @@
       applyLang();
     }
 
-    function showScreen(name) {
-      document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
-      document.getElementById("screen-" + name).classList.add("active");
+    function setChrome(name) {
+      const header = document.getElementById("phoneHeader");
       const nav = document.getElementById("phoneNav");
-      nav.style.display = name === "success" || name === "new" ? "none" : "grid";
-      if (name === "home" || name === "sales" || name === "customers" || name === "products") {
-        nav.style.display = "grid";
+      const isLogin = name === "login";
+      header.style.display = isLogin ? "none" : "flex";
+      const hideNav = ["login", "success", "new", "detail", "customer-form"].includes(name);
+      nav.style.display = hideNav ? "none" : "grid";
+      if (!hideNav) {
         [...nav.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
         const map = { home: 0, sales: 1, customers: 2, products: 3 };
         if (map[name] !== undefined) nav.children[map[name]].classList.add("active");
       }
+    }
+
+    function showScreen(name) {
+      document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+      document.getElementById("screen-" + name).classList.add("active");
+      setChrome(name);
+    }
+
+    function showLogin() {
+      loggedIn = false;
+      showScreen("login");
+    }
+
+    function enterApp() {
+      loggedIn = true;
+      showScreen("home");
     }
 
     function navTo(name, btn) {
@@ -288,10 +598,60 @@
       btn.classList.add("active");
     }
 
-    // mode buttons on new sale without inline onclick for first
-    document.querySelectorAll(".modes button").forEach((btn) => {
-      btn.addEventListener("click", () => setMode(btn));
+    function openDetail(key) {
+      const d = details[key];
+      document.getElementById("detailInvoice").textContent = d.invoice;
+      document.getElementById("detailCustomer").textContent = d.customer;
+      document.getElementById("detailCity").textContent = d.city;
+      document.getElementById("detailMode").textContent = d.mode;
+      const st = document.getElementById("detailStatus");
+      st.className = d.statusClass;
+      st.textContent = d.status;
+      document.getElementById("detailTotal").textContent = d.total;
+      document.getElementById("detailPaid").textContent = d.paid;
+      const bal = document.getElementById("detailBalance");
+      bal.textContent = d.balance;
+      bal.style.color = d.balanceColor;
+      document.getElementById("detailLines").innerHTML = d.lines
+        .map(
+          ([n, m, a]) =>
+            `<div class="line-item"><div><strong>${n}</strong><div class="line-meta">${m}</div></div><strong>${a}</strong></div>`
+        )
+        .join("");
+      document.getElementById("paymentPanel").style.display = d.canPay ? "block" : "none";
+      document.getElementById("paidNote").style.display = d.canPay ? "none" : "block";
+      showScreen("detail");
+    }
+
+    function markPaid() {
+      const st = document.getElementById("detailStatus");
+      st.className = "badge badge-paid";
+      st.textContent = "Paid";
+      document.getElementById("detailPaid").textContent = document.getElementById("detailTotal").textContent;
+      const bal = document.getElementById("detailBalance");
+      bal.textContent = "₹0";
+      bal.style.color = "var(--paid)";
+      document.getElementById("paymentPanel").style.display = "none";
+      document.getElementById("paidNote").style.display = "block";
+    }
+
+    document.querySelectorAll(".modes").forEach((group) => {
+      group.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => setMode(btn));
+      });
     });
+
+    document.querySelectorAll("#rangeChips, #statusChips").forEach((group) => {
+      group.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          [...group.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+    });
+
+    // Start on home (logged-in demo); use "Show login" to demo M0
+    showScreen("home");
   </script>
 </body>
 </html>
