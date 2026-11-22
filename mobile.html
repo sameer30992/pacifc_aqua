@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mobile mockup — Pacific Aqua</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topnav">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">PA</div>
+      <div>
+        <strong>Pacific Aqua</strong>
+        <span>Sales System · Mockups</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="prd.html">PRD</a>
+      <a class="active" href="mobile.html">Mobile mockup</a>
+      <a href="backend.html">Backend mockup</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <p class="eyebrow">Mockup</p>
+    <h1>Mobile sales app</h1>
+    <p class="lede">
+      Phone-first screens for field executives: home, new sale, my sales, customers, products.
+      Tap through the phone UI (sample data only).
+    </p>
+
+    <div class="mock-layout">
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="phone-header">
+            <div>
+              <small>Pacific Aqua</small>
+              <strong id="greeting">Namaste, Rahul</strong>
+            </div>
+            <button type="button" class="lang-btn" id="langBtn" onclick="toggleLang()">हिंदी</button>
+          </div>
+
+          <div class="phone-body">
+            <!-- HOME -->
+            <div class="screen active" id="screen-home">
+              <div class="stats">
+                <div class="stat"><span data-i18n="sales">Sales</span><strong>2</strong></div>
+                <div class="stat"><span data-i18n="collected">Collected</span><strong>₹26,060</strong></div>
+                <div class="stat"><span data-i18n="pending">Pending</span><strong>₹17,860</strong></div>
+                <div class="stat"><span data-i18n="today">Today</span><strong>22 Nov</strong></div>
+              </div>
+              <button type="button" class="full-btn" onclick="showScreen('new')" data-i18n="newSale">+ New Sale</button>
+              <div class="list-card">
+                <span data-i18n="mySales">My Sales</span>
+                <div class="sale-row">
+                  <div>
+                    <strong>Gogaon Aqua Mart</strong><br />
+                    <small>PA-1142</small>
+                  </div>
+                  <div style="text-align:right">
+                    <strong>₹11,060</strong><br />
+                    <span class="badge badge-paid">Paid</span>
+                  </div>
+                </div>
+                <div class="sale-row">
+                  <div>
+                    <strong>Green Valley Farm</strong><br />
+                    <small>PA-1141</small>
+                  </div>
+                  <div style="text-align:right">
+                    <strong>₹32,920</strong><br />
+                    <span class="badge badge-partial">Partial</span>
+                  </div>
+                </div>
+                <div class="sale-row">
+                  <div>
+                    <strong>Shree Pets &amp; Fish</strong><br />
+                    <small>PA-1140</small>
+                  </div>
+                  <div style="text-align:right">
+                    <strong>₹6,920</strong><br />
+                    <span class="badge badge-paid">Paid</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- NEW SALE -->
+            <div class="screen" id="screen-new">
+              <button type="button" class="lang-btn" style="color:var(--mid);border-color:var(--line);margin-bottom:0.5rem" onclick="showScreen('home')">← <span data-i18n="home">Home</span></button>
+              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="newSaleTitle">New Sale</h2>
+              <div class="field">
+                <label data-i18n="customer">Customer</label>
+                <select>
+                  <option>Gogaon Aqua Mart · Raipur</option>
+                  <option>Shree Pets &amp; Fish · Durg</option>
+                  <option>Green Valley Farm · Rajnandgaon</option>
+                </select>
+              </div>
+              <div class="field">
+                <label data-i18n="addLine">Products</label>
+                <select style="margin-bottom:0.4rem">
+                  <option>RO Membrane 80 GPD — ₹850</option>
+                  <option>Aqua Feed Grower 5kg — ₹1,450</option>
+                  <option>UV Sterilizer 11W — ₹2,200</option>
+                </select>
+                <input type="number" value="2" min="1" aria-label="Quantity" />
+                <p style="margin:0.55rem 0 0;display:flex;justify-content:space-between;font-weight:700">
+                  <span>Total</span><span>₹1,700</span>
+                </p>
+              </div>
+              <div class="field">
+                <label data-i18n="payment">Payment</label>
+                <div class="modes">
+                  <button type="button" class="active">Cash</button>
+                  <button type="button" onclick="setMode(this)">UPI</button>
+                  <button type="button" onclick="setMode(this)">Bank</button>
+                  <button type="button" onclick="setMode(this)">Credit</button>
+                </div>
+                <label style="margin-top:0.6rem" data-i18n="amountPaid">Amount paid</label>
+                <input type="number" value="1700" />
+              </div>
+              <button type="button" class="full-btn" style="background:var(--deep)" onclick="showScreen('success')" data-i18n="save">Save sale</button>
+            </div>
+
+            <!-- SUCCESS -->
+            <div class="screen" id="screen-success">
+              <div class="success">
+                <div class="ok">✓</div>
+                <h2 data-i18n="successTitle">Sale saved</h2>
+                <p style="color:var(--muted)">PA-1143 · Gogaon Aqua Mart · ₹1,700</p>
+                <button type="button" class="full-btn" style="background:var(--deep)" data-i18n="share">Share on WhatsApp</button>
+                <button type="button" class="full-btn" style="background:white;color:var(--ink);border:1px solid var(--line)" onclick="showScreen('home')" data-i18n="home">Home</button>
+              </div>
+            </div>
+
+            <!-- SALES -->
+            <div class="screen" id="screen-sales">
+              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="mySales">My Sales</h2>
+              <div class="list-card">
+                <div class="sale-row">
+                  <div><strong>Gogaon Aqua Mart</strong><br /><small>PA-1142 · Raipur</small></div>
+                  <div style="text-align:right"><strong>₹11,060</strong><br /><span class="badge badge-paid">Paid · UPI</span></div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>Green Valley Farm</strong><br /><small>PA-1141 · Rajnandgaon</small></div>
+                  <div style="text-align:right"><strong>₹32,920</strong><br /><span class="badge badge-partial">Partial · Credit</span></div>
+                </div>
+                <div class="sale-row">
+                  <div><strong>City Aquarium</strong><br /><small>PA-1139 · Bhilai</small></div>
+                  <div style="text-align:right"><strong>₹3,400</strong><br /><span class="badge badge-pending">Pending · UPI</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CUSTOMERS -->
+            <div class="screen" id="screen-customers">
+              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="customers">Customers</h2>
+              <div class="field"><input type="search" placeholder="Search customer" data-i18n-placeholder="searchCustomer" /></div>
+              <div class="list-card">
+                <div class="sale-row"><div><strong>Gogaon Aqua Mart</strong><br /><small>Raipur · Dealer</small></div><div style="text-align:right;color:var(--partial);font-size:0.8rem">₹12,400 due</div></div>
+                <div class="sale-row"><div><strong>Shree Pets &amp; Fish</strong><br /><small>Durg · Dealer</small></div><div style="text-align:right;font-size:0.8rem;color:var(--muted)">Clear</div></div>
+                <div class="sale-row"><div><strong>Green Valley Farm</strong><br /><small>Rajnandgaon · Institution</small></div><div style="text-align:right;color:var(--partial);font-size:0.8rem">₹18,500 due</div></div>
+              </div>
+            </div>
+
+            <!-- PRODUCTS -->
+            <div class="screen" id="screen-products">
+              <h2 style="margin:0 0 0.75rem;font-size:1.25rem" data-i18n="products">Products</h2>
+              <div class="field"><input type="search" placeholder="Search product" /></div>
+              <div class="list-card">
+                <div class="sale-row"><div><strong>RO Membrane 80 GPD</strong><br /><small>Filter · Stock 42</small></div><strong>₹850</strong></div>
+                <div class="sale-row"><div><strong>Aqua Feed Grower 5kg</strong><br /><small>Feed · Stock 65</small></div><strong>₹1,450</strong></div>
+                <div class="sale-row"><div><strong>UV Sterilizer 11W</strong><br /><small>Equipment · Stock 18</small></div><strong>₹2,200</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <nav class="phone-nav" id="phoneNav">
+            <button type="button" class="active" onclick="navTo('home', this)" data-i18n="home">Home</button>
+            <button type="button" onclick="navTo('sales', this)" data-i18n="mySales">My Sales</button>
+            <button type="button" onclick="navTo('customers', this)" data-i18n="customers">Customers</button>
+            <button type="button" onclick="navTo('products', this)" data-i18n="products">Products</button>
+          </nav>
+        </div>
+      </div>
+
+      <div class="help card">
+        <h2 style="margin-top:0">How to try it</h2>
+        <ol>
+          <li>Toggle हिंदी / EN in the phone header.</li>
+          <li>Tap <strong>New Sale</strong>, then <strong>Save sale</strong>.</li>
+          <li>Use bottom tabs for My Sales, Customers, Products.</li>
+        </ol>
+        <p class="note" style="margin-bottom:0">
+          Persona: <strong>Rahul</strong> (Sales Executive). See <a href="prd.html">PRD</a> for use cases UC-02 to UC-05.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const copy = {
+      en: {
+        greeting: "Namaste, Rahul",
+        langBtn: "हिंदी",
+        sales: "Sales",
+        collected: "Collected",
+        pending: "Pending",
+        today: "Today",
+        newSale: "+ New Sale",
+        newSaleTitle: "New Sale",
+        mySales: "My Sales",
+        home: "Home",
+        customer: "Customer",
+        addLine: "Products",
+        payment: "Payment",
+        amountPaid: "Amount paid",
+        save: "Save sale",
+        successTitle: "Sale saved",
+        share: "Share on WhatsApp",
+        customers: "Customers",
+        products: "Products",
+      },
+      hi: {
+        greeting: "नमस्ते, राहुल",
+        langBtn: "EN",
+        sales: "बिक्री",
+        collected: "वसूली",
+        pending: "बाकी",
+        today: "आज",
+        newSale: "+ नई बिक्री",
+        newSaleTitle: "नई बिक्री",
+        mySales: "मेरी बिक्री",
+        home: "होम",
+        customer: "ग्राहक",
+        addLine: "प्रोडक्ट",
+        payment: "पेमेंट",
+        amountPaid: "जमा राशि",
+        save: "सेव करें",
+        successTitle: "बिक्री सेव हो गई",
+        share: "WhatsApp पर भेजें",
+        customers: "ग्राहक",
+        products: "प्रोडक्ट",
+      },
+    };
+
+    let lang = "en";
+
+    function applyLang() {
+      const t = copy[lang];
+      document.getElementById("greeting").textContent = t.greeting;
+      document.getElementById("langBtn").textContent = t.langBtn;
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (t[key]) el.textContent = t[key];
+      });
+    }
+
+    function toggleLang() {
+      lang = lang === "en" ? "hi" : "en";
+      applyLang();
+    }
+
+    function showScreen(name) {
+      document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+      document.getElementById("screen-" + name).classList.add("active");
+      const nav = document.getElementById("phoneNav");
+      nav.style.display = name === "success" || name === "new" ? "none" : "grid";
+      if (name === "home" || name === "sales" || name === "customers" || name === "products") {
+        nav.style.display = "grid";
+        [...nav.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
+        const map = { home: 0, sales: 1, customers: 2, products: 3 };
+        if (map[name] !== undefined) nav.children[map[name]].classList.add("active");
+      }
+    }
+
+    function navTo(name, btn) {
+      showScreen(name);
+      [...btn.parentElement.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    function setMode(btn) {
+      [...btn.parentElement.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    // mode buttons on new sale without inline onclick for first
+    document.querySelectorAll(".modes button").forEach((btn) => {
+      btn.addEventListener("click", () => setMode(btn));
+    });
+  </script>
+</body>
+</html>
