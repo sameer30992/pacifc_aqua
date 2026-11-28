@@ -7,9 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/brand/pacific-aqua-logo.png" />
+  <link rel="apple-touch-icon" href="assets/brand/pacific-aqua-logo.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="mobile-mock-body">
   <header class="topnav">
     <a class="brand" href="index.html">
       <img class="brand-logo" src="assets/brand/pacific-aqua-logo.png" alt="Pacific Aqua" width="36" height="36" />
@@ -40,7 +42,21 @@
               </div>
             </div>
             <div class="header-actions">
-              <span class="sync-pill" id="syncPill" title="Offline queue">☁ 1</span>
+              <button type="button" class="sync-btn is-pending" id="syncPill" title="Upload pending · tap to sync" aria-label="Upload pending data" onclick="runSyncUpload()">
+                <span class="sync-state sync-state-idle" aria-hidden="true">
+                  <svg class="sync-ico" viewBox="0 0 24 24" fill="none">
+                    <path d="M7.2 17.2h9.1a3.55 3.55 0 0 0 .55-7.05 4.85 4.85 0 0 0-9.35-1.35A3.35 3.35 0 0 0 7.2 17.2Z" stroke="currentColor" stroke-width="1.85" stroke-linejoin="round"/>
+                    <path d="M12 14.6V9.4M12 9.4l-2.15 2.15M12 9.4l2.15 2.15" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="sync-count" id="syncCount">1</span>
+                </span>
+                <span class="sync-state sync-state-progress" aria-hidden="true">
+                  <span class="sync-ring"></span>
+                </span>
+                <span class="sync-state sync-state-done" aria-hidden="true">
+                  <svg class="sync-ico sync-ico-check" viewBox="0 0 24 24"><path d="m6.8 12.2 3.2 3.2 7.2-7.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </button>
               <button type="button" class="lang-btn" id="langBtn" onclick="toggleLang()">हिंदी</button>
               <button type="button" class="phone-profile-btn" id="mobileUserAvatarBtn" aria-label="Profile" title="Profile">
                 <img class="phone-user-avatar" src="assets/brand/user-avatar.svg" alt="" width="32" height="32" id="mobileUserAvatar" />
@@ -79,7 +95,9 @@
                 </div>
                 <div class="trip-steps" aria-label="Trip steps">
                   <button type="button" class="trip-step" id="stepLoadBtn" onclick="showScreen('plant-out')"><span>1</span><small data-i18n="stepLoad">Load</small></button>
+                  <span class="trip-step-line" id="tripLine12" aria-hidden="true"></span>
                   <button type="button" class="trip-step" id="stepDeliverBtn" onclick="startVisit()"><span>2</span><small data-i18n="stepDeliver">Deliver</small></button>
+                  <span class="trip-step-line" id="tripLine23" aria-hidden="true"></span>
                   <button type="button" class="trip-step" id="stepReturnBtn" onclick="showScreen('plant-in')"><span>3</span><small data-i18n="stepReturn">Return</small></button>
                 </div>
                 <div class="van-stock" id="vanStockMini">
@@ -95,7 +113,7 @@
                 <div class="stat"><span data-i18n="empties">Empty jars</span><strong>18</strong></div>
               </div>
               <div class="sticky-cta" style="margin-top:0.55rem">
-                <button type="button" class="full-btn" style="margin-top:0" onclick="startVisit()" data-i18n="newVisit">+ New billing</button>
+                <button type="button" class="full-btn" id="homePrimaryCta" style="margin-top:0" onclick="homePrimaryAction()">Load at plant</button>
               </div>
               <button type="button" class="ghost-full" style="margin-top:0.45rem" onclick="showScreen('orders')">
                 <span data-i18n="openOrders">Open orders</span> <span class="badge badge-pending" id="homeOrdersBadge">2</span>
@@ -150,48 +168,27 @@
               <button type="button" class="back-link" onclick="showScreen('home')">← <span data-i18n="home">Home</span></button>
               <h2 class="screen-title" data-i18n="plantOutTitle">Load from plant</h2>
               <p class="muted" style="margin:-0.35rem 0 0.65rem" data-i18n="plantOutHint">Step 1 · What did you take on the vehicle? (प्लांट से कितना लिया)</p>
-              <div class="field">
-                <label data-i18n="loadProducts">Products loaded</label>
-                <div class="dm-row">
-                  <div class="dm-prod">
-                    <img class="mobile-prod-icon" src="assets/products/icon-jar-20l.png" alt="" />
-                    <strong>20 L Jar</strong>
-                  </div>
-                  <div class="dm-qty" style="grid-column: span 2">
-                    <span class="dm-label"><strong data-i18n="qtyLoaded">Qty loaded</strong><small>मात्रा</small></span>
-                    <div class="stepper">
-                      <button type="button" onclick="step('load1',-1)">−</button>
-                      <input id="load1" type="number" value="40" min="0" />
-                      <button type="button" onclick="step('load1',1)">+</button>
-                    </div>
-                  </div>
+              <div class="field mobile-prod-form">
+                <div class="dm-head">
+                  <label style="margin:0" data-i18n="loadProducts">Products loaded</label>
                 </div>
-                <div class="dm-row">
-                  <div class="dm-prod">
-                    <img class="mobile-prod-icon" src="assets/products/icon-jar-chilled.png" alt="" />
-                    <strong>Chilled</strong>
-                  </div>
-                  <div class="dm-qty" style="grid-column: span 2">
-                    <span class="dm-label"><strong data-i18n="qtyLoaded">Qty loaded</strong><small>मात्रा</small></span>
-                    <div class="stepper">
-                      <button type="button" onclick="step('load2',-1)">−</button>
-                      <input id="load2" type="number" value="25" min="0" />
-                      <button type="button" onclick="step('load2',1)">+</button>
-                    </div>
-                  </div>
+                <div class="dm-cols load-dm-cols" id="loadProdCols" hidden>
+                  <span class="dm-col-label dm-col-prod"><strong>Product</strong></span>
+                  <span class="dm-col-label"><strong data-i18n="qtyLoaded">Qty</strong><small>मात्रा</small></span>
+                  <span class="dm-col-del" aria-hidden="true"></span>
                 </div>
-                <div class="dm-row">
-                  <div class="dm-prod">
-                    <img class="mobile-prod-icon" src="assets/products/icon-bottle-250ml.png" alt="" />
-                    <strong>250 ml box</strong>
+                <div id="loadProductRows"></div>
+                <p class="add-bill-empty" id="loadProdEmpty">No products yet · tap below to add</p>
+                <button type="button" class="btn btn-ghost btn-sm add-prod-btn" id="loadProdToggle" onclick="toggleLoadProductPicker()">＋ Add product</button>
+                <div class="prod-picker" id="loadProdPicker" hidden>
+                  <div class="prod-picker-head">
+                    <p class="prod-picker-label">Select products</p>
+                    <span class="prod-picker-count" id="loadProdPickCount">0 selected</span>
                   </div>
-                  <div class="dm-qty" style="grid-column: span 2">
-                    <span class="dm-label"><strong data-i18n="qtyLoaded">Qty loaded</strong><small>मात्रा</small></span>
-                    <div class="stepper">
-                      <button type="button" onclick="step('load3',-1)">−</button>
-                      <input id="load3" type="number" value="10" min="0" />
-                      <button type="button" onclick="step('load3',1)">+</button>
-                    </div>
+                  <div class="prod-picker-grid" id="loadProdPickerGrid"></div>
+                  <div class="prod-picker-actions">
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelLoadProductPick()">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="loadProdPickAddBtn" onclick="confirmLoadProductPick()" disabled>Add selected</button>
                   </div>
                 </div>
               </div>
@@ -312,71 +309,29 @@
                 </div>
               </div>
 
-              <div class="field field-tight">
+              <div class="field field-tight mobile-prod-form">
                 <div class="dm-head">
                   <label style="margin:0" data-i18n="productsDiyaMila">Given / Empty</label>
-                  <span class="dm-bill"><span data-i18n="billable">Bill</span> ₹250</span>
+                  <span class="dm-bill"><span data-i18n="billable">Bill</span> <span id="visitBillTotal">₹250</span></span>
                 </div>
-                <div class="dm-cols">
-                  <span></span>
+                <div class="dm-cols visit-dm-cols" id="visitProdCols" hidden>
+                  <span class="dm-col-label dm-col-prod"><strong>Product</strong></span>
                   <span class="dm-col-label" data-i18n-html="diyaLabel"><strong>Given</strong><small>दिया</small></span>
                   <span class="dm-col-label" data-i18n-html="milaLabel"><strong>Empty</strong><small>मिला</small></span>
+                  <span class="dm-col-del" aria-hidden="true"></span>
                 </div>
-                <div class="dm-row">
-                  <div class="dm-prod">
-                    <img class="mobile-prod-icon" src="assets/products/icon-jar-20l.png" alt="" title="20 L Jar" />
+                <div id="visitProductRows"></div>
+                <p class="add-bill-empty" id="visitProdEmpty">No products yet · tap below to add</p>
+                <button type="button" class="btn btn-ghost btn-sm add-prod-btn" id="visitProdToggle" onclick="toggleVisitProductPicker()">＋ Add product</button>
+                <div class="prod-picker" id="visitProdPicker" hidden>
+                  <div class="prod-picker-head">
+                    <p class="prod-picker-label">Select products</p>
+                    <span class="prod-picker-count" id="visitProdPickCount">0 selected</span>
                   </div>
-                  <div class="dm-qty">
-                    <div class="stepper">
-                      <button type="button" onclick="step('d1',-1)">−</button>
-                      <input id="d1" type="number" value="5" min="0" aria-label="Given" />
-                      <button type="button" onclick="step('d1',1)">+</button>
-                    </div>
-                  </div>
-                  <div class="dm-qty">
-                    <div class="stepper">
-                      <button type="button" onclick="step('m1',-1)">−</button>
-                      <input id="m1" type="number" value="5" min="0" aria-label="Empty back" />
-                      <button type="button" onclick="step('m1',1)">+</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="dm-row">
-                  <div class="dm-prod">
-                    <img class="mobile-prod-icon" src="assets/products/icon-jar-chilled.png" alt="" title="Chilled" />
-                  </div>
-                  <div class="dm-qty">
-                    <div class="stepper">
-                      <button type="button" onclick="step('d2',-1)">−</button>
-                      <input id="d2" type="number" value="1" min="0" aria-label="Given" />
-                      <button type="button" onclick="step('d2',1)">+</button>
-                    </div>
-                  </div>
-                  <div class="dm-qty">
-                    <div class="stepper">
-                      <button type="button" onclick="step('m2',-1)">−</button>
-                      <input id="m2" type="number" value="0" min="0" aria-label="Empty back" />
-                      <button type="button" onclick="step('m2',1)">+</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="dm-row">
-                  <div class="dm-prod">
-                    <img class="mobile-prod-icon" src="assets/products/icon-bottle-2l.png" alt="" title="2 Ltr" />
-                  </div>
-                  <div class="dm-qty">
-                    <div class="stepper">
-                      <button type="button" onclick="step('d3',-1)">−</button>
-                      <input id="d3" type="number" value="0" min="0" aria-label="Given" />
-                      <button type="button" onclick="step('d3',1)">+</button>
-                    </div>
-                  </div>
-                  <div class="dm-qty">
-                    <div class="stepper">
-                      <button type="button" onclick="step('m3',-1)">−</button>
-                      <input id="m3" type="number" value="0" min="0" aria-label="Empty back" />
-                      <button type="button" onclick="step('m3',1)">+</button>
-                    </div>
+                  <div class="prod-picker-grid" id="visitProdPickerGrid"></div>
+                  <div class="prod-picker-actions">
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelVisitProductPick()">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="visitProdPickAddBtn" onclick="confirmVisitProductPick()" disabled>Add selected</button>
                   </div>
                 </div>
               </div>
@@ -677,6 +632,7 @@
         pending: "Pending",
         empties: "Empty jars",
         newVisit: "+ New billing",
+        homeLoadCta: "Load at plant",
         newVisitTitle: "New billing",
         openOrders: "Open orders",
         recentVisits: "Recent visits",
@@ -802,6 +758,7 @@
         pending: "बाकी",
         empties: "खाली जार",
         newVisit: "+ नया बिलिंग",
+        homeLoadCta: "प्लांट से लोड करें",
         newVisitTitle: "नया बिलिंग",
         openOrders: "ओपन ऑर्डर",
         recentVisits: "हाल की विज़िट",
@@ -1199,30 +1156,46 @@
       const t = copy[lang];
       const label = document.getElementById("tripStatusLabel");
       const btn = document.getElementById("tripActionBtn");
+      const homeCta = document.getElementById("homePrimaryCta");
       const steps = [
         document.getElementById("stepLoadBtn"),
         document.getElementById("stepDeliverBtn"),
         document.getElementById("stepReturnBtn"),
       ];
+      const line12 = document.getElementById("tripLine12");
+      const line23 = document.getElementById("tripLine23");
       const van = document.getElementById("vanStockMini");
       steps.forEach((s) => s.classList.remove("done", "active"));
+      if (line12) line12.classList.remove("is-on", "is-done");
+      if (line23) line23.classList.remove("is-on", "is-done");
       if (tripState === "none") {
         label.textContent = t.tripNeedLoad;
         btn.textContent = t.tripLoadBtn;
         steps[0].classList.add("active");
         van.style.opacity = "0.45";
+        if (homeCta) homeCta.textContent = t.homeLoadCta || "Load at plant";
       } else if (tripState === "loaded") {
         label.textContent = t.tripOnRoute;
         btn.textContent = t.tripReturnBtn;
         steps[0].classList.add("done");
         steps[1].classList.add("active");
+        if (line12) line12.classList.add("is-on");
         van.style.opacity = "1";
+        if (homeCta) homeCta.textContent = t.newVisit || "+ New billing";
       } else {
         label.textContent = t.tripClosed;
         btn.textContent = t.tripNewBtn;
         steps.forEach((s) => s.classList.add("done"));
+        if (line12) line12.classList.add("is-done");
+        if (line23) line23.classList.add("is-done");
         van.style.opacity = "0.45";
+        if (homeCta) homeCta.textContent = t.homeLoadCta || "Load at plant";
       }
+    }
+
+    function homePrimaryAction() {
+      if (tripState === "loaded") startVisit();
+      else showScreen("plant-out");
     }
 
     function tripAction() {
@@ -1301,6 +1274,64 @@
       applyLang();
     }
 
+    let syncBusy = false;
+    let syncPending = 1;
+    let syncHideTimer = null;
+
+    function setSyncUi(state) {
+      const btn = document.getElementById("syncPill");
+      const count = document.getElementById("syncCount");
+      if (!btn) return;
+      btn.hidden = false;
+      btn.classList.remove("is-pending", "is-syncing", "is-done", "is-idle");
+      btn.classList.add("is-" + state);
+      if (count) count.textContent = String(syncPending);
+      if (state === "pending") {
+        btn.disabled = false;
+        btn.title = "Upload pending · tap to sync";
+        btn.setAttribute("aria-label", "Upload pending data");
+      } else if (state === "syncing") {
+        btn.disabled = true;
+        btn.title = "Uploading…";
+        btn.setAttribute("aria-label", "Uploading data");
+      } else if (state === "done") {
+        btn.disabled = true;
+        btn.title = "Uploaded";
+        btn.setAttribute("aria-label", "Upload complete");
+      } else {
+        btn.hidden = true;
+        btn.disabled = true;
+        btn.title = "All synced";
+        btn.setAttribute("aria-label", "All data synced");
+      }
+    }
+
+    function runSyncUpload() {
+      if (syncBusy || syncPending <= 0) return;
+      const uploaded = syncPending;
+      syncBusy = true;
+      clearTimeout(syncHideTimer);
+      setSyncUi("syncing");
+      window.setTimeout(() => {
+        syncPending = 0;
+        syncBusy = false;
+        setSyncUi("done");
+        const en = lang === "en";
+        const title = en ? "Upload complete" : "अपलोड पूरा";
+        const sub = en
+          ? (uploaded === 1
+            ? "1 pending bill / visit synced to shop"
+            : uploaded + " pending jobs & bills uploaded to shop")
+          : (uploaded === 1
+            ? "1 बिल / विज़िट दुकान पर सिंक हो गया"
+            : uploaded + " पेंडिंग जॉब / बिल दुकान पर अपलोड हुए");
+        showGlassToast(title, sub, "success");
+        syncHideTimer = window.setTimeout(() => {
+          setSyncUi("idle");
+        }, 1800);
+      }, 1600);
+    }
+
     function setChrome(name) {
       const header = document.getElementById("phoneHeader");
       const nav = document.getElementById("phoneNav");
@@ -1326,6 +1357,14 @@
       document.getElementById("screen-" + name).classList.add("active");
       setChrome(name);
       if (name === "orders") markOrdersSeen();
+      if (name === "plant-out") {
+        cancelLoadProductPick();
+        renderLoadProductRows();
+      }
+      if (name === "new") {
+        cancelVisitProductPick();
+        renderVisitProductRows();
+      }
     }
 
     function showLogin() { showScreen("login"); }
@@ -1509,7 +1548,283 @@
 
     function step(id, delta) {
       const el = document.getElementById(id);
-      el.value = Math.max(0, (parseInt(el.value || "0", 10) + delta));
+      if (!el) return;
+      el.value = Math.max(0, (parseInt(el.value || "0", 10) || 0) + delta);
+      if (String(id).startsWith("vd_")) recalcVisitBill();
+    }
+
+    /* —— Mobile product lines (same pattern as admin Add to bill) —— */
+    const MOBILE_PRODUCTS = [
+      { id: "jar", name: "20 Ltr", rate: 40, icon: "assets/products/icon-jar-20l.png" },
+      { id: "ch", name: "Chilled", rate: 50, icon: "assets/products/icon-jar-chilled.png" },
+      { id: "pouch", name: "Pouch", rate: 35, icon: "assets/products/icon-pouch.png" },
+      { id: "l2", name: "2 Ltr", rate: 50, icon: "assets/products/icon-bottle-2l.png" },
+      { id: "l1", name: "1 Ltr", rate: 90, icon: "assets/products/icon-bottle-1l.png" },
+      { id: "ml500", name: "500 ml", rate: 120, icon: "assets/products/icon-bottle-500ml.png" },
+      { id: "ml250", name: "250 ml", rate: 120, icon: "assets/products/icon-bottle-250ml.png" },
+      { id: "disp", name: "Dispenser", rate: 0, icon: "assets/products/icon-dispenser.png" },
+    ];
+    const PROD_CHECK_SVG =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5 10 17.5 19 7"/></svg>';
+    const LINE_TRASH_SVG =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>';
+
+    let loadLines = [
+      { uid: "load_jar", productId: "jar", qty: 40 },
+      { uid: "load_ch", productId: "ch", qty: 25 },
+      { uid: "load_ml250", productId: "ml250", qty: 10 },
+    ];
+    let visitLines = [
+      { uid: "visit_jar", productId: "jar", given: 5, empty: 5 },
+      { uid: "visit_ch", productId: "ch", given: 1, empty: 0 },
+      { uid: "visit_l2", productId: "l2", given: 0, empty: 0 },
+    ];
+    let loadPickSelected = new Set();
+    let visitPickSelected = new Set();
+
+    function mobileProdPickCard(p, used, selected, toggleFn) {
+      return `<button type="button" class="prod-pick${used ? " is-used" : ""}${selected ? " is-selected" : ""}" data-id="${p.id}" ${used ? "disabled" : ""} aria-pressed="${selected ? "true" : "false"}" onclick="${toggleFn}('${p.id}')">
+        <span class="prod-pick-check">${PROD_CHECK_SVG}</span>
+        <img src="${p.icon}" alt="" />
+        <strong>${p.name}</strong>
+        <span>${p.rate ? "₹" + p.rate : "—"}</span>
+      </button>`;
+    }
+
+    function updateMobilePickUI(gridId, countId, addBtnId, selected) {
+      const grid = document.getElementById(gridId);
+      if (grid) {
+        grid.querySelectorAll(".prod-pick:not(.is-used)").forEach((btn) => {
+          const id = btn.getAttribute("data-id");
+          const on = selected.has(id);
+          btn.classList.toggle("is-selected", on);
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+      }
+      const n = selected.size;
+      const count = document.getElementById(countId);
+      if (count) count.textContent = n + " selected";
+      const addBtn = document.getElementById(addBtnId);
+      if (addBtn) addBtn.disabled = n === 0;
+    }
+
+    function readLineQty(id) {
+      return Math.max(0, parseInt(document.getElementById(id)?.value || "0", 10) || 0);
+    }
+
+    function syncLoadQtysFromDom() {
+      loadLines.forEach((line) => {
+        line.qty = readLineQty("loadQ_" + line.uid);
+      });
+    }
+
+    function syncVisitQtysFromDom() {
+      visitLines.forEach((line) => {
+        line.given = readLineQty("vd_" + line.uid);
+        line.empty = readLineQty("ve_" + line.uid);
+      });
+    }
+
+    function renderLoadProductRows() {
+      const wrap = document.getElementById("loadProductRows");
+      if (!wrap) return;
+      wrap.innerHTML = loadLines
+        .map((line) => {
+          const p = MOBILE_PRODUCTS.find((x) => x.id === line.productId);
+          if (!p) return "";
+          return `<div class="dm-row load-prod-line" data-uid="${line.uid}">
+            <div class="dm-prod">
+              <span class="dm-prod-media"><img class="mobile-prod-icon" src="${p.icon}" alt="" /></span>
+              <span class="dm-prod-name">${p.name}</span>
+            </div>
+            <div class="dm-qty">
+              <div class="stepper">
+                <button type="button" onclick="step('loadQ_${line.uid}',-1)">−</button>
+                <input id="loadQ_${line.uid}" type="number" value="${line.qty}" min="0" aria-label="${p.name} qty" />
+                <button type="button" onclick="step('loadQ_${line.uid}',1)">+</button>
+              </div>
+            </div>
+            <button type="button" class="line-remove" onclick="removeLoadProduct('${line.uid}')" title="Remove product" aria-label="Remove ${p.name}">${LINE_TRASH_SVG}</button>
+          </div>`;
+        })
+        .join("");
+      const has = loadLines.length > 0;
+      const empty = document.getElementById("loadProdEmpty");
+      const cols = document.getElementById("loadProdCols");
+      const toggle = document.getElementById("loadProdToggle");
+      if (empty) empty.hidden = has;
+      if (cols) cols.hidden = !has;
+      if (toggle) {
+        const left = MOBILE_PRODUCTS.filter((p) => !loadLines.some((l) => l.productId === p.id)).length;
+        toggle.hidden = left === 0;
+        toggle.textContent = has ? "＋ Add another product" : "＋ Add product";
+      }
+    }
+
+    function renderLoadProductPicker() {
+      const grid = document.getElementById("loadProdPickerGrid");
+      if (!grid) return;
+      loadPickSelected = new Set();
+      grid.innerHTML = MOBILE_PRODUCTS.map((p) => {
+        const used = loadLines.some((l) => l.productId === p.id);
+        return mobileProdPickCard(p, used, false, "toggleLoadProductPick");
+      }).join("");
+      updateMobilePickUI("loadProdPickerGrid", "loadProdPickCount", "loadProdPickAddBtn", loadPickSelected);
+    }
+
+    function toggleLoadProductPicker() {
+      const picker = document.getElementById("loadProdPicker");
+      if (!picker) return;
+      const open = picker.hidden;
+      if (open) {
+        syncLoadQtysFromDom();
+        renderLoadProductPicker();
+      } else loadPickSelected = new Set();
+      picker.hidden = !open;
+    }
+
+    function toggleLoadProductPick(productId) {
+      if (loadLines.some((l) => l.productId === productId)) return;
+      if (loadPickSelected.has(productId)) loadPickSelected.delete(productId);
+      else loadPickSelected.add(productId);
+      updateMobilePickUI("loadProdPickerGrid", "loadProdPickCount", "loadProdPickAddBtn", loadPickSelected);
+    }
+
+    function cancelLoadProductPick() {
+      loadPickSelected = new Set();
+      const picker = document.getElementById("loadProdPicker");
+      if (picker) picker.hidden = true;
+    }
+
+    function confirmLoadProductPick() {
+      syncLoadQtysFromDom();
+      const stamp = Date.now().toString(36);
+      [...loadPickSelected].forEach((productId, i) => {
+        if (loadLines.some((l) => l.productId === productId)) return;
+        loadLines.push({ uid: productId + "_" + stamp + i, productId, qty: 1 });
+      });
+      loadPickSelected = new Set();
+      const picker = document.getElementById("loadProdPicker");
+      if (picker) picker.hidden = true;
+      renderLoadProductRows();
+    }
+
+    function removeLoadProduct(uid) {
+      syncLoadQtysFromDom();
+      loadLines = loadLines.filter((l) => l.uid !== uid);
+      renderLoadProductRows();
+      const picker = document.getElementById("loadProdPicker");
+      if (picker && !picker.hidden) renderLoadProductPicker();
+    }
+
+    function recalcVisitBill() {
+      const total = visitLines.reduce((sum, line) => {
+        const p = MOBILE_PRODUCTS.find((x) => x.id === line.productId);
+        if (!p) return sum;
+        return sum + readLineQty("vd_" + line.uid) * p.rate;
+      }, 0);
+      const el = document.getElementById("visitBillTotal");
+      if (el) el.textContent = "₹" + total.toLocaleString("en-IN");
+    }
+
+    function renderVisitProductRows() {
+      const wrap = document.getElementById("visitProductRows");
+      if (!wrap) return;
+      wrap.innerHTML = visitLines
+        .map((line) => {
+          const p = MOBILE_PRODUCTS.find((x) => x.id === line.productId);
+          if (!p) return "";
+          return `<div class="dm-row visit-prod-line" data-uid="${line.uid}">
+            <div class="dm-prod">
+              <span class="dm-prod-media"><img class="mobile-prod-icon" src="${p.icon}" alt="" /></span>
+              <span class="dm-prod-name">${p.name}<small>₹${p.rate}</small></span>
+            </div>
+            <div class="dm-qty">
+              <div class="stepper">
+                <button type="button" onclick="step('vd_${line.uid}',-1)">−</button>
+                <input id="vd_${line.uid}" type="number" value="${line.given}" min="0" oninput="recalcVisitBill()" aria-label="${p.name} given" />
+                <button type="button" onclick="step('vd_${line.uid}',1)">+</button>
+              </div>
+            </div>
+            <div class="dm-qty">
+              <div class="stepper">
+                <button type="button" onclick="step('ve_${line.uid}',-1)">−</button>
+                <input id="ve_${line.uid}" type="number" value="${line.empty}" min="0" aria-label="${p.name} empty" />
+                <button type="button" onclick="step('ve_${line.uid}',1)">+</button>
+              </div>
+            </div>
+            <button type="button" class="line-remove" onclick="removeVisitProduct('${line.uid}')" title="Remove product" aria-label="Remove ${p.name}">${LINE_TRASH_SVG}</button>
+          </div>`;
+        })
+        .join("");
+      const has = visitLines.length > 0;
+      const empty = document.getElementById("visitProdEmpty");
+      const cols = document.getElementById("visitProdCols");
+      const toggle = document.getElementById("visitProdToggle");
+      if (empty) empty.hidden = has;
+      if (cols) cols.hidden = !has;
+      if (toggle) {
+        const left = MOBILE_PRODUCTS.filter((p) => !visitLines.some((l) => l.productId === p.id)).length;
+        toggle.hidden = left === 0;
+        toggle.textContent = has ? "＋ Add another product" : "＋ Add product";
+      }
+      recalcVisitBill();
+    }
+
+    function renderVisitProductPicker() {
+      const grid = document.getElementById("visitProdPickerGrid");
+      if (!grid) return;
+      visitPickSelected = new Set();
+      grid.innerHTML = MOBILE_PRODUCTS.map((p) => {
+        const used = visitLines.some((l) => l.productId === p.id);
+        return mobileProdPickCard(p, used, false, "toggleVisitProductPick");
+      }).join("");
+      updateMobilePickUI("visitProdPickerGrid", "visitProdPickCount", "visitProdPickAddBtn", visitPickSelected);
+    }
+
+    function toggleVisitProductPicker() {
+      const picker = document.getElementById("visitProdPicker");
+      if (!picker) return;
+      const open = picker.hidden;
+      if (open) {
+        syncVisitQtysFromDom();
+        renderVisitProductPicker();
+      } else visitPickSelected = new Set();
+      picker.hidden = !open;
+    }
+
+    function toggleVisitProductPick(productId) {
+      if (visitLines.some((l) => l.productId === productId)) return;
+      if (visitPickSelected.has(productId)) visitPickSelected.delete(productId);
+      else visitPickSelected.add(productId);
+      updateMobilePickUI("visitProdPickerGrid", "visitProdPickCount", "visitProdPickAddBtn", visitPickSelected);
+    }
+
+    function cancelVisitProductPick() {
+      visitPickSelected = new Set();
+      const picker = document.getElementById("visitProdPicker");
+      if (picker) picker.hidden = true;
+    }
+
+    function confirmVisitProductPick() {
+      syncVisitQtysFromDom();
+      const stamp = Date.now().toString(36);
+      [...visitPickSelected].forEach((productId, i) => {
+        if (visitLines.some((l) => l.productId === productId)) return;
+        visitLines.push({ uid: productId + "_" + stamp + i, productId, given: 1, empty: 0 });
+      });
+      visitPickSelected = new Set();
+      const picker = document.getElementById("visitProdPicker");
+      if (picker) picker.hidden = true;
+      renderVisitProductRows();
+    }
+
+    function removeVisitProduct(uid) {
+      syncVisitQtysFromDom();
+      visitLines = visitLines.filter((l) => l.uid !== uid);
+      renderVisitProductRows();
+      const picker = document.getElementById("visitProdPicker");
+      if (picker && !picker.hidden) renderVisitProductPicker();
     }
 
     function openDetail(key) {
@@ -1562,6 +1877,8 @@
     renderOrderNotifications();
     paintMobileCustomerLists();
     refreshMobileCustomerPhotoPreview();
+    renderLoadProductRows();
+    renderVisitProductRows();
     const firstChip = document.querySelector("#routeList .route-chip.active");
     if (firstChip) selectCustomer(firstChip, firstChip.getAttribute("data-cust") || "gr", true);
     showScreen("home");

@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/brand/pacific-aqua-logo.png" />
+  <link rel="apple-touch-icon" href="assets/brand/pacific-aqua-logo.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="admin-app">
@@ -3830,6 +3832,28 @@
 
     let editingProductId = null;
     let selectedProductIcon = PRODUCT_IMAGE_OPTIONS[0];
+    const productStockDrafts = {};
+
+    function getProductDraftStock(p) {
+      if (!p) return 0;
+      if (Object.prototype.hasOwnProperty.call(productStockDrafts, p.id)) {
+        return Math.max(0, parseInt(productStockDrafts[p.id], 10) || 0);
+      }
+      return Math.max(0, parseInt(p.stock, 10) || 0);
+    }
+
+    function syncProductStockSubmit(id) {
+      const p = productCatalog.find((x) => x.id === id);
+      const btn = document.getElementById("prodStockSubmit-" + id);
+      if (!p || !btn) return;
+      const draft = getProductDraftStock(p);
+      const saved = Math.max(0, parseInt(p.stock, 10) || 0);
+      const dirty = draft !== saved;
+      btn.hidden = !dirty;
+      btn.disabled = !dirty;
+      const card = document.querySelector(`.product-card[data-id="${id}"]`);
+      if (card) card.classList.toggle("has-stock-pending", dirty);
+    }
 
     function renderProductCatalog() {
       const grid = document.getElementById("productGrid");
@@ -3841,23 +3865,39 @@
       grid.innerHTML = productCatalog
         .map((p) => {
           const inactive = p.status !== "active";
-          return `<article class="product-card${inactive ? " is-inactive" : ""}" data-id="${p.id}">
-            <div class="icon-hero" aria-hidden="true"><img src="${p.icon}" alt="" /></div>
+          const draft = getProductDraftStock(p);
+          const saved = Math.max(0, parseInt(p.stock, 10) || 0);
+          const dirty = draft !== saved;
+          const menuId = "prod-" + p.id;
+          return `<article class="product-card${inactive ? " is-inactive" : ""}${dirty ? " has-stock-pending" : ""}" data-id="${p.id}">
+            <div class="product-card-top">
+              <div class="icon-hero" aria-hidden="true"><img src="${p.icon}" alt="" /></div>
+              <div class="order-menu product-card-menu">
+                <button type="button" class="order-menu-btn" aria-label="Product actions" aria-haspopup="true" aria-expanded="false" onclick="toggleOrderMenu(event, '${menuId}')">
+                  <span class="order-menu-dots" aria-hidden="true"></span>
+                </button>
+                <div class="order-menu-panel" id="orderMenu-${menuId}" hidden role="menu">
+                  <button type="button" role="menuitem" onclick="event.stopPropagation();closeAllOrderMenus();openProductForm('${p.id}')">
+                    <span class="omi omi-edit" aria-hidden="true"></span>Edit
+                  </button>
+                  <button type="button" role="menuitem" class="is-danger" onclick="event.stopPropagation();closeAllOrderMenus();confirmRemoveProduct('${p.id}')">
+                    <span class="omi omi-trash" aria-hidden="true"></span>Remove
+                  </button>
+                </div>
+              </div>
+            </div>
             <h3>${p.name}</h3>
             <p>${p.category} · ${p.unit}</p>
             <div class="rate">₹${Number(p.rate).toLocaleString("en-IN")}</div>
             <div class="product-stock-row">
               <span class="muted">Stock</span>
               <div class="stepper product-stock-stepper">
-                <button type="button" onclick="adjustProductStock('${p.id}',-1)">−</button>
-                <strong id="prodStockVal-${p.id}">${Number(p.stock).toLocaleString("en-IN")}</strong>
-                <button type="button" onclick="adjustProductStock('${p.id}',1)">+</button>
+                <button type="button" onclick="adjustProductStock('${p.id}',-1)" aria-label="Decrease stock">−</button>
+                <strong id="prodStockVal-${p.id}">${Number(draft).toLocaleString("en-IN")}</strong>
+                <button type="button" onclick="adjustProductStock('${p.id}',1)" aria-label="Increase stock">+</button>
               </div>
             </div>
-            <div class="product-card-actions">
-              <button type="button" class="link-btn" onclick="openProductForm('${p.id}')">Edit</button>
-              <button type="button" class="link-btn is-danger-link" onclick="confirmRemoveProduct('${p.id}')">Remove</button>
-            </div>
+            <button type="button" class="btn btn-primary btn-sm product-stock-submit" id="prodStockSubmit-${p.id}" ${dirty ? "" : "hidden"} onclick="submitProductStock('${p.id}')">Submit</button>
           </article>`;
         })
         .join("");
@@ -3866,13 +3906,40 @@
     function adjustProductStock(id, delta) {
       const p = productCatalog.find((x) => x.id === id);
       if (!p) return;
-      p.stock = Math.max(0, (parseInt(p.stock, 10) || 0) + delta);
+      const next = Math.max(0, getProductDraftStock(p) + delta);
+      productStockDrafts[id] = next;
+      const el = document.getElementById("prodStockVal-" + id);
+      if (el) el.textContent = Number(next).toLocaleString("en-IN");
+      syncProductStockSubmit(id);
+      if (editingProductId === id) {
+        const stockInput = document.getElementById("prodStock");
+        if (stockInput) stockInput.value = String(next);
+      }
+    }
+
+    async function submitProductStock(id) {
+      const p = productCatalog.find((x) => x.id === id);
+      if (!p) return;
+      const draft = getProductDraftStock(p);
+      const saved = Math.max(0, parseInt(p.stock, 10) || 0);
+      if (draft === saved) {
+        syncProductStockSubmit(id);
+        return;
+      }
+      p.stock = draft;
+      delete productStockDrafts[id];
       const el = document.getElementById("prodStockVal-" + id);
       if (el) el.textContent = Number(p.stock).toLocaleString("en-IN");
+      syncProductStockSubmit(id);
       if (editingProductId === id) {
         const stockInput = document.getElementById("prodStock");
         if (stockInput) stockInput.value = String(p.stock);
       }
+      await showAppAlert({
+        title: "Stock updated",
+        message: `${p.name} stock set to ${Number(p.stock).toLocaleString("en-IN")}.`,
+        icon: "is-success",
+      });
     }
 
     function updateProductImagePreview() {
@@ -3905,7 +3972,7 @@
       document.getElementById("prodCategory").value = p ? p.category : "";
       document.getElementById("prodUnit").value = p ? p.unit : "jar";
       document.getElementById("prodRate").value = p ? String(p.rate) : "40";
-      document.getElementById("prodStock").value = p ? String(p.stock) : "0";
+      document.getElementById("prodStock").value = p ? String(getProductDraftStock(p)) : "0";
       document.getElementById("prodStatus").value = p ? p.status : "active";
       selectedProductIcon = p ? p.icon : PRODUCT_IMAGE_OPTIONS[0];
       const fileInput = document.getElementById("prodImageFile");
@@ -3949,6 +4016,7 @@
         const p = productCatalog.find((x) => x.id === editingProductId);
         if (!p) return;
         Object.assign(p, { name, category, unit, rate, stock, status, icon });
+        delete productStockDrafts[editingProductId];
         closeProductForm();
         renderProductCatalog();
         await showAppAlert({ title: "Product updated", message: name + " saved.", icon: "is-success" });
@@ -3975,13 +4043,14 @@
       if (!p) return;
       const ok = await showAppConfirm({
         title: "Remove product?",
-        message: `Remove ${p.name} from the catalog?\nStock ${Number(p.stock).toLocaleString("en-IN")} · ₹${p.rate}`,
+        message: `Remove ${p.name} from the catalog?\nStock ${Number(getProductDraftStock(p)).toLocaleString("en-IN")} · ₹${p.rate}`,
         confirmLabel: "Remove",
         cancelLabel: "Keep",
         danger: true,
       });
       if (!ok) return;
       productCatalog = productCatalog.filter((x) => x.id !== targetId);
+      delete productStockDrafts[targetId];
       if (editingProductId === targetId) closeProductForm();
       renderProductCatalog();
       await showAppAlert({ title: "Product removed", message: p.name + " deleted.", icon: "is-success" });
