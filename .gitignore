@@ -3,10 +3,15 @@ Thumbs.db
 *.log
 .idea/
 .vscode/
+.cursor/
 node_modules/
 .next/
 dist/
 .env
 .env.*
+server/target/
+*.class
+.mvn/
+admin-web/dist/
 
 docs/transcripts/*.wav

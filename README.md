@@ -1,31 +1,67 @@
-# Pacific Aqua Sales System — PRD & HTML Mockups
+# Pacific Aqua — Admin Control
 
-Static HTML mockups and a detailed PRD for replacing Pacific Aqua’s sales Excel with:
+Admin web app (Vue 3) + API (Spring Boot 3) + MySQL 8 for Pacific Aqua sales ledger.
 
-1. **Mobile sales app** (phone web) — field sale capture  
-2. **Backend admin** (desktop web) — ledger, dues, masters, export  
+## Stack
 
-## Open locally
+- **admin-web/** — Vue 3 + Vite + Pinia + Vue Router
+- **server/** — Spring Boot 3, JWT auth, Flyway, WebSocket (STOMP)
+- **docker-compose.yml** — MySQL 8
 
-Open `index.html` in a browser, or from this folder:
+REST paths have **no `/api` prefix** (e.g. `POST /auth/login`, `GET /visits`).
+
+## Prerequisites
+
+- Java 17+ (`JAVA_HOME` set)
+- Maven 3.8+
+- Node 20+
+- Docker Desktop (for MySQL)
+
+## Run
 
 ```bash
-python3 -m http.server 3847 --bind 127.0.0.1
+# 1) Database
+docker compose up -d
+
+# 2) API
+cd server
+export JAVA_HOME=/opt/homebrew/Cellar/openjdk/19.0.1/libexec/openjdk.jdk/Contents/Home   # adjust if needed
+mvn spring-boot:run
+
+# 3) Admin UI
+cd ../admin-web
+npm install
+npm run dev
 ```
 
-Then visit `http://127.0.0.1:3847`.
+- Admin UI: http://127.0.0.1:5173  
+- API: http://127.0.0.1:8080  
 
-## Files
+### Seed login
 
-| File | Contents |
+| Field | Value |
 | --- | --- |
-| `index.html` | Overview hub |
-| `prd.html` | PRD summary in the browser |
-| `docs/PRD.md` | Full PRD (personas, use cases, pages, functionalities) |
-| `mobile.html` | Clickable phone mockup (EN / हिंदी) |
-| `backend.html` | Clickable admin mockup |
-| `styles.css` | Shared styles |
+| Phone | `9999999999` |
+| Password | `admin123` |
 
-## Note
+Helpers: Tikesh / Himanshu / Deepak — phone `9000000001`…`3`, password `helper123`.
 
-`R&B.m4a` and `Pacific Aqua.xlsx` were not available when this draft was written. Re-attach them to refine columns and meeting decisions.
+## Modules (live)
+
+Login · SUM UP · P&S · BILL · Orders · Customers · Plant trips · Products · Employees
+
+Orders notify helpers via **WebSocket** (`/topic/helpers/{id}/orders`) with **HTTP poll** fallback (`GET /orders/mine`).
+
+## Import Excel data
+
+With MySQL running and products seeded (start API once):
+
+```bash
+python3 scripts/import_excel.py
+```
+
+Loads customers from the **Customers** sheet, helpers from **ATT.**, and visits from the **BILL** sheet.
+
+## Mockups
+
+Static HTML mockups remain at repo root: `backend.html`, `mobile.html`, `styles.css`.

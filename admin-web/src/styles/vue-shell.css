@@ -1,0 +1,27 @@
+/* Vue mount shell — keep mockup admin CSS in charge */
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+#app {
+  min-height: 100%;
+}
+
+body.admin-app {
+  overflow: hidden;
+}
+
+.person-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.admin-user-chip .pa-avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.62rem;
+}
