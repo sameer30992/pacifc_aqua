@@ -12,7 +12,7 @@
 <body>
   <header class="topnav">
     <a class="brand" href="index.html">
-      <div class="brand-mark">PA</div>
+      <img class="brand-logo" src="assets/brand/pacific-aqua-logo.png" alt="Pacific Aqua" width="36" height="36" />
       <div>
         <strong>Pacific Aqua</strong>
         <span>Sales System · Mockups</span>
@@ -22,64 +22,100 @@
       <a href="index.html">Overview</a>
       <a href="prd.html">PRD</a>
       <a class="active" href="mobile.html">Mobile mockup</a>
-      <a href="backend.html">Backend mockup</a>
+      <a href="backend.html">Admin Control</a>
     </nav>
   </header>
 
-  <main class="wrap">
-    <p class="eyebrow">Mockup · M0–M9</p>
-    <h1>Mobile sales app</h1>
-    <p class="lede">
-      Phone-first screens for field executives (PRD §7.1): login, home, new sale, success,
-      my sales, sale detail, customers, add customer, products. Tap through with sample data.
-    </p>
-
+  <main class="wrap mobile-mock-page">
     <div class="mock-layout">
+      <div class="phone-col">
       <div class="phone">
         <div class="phone-inner">
           <div class="phone-header" id="phoneHeader">
-            <div>
-              <small>Pacific Aqua</small>
-              <strong id="greeting">Namaste, Rahul</strong>
+            <div class="phone-brand">
+              <img class="phone-brand-logo" src="assets/brand/pacific-aqua-logo.png" alt="Pacific Aqua" width="36" height="36" />
+              <div class="phone-brand-text">
+                <small>Pacific Aqua · Route A</small>
+                <strong id="greeting">Namaste, Tikesh</strong>
+              </div>
             </div>
-            <button type="button" class="lang-btn" id="langBtn" onclick="toggleLang()">हिंदी</button>
+            <div class="header-actions">
+              <span class="sync-pill" id="syncPill" title="Offline queue">☁ 1</span>
+              <button type="button" class="lang-btn" id="langBtn" onclick="toggleLang()">हिंदी</button>
+              <button type="button" class="phone-profile-btn" id="mobileUserAvatarBtn" aria-label="Profile" title="Profile">
+                <img class="phone-user-avatar" src="assets/brand/user-avatar.svg" alt="" width="32" height="32" id="mobileUserAvatar" />
+              </button>
+            </div>
           </div>
 
           <div class="phone-body">
             <!-- M0 LOGIN -->
             <div class="screen" id="screen-login">
               <div class="login-card">
-                <div class="brand-mark">PA</div>
+                <img class="login-brand-logo" src="assets/brand/pacific-aqua-logo.png" alt="Pacific Aqua" width="64" height="64" />
                 <h2 data-i18n="loginTitle">Sign in</h2>
-                <p class="sub" data-i18n="loginSub">Sales executive · mobile</p>
-                <div class="field" style="padding:0;background:transparent;margin:0 0 0.55rem">
-                  <label data-i18n="phoneEmail">Phone or email</label>
-                  <input type="text" value="9876501234" autocomplete="username" />
+                <p class="sub" data-i18n="loginSub">Helper · mobile</p>
+                <div class="field form-field" style="padding:0;background:transparent;margin:0 0 0.45rem;border:0;box-shadow:none">
+                  <label for="mobileLoginUser" data-i18n="phoneEmail">Phone or email</label>
+                  <input id="mobileLoginUser" type="text" value="9876504455" autocomplete="username" />
                 </div>
-                <div class="field" style="padding:0;background:transparent;margin:0 0 0.55rem">
-                  <label data-i18n="password">Password</label>
-                  <input type="password" value="••••••••" autocomplete="current-password" />
+                <div class="field form-field" style="padding:0;background:transparent;margin:0 0 0.45rem;border:0;box-shadow:none">
+                  <label for="mobileLoginPass" data-i18n="password">Password</label>
+                  <input id="mobileLoginPass" type="password" value="••••••••" autocomplete="current-password" />
                 </div>
-                <button type="button" class="full-btn" style="margin-top:0.35rem" onclick="enterApp()" data-i18n="loginCta">Login</button>
-                <p class="muted" style="text-align:center;margin:0.75rem 0 0;font-size:0.72rem" data-i18n="langHint">Language: use हिंदी / EN after login</p>
+                <button type="button" class="full-btn" style="margin-top:0.25rem" onclick="enterApp()" data-i18n="loginCta">Login</button>
               </div>
             </div>
 
             <!-- M1 HOME -->
             <div class="screen active" id="screen-home">
-              <div class="stats">
-                <div class="stat"><span data-i18n="sales">Sales</span><strong>2</strong></div>
-                <div class="stat"><span data-i18n="collected">Collected</span><strong>₹1,040</strong></div>
-                <div class="stat"><span data-i18n="pending">Pending</span><strong>₹700</strong></div>
-                <div class="stat"><span data-i18n="today">Today</span><strong>22 Nov</strong></div>
+              <div class="trip-card" id="tripCard">
+                <div class="trip-top">
+                  <div>
+                    <small data-i18n="todayTrip">Today’s trip</small>
+                    <strong id="tripStatusLabel">On route · Trip #12</strong>
+                  </div>
+                  <button type="button" class="btn-mini" id="tripActionBtn" onclick="tripAction()">Return</button>
+                </div>
+                <div class="trip-steps" aria-label="Trip steps">
+                  <button type="button" class="trip-step" id="stepLoadBtn" onclick="showScreen('plant-out')"><span>1</span><small data-i18n="stepLoad">Load</small></button>
+                  <button type="button" class="trip-step" id="stepDeliverBtn" onclick="startVisit()"><span>2</span><small data-i18n="stepDeliver">Deliver</small></button>
+                  <button type="button" class="trip-step" id="stepReturnBtn" onclick="showScreen('plant-in')"><span>3</span><small data-i18n="stepReturn">Return</small></button>
+                </div>
+                <div class="van-stock" id="vanStockMini">
+                  <div><span data-i18n="vanFull">Van full left</span><strong>18 jar · 7 ch</strong></div>
+                  <div><span data-i18n="vanEmpty">Empties in van</span><strong>22</strong></div>
+                  <div><span data-i18n="vanCash">Cash in hand</span><strong>₹2,140</strong></div>
+                </div>
               </div>
-              <button type="button" class="full-btn" onclick="showScreen('new')" data-i18n="newSale">+ New Sale</button>
+              <div class="stats">
+                <div class="stat"><span data-i18n="visits">Visits</span><strong>6</strong></div>
+                <div class="stat"><span data-i18n="collected">Collected</span><strong>₹2,140</strong></div>
+                <div class="stat"><span data-i18n="pending">Pending</span><strong>₹700</strong></div>
+                <div class="stat"><span data-i18n="empties">Empty jars</span><strong>18</strong></div>
+              </div>
+              <div class="sticky-cta" style="margin-top:0.55rem">
+                <button type="button" class="full-btn" style="margin-top:0" onclick="startVisit()" data-i18n="newVisit">+ New billing</button>
+              </div>
+              <button type="button" class="ghost-full" style="margin-top:0.45rem" onclick="showScreen('orders')">
+                <span data-i18n="openOrders">Open orders</span> <span class="badge badge-pending" id="homeOrdersBadge">2</span>
+              </button>
+              <div class="home-order-toast" id="homeOrderToast" hidden>
+                <div class="home-order-toast-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 3a5.2 5.2 0 0 0-5.2 5.2v2.1c0 .7-.2 1.4-.6 2L5 14.4h14l-1.2-2.1c-.4-.6-.6-1.3-.6-2V8.2A5.2 5.2 0 0 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.6 17.2a2.4 2.4 0 0 0 4.8 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+                </div>
+                <div class="home-order-toast-body">
+                  <strong id="homeOrderToastTitle">New order</strong>
+                  <small id="homeOrderToastMeta">G R Electrical · 10 × 20 Ltr · Urgent</small>
+                </div>
+                <button type="button" class="btn-mini" onclick="showScreen('orders')" data-i18n="viewOrder">View</button>
+              </div>
               <div class="list-card">
-                <span data-i18n="recentSales">Recent sales</span>
+                <span data-i18n="recentVisits">Recent visits</span>
                 <div class="sale-row tap-row" onclick="openDetail('paid')">
                   <div>
-                    <strong>A R Traders, Shrinagar</strong><br />
-                    <small>PA-1142</small>
+                    <strong>G R Electrical</strong><br />
+                    <small>PA-1142 · Given 5 · Empty 5</small>
                   </div>
                   <div style="text-align:right">
                     <strong>₹400</strong><br />
@@ -89,171 +125,334 @@
                 <div class="sale-row tap-row" onclick="openDetail('partial')">
                   <div>
                     <strong>Vedprakash Pandey ji</strong><br />
-                    <small>PA-1141</small>
+                    <small>PA-1141 · Given 20 · Empty 8</small>
                   </div>
                   <div style="text-align:right">
                     <strong>₹1,200</strong><br />
                     <span class="badge badge-partial">Partial</span>
                   </div>
                 </div>
-                <div class="sale-row tap-row" onclick="openDetail('paid2')">
+                <div class="sale-row tap-row" onclick="openDetail('offline')">
                   <div>
-                    <strong>Kundan Agency</strong><br />
-                    <small>PA-1140</small>
+                    <strong>Rosmerta Digital</strong><br />
+                    <small>PA-1143 · waiting sync</small>
                   </div>
                   <div style="text-align:right">
-                    <strong>₹640</strong><br />
-                    <span class="badge badge-paid">Paid</span>
+                    <strong>₹200</strong><br />
+                    <span class="badge badge-sync">Offline</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- M2 NEW SALE -->
-            <div class="screen" id="screen-new">
+            <!-- PLANT LOAD -->
+            <div class="screen" id="screen-plant-out">
               <button type="button" class="back-link" onclick="showScreen('home')">← <span data-i18n="home">Home</span></button>
-              <h2 class="screen-title" data-i18n="newSaleTitle">New Sale</h2>
+              <h2 class="screen-title" data-i18n="plantOutTitle">Load from plant</h2>
+              <p class="muted" style="margin:-0.35rem 0 0.65rem" data-i18n="plantOutHint">Step 1 · What did you take on the vehicle? (प्लांट से कितना लिया)</p>
               <div class="field">
-                <div class="inline-add">
-                  <label style="margin:0" data-i18n="customer">Customer</label>
-                  <button type="button" class="link-btn" onclick="showScreen('customer-form')" data-i18n="addCustomer">+ Add</button>
-                </div>
-                <select>
-                  <option>Vedprakash Pandey ji · Kota · Retail</option>
-                  <option>Kundan Agency · Gudhiyari · Dealer</option>
-                  <option>Yogesh traders, Gudhiyari · Dealer</option>
-                  <option>A R Traders, Shrinagar · Dealer</option>
-                  <option>Komal Ji, Shivanand nagar · Retail</option>
-                  <option>Agrawal Marketing, Ramnagar · Dealer</option>
-                </select>
-              </div>
-              <div class="field">
-                <div class="inline-add">
-                  <label style="margin:0" data-i18n="addLine">Line items</label>
-                  <button type="button" class="link-btn" data-i18n="addProduct">+ Product</button>
-                </div>
-                <div class="line-item">
-                  <div style="display:flex;gap:0.5rem;align-items:center">
+                <label data-i18n="loadProducts">Products loaded</label>
+                <div class="dm-row">
+                  <div class="dm-prod">
                     <img class="mobile-prod-icon" src="assets/products/icon-jar-20l.png" alt="" />
-                    <div>
-                      <strong>20 Ltr Jar</strong>
-                      <div class="line-meta">10 × ₹40</div>
+                    <strong>20 L Jar</strong>
+                  </div>
+                  <div class="dm-qty" style="grid-column: span 2">
+                    <span class="dm-label"><strong data-i18n="qtyLoaded">Qty loaded</strong><small>मात्रा</small></span>
+                    <div class="stepper">
+                      <button type="button" onclick="step('load1',-1)">−</button>
+                      <input id="load1" type="number" value="40" min="0" />
+                      <button type="button" onclick="step('load1',1)">+</button>
                     </div>
                   </div>
-                  <strong>₹400</strong>
                 </div>
-                <div class="line-item">
-                  <div style="display:flex;gap:0.5rem;align-items:center">
+                <div class="dm-row">
+                  <div class="dm-prod">
                     <img class="mobile-prod-icon" src="assets/products/icon-jar-chilled.png" alt="" />
-                    <div>
-                      <strong>Chilled Jar</strong>
-                      <div class="line-meta">4 × ₹50 · rate editable</div>
+                    <strong>Chilled</strong>
+                  </div>
+                  <div class="dm-qty" style="grid-column: span 2">
+                    <span class="dm-label"><strong data-i18n="qtyLoaded">Qty loaded</strong><small>मात्रा</small></span>
+                    <div class="stepper">
+                      <button type="button" onclick="step('load2',-1)">−</button>
+                      <input id="load2" type="number" value="25" min="0" />
+                      <button type="button" onclick="step('load2',1)">+</button>
                     </div>
                   </div>
-                  <strong>₹200</strong>
                 </div>
-                <div style="margin-top:0.55rem;display:flex;gap:0.4rem">
-                  <select style="flex:1">
-                    <option>20 Ltr Jar — ₹40</option>
-                    <option>Chilled Jar — ₹50</option>
-                    <option>Pouch — ₹35</option>
-                    <option>1 Ltr — ₹90</option>
-                    <option>500 ml — ₹120</option>
-                    <option>250 ml — ₹120</option>
-                    <option>Dispenser — ₹0</option>
-                  </select>
-                  <input type="number" value="1" min="1" aria-label="Quantity" style="width:4rem" />
+                <div class="dm-row">
+                  <div class="dm-prod">
+                    <img class="mobile-prod-icon" src="assets/products/icon-bottle-250ml.png" alt="" />
+                    <strong>250 ml box</strong>
+                  </div>
+                  <div class="dm-qty" style="grid-column: span 2">
+                    <span class="dm-label"><strong data-i18n="qtyLoaded">Qty loaded</strong><small>मात्रा</small></span>
+                    <div class="stepper">
+                      <button type="button" onclick="step('load3',-1)">−</button>
+                      <input id="load3" type="number" value="10" min="0" />
+                      <button type="button" onclick="step('load3',1)">+</button>
+                    </div>
+                  </div>
                 </div>
-                <p style="margin:0.65rem 0 0;display:flex;justify-content:space-between;font-weight:700">
-                  <span data-i18n="total">Total</span><span>₹600</span>
-                </p>
               </div>
               <div class="field">
-                <label data-i18n="payment">Payment mode</label>
-                <div class="modes">
-                  <button type="button">Cash</button>
-                  <button type="button" class="active">UPI</button>
+                <label data-i18n="plantWitness">Plant person / note</label>
+                <input type="text" placeholder="Optional · who issued stock" data-i18n-placeholder="plantWitnessPh" />
+              </div>
+              <div class="sticky-cta">
+                <button type="button" class="full-btn" onclick="confirmLoad()" data-i18n="startTrip">Start trip · van loaded</button>
+              </div>
+              <p class="muted" style="text-align:center;font-size:0.72rem;margin:0.45rem 0 0" data-i18n="loadRule">Visits unlock only after load is saved</p>
+            </div>
+
+            <!-- PLANT RETURN -->
+            <div class="screen" id="screen-plant-in">
+              <button type="button" class="back-link" onclick="showScreen('home')">← <span data-i18n="home">Home</span></button>
+              <h2 class="screen-title" data-i18n="plantInTitle">Return to plant</h2>
+              <p class="muted" style="margin:-0.35rem 0 0.65rem" data-i18n="plantInHint">Step 3 · App already calculated what should come back</p>
+              <div class="balance-panel">
+                <div class="balance-head">
+                  <div>
+                    <strong data-i18n="tripSummary">Trip summary</strong>
+                    <div class="muted" style="font-size:0.72rem">Trip #12 · Route A</div>
+                  </div>
+                </div>
+                <div class="balance-body open">
+                  <div class="balance-kpi"><span data-i18n="sumLoaded">Loaded at plant</span><strong>40 jar · 25 ch · 10 box</strong></div>
+                  <div class="balance-kpi"><span data-i18n="sumGiven">Given to customers</span><strong>22 jar · 18 ch · 8 box</strong></div>
+                  <div class="balance-kpi"><span data-i18n="sumEmpty">Empties collected</span><strong>22</strong></div>
+                  <div class="balance-kpi"><span data-i18n="sumCash">Cash / UPI collected</span><strong>₹2,140</strong></div>
+                </div>
+              </div>
+              <div class="field">
+                <label data-i18n="returnUnsold">Return unsold (full) · नहीं बिका माल</label>
+                <div class="dm-row">
+                  <div class="dm-prod"><img class="mobile-prod-icon" src="assets/products/icon-jar-20l.png" alt="" /><strong>20 L</strong></div>
+                  <div class="dm-qty" style="grid-column: span 2">
+                    <span class="dm-label"><strong data-i18n="expected">Expected 18</strong><small data-i18n="adjustHint">adjust if different</small></span>
+                    <div class="stepper">
+                      <button type="button" onclick="step('ret1',-1)">−</button>
+                      <input id="ret1" type="number" value="18" min="0" />
+                      <button type="button" onclick="step('ret1',1)">+</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="dm-row">
+                  <div class="dm-prod"><img class="mobile-prod-icon" src="assets/products/icon-jar-chilled.png" alt="" /><strong>Chilled</strong></div>
+                  <div class="dm-qty" style="grid-column: span 2">
+                    <span class="dm-label"><strong data-i18n="expectedCh">Expected 7</strong><small data-i18n="adjustHint">adjust if different</small></span>
+                    <div class="stepper">
+                      <button type="button" onclick="step('ret2',-1)">−</button>
+                      <input id="ret2" type="number" value="7" min="0" />
+                      <button type="button" onclick="step('ret2',1)">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label data-i18n="returnEmpty">Submit empty jars · खाली जार जमा</label>
+                <div class="stepper" style="margin-top:0.35rem">
+                  <button type="button" onclick="step('retEmpty',-1)">−</button>
+                  <input id="retEmpty" type="number" value="22" min="0" style="width:3.2rem" />
+                  <button type="button" onclick="step('retEmpty',1)">+</button>
+                </div>
+                <p class="muted" style="margin:0.45rem 0 0;font-size:0.72rem" data-i18n="emptyMatch">Matches empties collected on visits</p>
+              </div>
+              <div class="field">
+                <label data-i18n="varianceNote">If numbers differ · reason</label>
+                <input type="text" placeholder="Breakage / leftover at customer / recount" data-i18n-placeholder="variancePh" />
+              </div>
+              <div class="sticky-cta">
+                <button type="button" class="full-btn" onclick="confirmReturn()" data-i18n="closeTrip">Submit to plant · close trip</button>
+              </div>
+            </div>
+
+            <!-- M2 NEW VISIT -->
+            <div class="screen visit-dense" id="screen-new">
+              <div class="visit-top">
+                <button type="button" class="back-link" onclick="showScreen('home')">←</button>
+                <h2 class="screen-title" data-i18n="newVisitTitle">New billing</h2>
+                <span class="van-chip van-chip-mini" id="vanChip"><span data-i18n="vanNow">Van</span> 18·7·E22</span>
+              </div>
+
+              <div class="field field-tight">
+                <div class="inline-add">
+                  <label style="margin:0" data-i18n="routeCustomers">Customer</label>
+                  <button type="button" class="link-btn" onclick="toggleSearch()" data-i18n="searchOther">Search</button>
+                </div>
+                <div class="route-list route-list-scroll" id="routeList">
+                  <button type="button" class="route-chip active" data-cust="gr" onclick="selectCustomer(this, 'gr')"></button>
+                  <button type="button" class="route-chip" data-cust="ved" onclick="selectCustomer(this, 'ved')"></button>
+                  <button type="button" class="route-chip" data-cust="ros" onclick="selectCustomer(this, 'ros')"></button>
+                  <button type="button" class="route-chip" data-cust="vishal" onclick="selectCustomer(this, 'vishal')"></button>
+                  <button type="button" class="route-chip" data-cust="venk" onclick="selectCustomer(this, 'venk')"></button>
+                  <button type="button" class="route-chip" data-cust="kal" onclick="selectCustomer(this, 'kal')"></button>
+                </div>
+                <div id="searchBox" style="display:none;margin-top:0.35rem">
+                  <input type="search" placeholder="Search any customer…" data-i18n-placeholder="searchCustomer" />
+                </div>
+              </div>
+
+              <div class="balance-panel balance-compact" id="balancePanel">
+                <div class="balance-head">
+                  <div>
+                    <div class="balance-person">
+                      <span class="pa-avatar pa-av-md pa-tone-5" id="selCustomerAvatar" aria-hidden="true">GR</span>
+                      <strong id="selCustomer">G R Electrical</strong>
+                    </div>
+                    <div class="balance-inline">
+                      <span><span data-i18n="moneyDue">Due</span> <b class="warn" id="balMoney">₹200</b></span>
+                      <span><span data-i18n="emptyJars">Empty</span> <b class="warn" id="balJars">2</b></span>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-mini" onclick="toggleBalance()" data-i18n="checkBalance">More</button>
+                </div>
+                <div class="balance-body" id="balanceBody">
+                  <p class="muted" style="margin:0;font-size:0.65rem" data-i18n="balanceNote">Last visit: 24 Nov · ₹200 pending — collect before new delivery.</p>
+                </div>
+              </div>
+
+              <div class="field field-tight">
+                <div class="dm-head">
+                  <label style="margin:0" data-i18n="productsDiyaMila">Given / Empty</label>
+                  <span class="dm-bill"><span data-i18n="billable">Bill</span> ₹250</span>
+                </div>
+                <div class="dm-cols">
+                  <span></span>
+                  <span class="dm-col-label" data-i18n-html="diyaLabel"><strong>Given</strong><small>दिया</small></span>
+                  <span class="dm-col-label" data-i18n-html="milaLabel"><strong>Empty</strong><small>मिला</small></span>
+                </div>
+                <div class="dm-row">
+                  <div class="dm-prod">
+                    <img class="mobile-prod-icon" src="assets/products/icon-jar-20l.png" alt="" title="20 L Jar" />
+                  </div>
+                  <div class="dm-qty">
+                    <div class="stepper">
+                      <button type="button" onclick="step('d1',-1)">−</button>
+                      <input id="d1" type="number" value="5" min="0" aria-label="Given" />
+                      <button type="button" onclick="step('d1',1)">+</button>
+                    </div>
+                  </div>
+                  <div class="dm-qty">
+                    <div class="stepper">
+                      <button type="button" onclick="step('m1',-1)">−</button>
+                      <input id="m1" type="number" value="5" min="0" aria-label="Empty back" />
+                      <button type="button" onclick="step('m1',1)">+</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="dm-row">
+                  <div class="dm-prod">
+                    <img class="mobile-prod-icon" src="assets/products/icon-jar-chilled.png" alt="" title="Chilled" />
+                  </div>
+                  <div class="dm-qty">
+                    <div class="stepper">
+                      <button type="button" onclick="step('d2',-1)">−</button>
+                      <input id="d2" type="number" value="1" min="0" aria-label="Given" />
+                      <button type="button" onclick="step('d2',1)">+</button>
+                    </div>
+                  </div>
+                  <div class="dm-qty">
+                    <div class="stepper">
+                      <button type="button" onclick="step('m2',-1)">−</button>
+                      <input id="m2" type="number" value="0" min="0" aria-label="Empty back" />
+                      <button type="button" onclick="step('m2',1)">+</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="dm-row">
+                  <div class="dm-prod">
+                    <img class="mobile-prod-icon" src="assets/products/icon-bottle-2l.png" alt="" title="2 Ltr" />
+                  </div>
+                  <div class="dm-qty">
+                    <div class="stepper">
+                      <button type="button" onclick="step('d3',-1)">−</button>
+                      <input id="d3" type="number" value="0" min="0" aria-label="Given" />
+                      <button type="button" onclick="step('d3',1)">+</button>
+                    </div>
+                  </div>
+                  <div class="dm-qty">
+                    <div class="stepper">
+                      <button type="button" onclick="step('m3',-1)">−</button>
+                      <input id="m3" type="number" value="0" min="0" aria-label="Empty back" />
+                      <button type="button" onclick="step('m3',1)">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field field-tight pay-row">
+                <div class="modes modes-tight">
+                  <button type="button" class="active">Cash</button>
+                  <button type="button">UPI</button>
                   <button type="button">Bank</button>
                   <button type="button">Credit</button>
                 </div>
-                <label style="margin-top:0.6rem" data-i18n="amountPaid">Amount paid</label>
-                <input type="number" value="300" min="0" />
-                <p class="muted" style="margin:0.4rem 0 0;font-size:0.72rem" data-i18n="statusHint">Status → Partial (₹300 balance)</p>
+                <div class="pay-amt">
+                  <label data-i18n="amountPaid">Collected ₹</label>
+                  <input type="number" value="450" min="0" />
+                </div>
               </div>
-              <div class="field">
-                <label data-i18n="remarks">Remarks</label>
-                <input type="text" placeholder="Optional note" data-i18n-placeholder="remarksPh" />
+
+              <div class="visit-save-bar sticky-cta">
+                <button type="button" class="full-btn" style="margin:0" onclick="showScreen('success')" data-i18n="saveVisit">Save visit</button>
               </div>
-              <button type="button" class="full-btn" style="background:var(--deep)" onclick="showScreen('success')" data-i18n="save">Save sale</button>
             </div>
 
             <!-- M3 SUCCESS -->
             <div class="screen" id="screen-success">
               <div class="success">
                 <div class="ok">✓</div>
-                <h2 data-i18n="successTitle">Sale saved</h2>
-                <p style="color:var(--muted);margin:0.35rem 0 0.15rem">PA-1143 · Vedprakash Pandey ji</p>
-                <p style="margin:0 0 1rem"><strong>₹600</strong> · <span class="badge badge-partial">Partial</span></p>
-                <button type="button" class="full-btn" style="background:var(--deep)" data-i18n="share">Share on WhatsApp</button>
-                <button type="button" class="ghost-full" onclick="showScreen('home')" data-i18n="backHome">Back to Home</button>
+                <h2 data-i18n="successTitle">Visit saved</h2>
+                <p style="color:var(--muted);margin:0.35rem 0 0.15rem">PA-1144 · G R Electrical</p>
+                <p style="margin:0 0 0.35rem"><strong>Given 5 · Empty back 5</strong> · ₹450</p>
+                <p style="margin:0 0 1rem"><span class="badge badge-sync" data-i18n="queuedSync">Queued · will sync</span></p>
+                <div class="sticky-cta">
+                  <button type="button" class="full-btn" onclick="showScreen('new')" data-i18n="nextVisit">Next visit</button>
+                  <button type="button" class="ghost-full" onclick="showScreen('home')" data-i18n="backHome">Back to Home</button>
+                </div>
               </div>
             </div>
 
-            <!-- M4 MY SALES -->
-            <div class="screen" id="screen-sales">
-              <h2 class="screen-title" data-i18n="mySales">My Sales</h2>
+            <!-- M5 MY VISITS -->
+            <div class="screen" id="screen-visits">
+              <h2 class="screen-title" data-i18n="myVisits">My Visits</h2>
               <div class="filter-chips" id="rangeChips">
                 <button type="button" class="active" data-i18n="filterToday">Today</button>
                 <button type="button" data-i18n="filterWeek">Week</button>
                 <button type="button" data-i18n="filterAll">All</button>
               </div>
-              <div class="filter-chips" id="statusChips">
-                <button type="button" class="active" data-i18n="filterAllStatus">All</button>
-                <button type="button">Paid</button>
-                <button type="button">Partial</button>
-                <button type="button">Pending</button>
-              </div>
-              <div class="list-card" style="margin-top:0">
-                <div class="sale-row tap-row" onclick="openDetail('paid')">
-                  <div><strong>A R Traders, Shrinagar</strong><br /><small>PA-1142 · Shrinagar</small></div>
-                  <div style="text-align:right"><strong>₹400</strong><br /><span class="badge badge-paid">Paid · Cash</span></div>
+              <div class="list-card" style="margin-top:0" id="mobileVisitsList">
+                <div class="sale-row tap-row has-avatar" data-cust-name="G R Electrical" onclick="openDetail('paid')">
+                  <div><strong>G R Electrical</strong><br /><small>PA-1142 · 5/5 jars</small></div>
+                  <div style="text-align:right"><strong>₹400</strong><br /><span class="badge badge-paid">Paid</span></div>
                 </div>
-                <div class="sale-row tap-row" onclick="openDetail('partial')">
-                  <div><strong>Vedprakash Pandey ji</strong><br /><small>PA-1141 · Kota</small></div>
-                  <div style="text-align:right"><strong>₹1,200</strong><br /><span class="badge badge-partial">Partial · Credit</span></div>
+                <div class="sale-row tap-row has-avatar" data-cust-name="Vedprakash Pandey ji" onclick="openDetail('partial')">
+                  <div><strong>Vedprakash Pandey ji</strong><br /><small>PA-1141 · dues left</small></div>
+                  <div style="text-align:right"><strong>₹1,200</strong><br /><span class="badge badge-partial">Partial</span></div>
                 </div>
-                <div class="sale-row tap-row" onclick="openDetail('pending')">
-                  <div><strong>Yogesh traders, Gudhiyari</strong><br /><small>PA-1139 · Gudhiyari</small></div>
-                  <div style="text-align:right"><strong>₹940</strong><br /><span class="badge badge-pending">Pending · Credit</span></div>
+                <div class="sale-row tap-row has-avatar" data-cust-name="Rosmerta Digital" onclick="openDetail('offline')">
+                  <div><strong>Rosmerta Digital</strong><br /><small>PA-1143 · offline</small></div>
+                  <div style="text-align:right"><strong>₹200</strong><br /><span class="badge badge-sync">Sync</span></div>
                 </div>
               </div>
             </div>
 
-            <!-- M5 SALE DETAIL -->
+            <!-- M5 DETAIL -->
             <div class="screen" id="screen-detail">
-              <button type="button" class="back-link" onclick="showScreen('sales')">← <span data-i18n="mySales">My Sales</span></button>
+              <button type="button" class="back-link" onclick="showScreen('visits')">← <span data-i18n="myVisits">My Visits</span></button>
               <h2 class="screen-title" id="detailInvoice">PA-1141</h2>
               <div class="detail-block">
-                <div class="detail-kv"><span data-i18n="customer">Customer</span><strong id="detailCustomer">Vedprakash Pandey ji</strong></div>
-                <div class="detail-kv"><span data-i18n="city">City</span><span id="detailCity">Kota, Raipur</span></div>
-                <div class="detail-kv"><span data-i18n="mode">Mode</span><span id="detailMode">Credit</span></div>
+                <div class="detail-kv"><span data-i18n="customer">Customer</span><span class="name-with-av" id="detailCustomerWrap"><span class="pa-avatar pa-av-sm pa-tone-3" id="detailCustomerAvatar" aria-hidden="true">VP</span><strong id="detailCustomer">Vedprakash Pandey ji</strong></span></div>
                 <div class="detail-kv"><span data-i18n="status">Status</span><span id="detailStatus" class="badge badge-partial">Partial</span></div>
+                <div class="detail-kv"><span data-i18n="emptyJars">Empty jars</span><strong id="detailEmpties">12</strong></div>
+                <div class="detail-kv"><span data-i18n="balance">Money due</span><strong id="detailBalance" style="color:var(--partial)">₹700</strong></div>
               </div>
               <div class="detail-block">
-                <h3 data-i18n="addLine">Line items</h3>
-                <div id="detailLines">
-                  <div class="line-item">
-                    <div><strong>20 Ltr Jar</strong><div class="line-meta">20 × ₹40</div></div>
-                    <strong>₹800</strong>
-                  </div>
-                  <div class="line-item">
-                    <div><strong>Chilled Jar</strong><div class="line-meta">8 × ₹50</div></div>
-                    <strong>₹400</strong>
-                  </div>
-                </div>
+                <h3 data-i18n="productsDiyaMila">Given / Empty back</h3>
+                <div id="detailLines"></div>
                 <div class="detail-kv" style="margin-top:0.5rem;font-weight:700"><span data-i18n="total">Total</span><span id="detailTotal">₹1,200</span></div>
-                <div class="detail-kv"><span data-i18n="amountPaid">Paid</span><span id="detailPaid">₹500</span></div>
-                <div class="detail-kv"><span data-i18n="balance">Balance</span><strong id="detailBalance" style="color:var(--partial)">₹700</strong></div>
+                <div class="detail-kv"><span data-i18n="amountPaid">Collected</span><span id="detailPaid">₹500</span></div>
               </div>
               <div class="field" id="paymentPanel">
                 <label data-i18n="recordPayment">Record payment</label>
@@ -263,306 +462,699 @@
                   <button type="button">Bank</button>
                 </div>
                 <input type="number" value="700" min="1" aria-label="Payment amount" />
-                <button type="button" class="full-btn" style="background:var(--deep)" onclick="markPaid()" data-i18n="savePayment">Save payment</button>
+                <div class="sticky-cta">
+                  <button type="button" class="full-btn" onclick="markPaid()" data-i18n="savePayment">Save payment</button>
+                </div>
               </div>
               <p class="muted" id="paidNote" style="display:none;text-align:center" data-i18n="fullyPaid">Fully paid — no balance left.</p>
             </div>
 
-            <!-- M6 CUSTOMERS -->
+            <!-- M6 ORDERS · admin notifications -->
+            <div class="screen" id="screen-orders">
+              <div class="orders-head">
+                <div>
+                  <h2 class="screen-title" style="margin:0" data-i18n="orders">Orders</h2>
+                  <p class="muted orders-sub" data-i18n="ordersHint">New from admin · start visit</p>
+                </div>
+                <span class="badge badge-pending" id="ordersNewCount">2 new</span>
+              </div>
+              <div class="order-notif-list" id="orderNotifList"></div>
+            </div>
+
+            <!-- M7 CUSTOMERS -->
             <div class="screen" id="screen-customers">
               <div class="inline-add" style="margin-bottom:0.65rem">
                 <h2 class="screen-title" style="margin:0" data-i18n="customers">Customers</h2>
-                <button type="button" class="link-btn" onclick="showScreen('customer-form')" data-i18n="addCustomer">+ Add</button>
+                <button type="button" class="link-btn" onclick="openMobileCustomerForm()" data-i18n="addCustomer">+ Add</button>
               </div>
-              <div class="field"><input type="search" placeholder="Search name, phone, city" data-i18n-placeholder="searchCustomer" /></div>
-              <div class="list-card" style="margin-top:0">
-                <div class="sale-row tap-row" onclick="showScreen('customer-form')">
-                  <div><strong>Vedprakash Pandey ji</strong><br /><small>Kota, Raipur · Retail · 9827166259</small></div>
+              <div class="field"><input type="search" placeholder="Search name, phone…" data-i18n-placeholder="searchCustomer" /></div>
+              <div class="list-card" style="margin-top:0" id="mobileCustomerList">
+                <div class="sale-row has-avatar" data-cust-name="G R Electrical">
+                  <div><strong>G R Electrical</strong><br /><small>Route A · 2 empty · ₹200 due</small></div>
+                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹200</div>
+                </div>
+                <div class="sale-row has-avatar" data-cust-name="Vedprakash Pandey ji">
+                  <div><strong>Vedprakash Pandey ji</strong><br /><small>Route A · 12 empty</small></div>
                   <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹1,11,675</div>
                 </div>
-                <div class="sale-row">
-                  <div><strong>Saurabh Flanges Pvt. Ltd.</strong><br /><small>Urla Industrial · Institution</small></div>
-                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹75,530</div>
-                </div>
-                <div class="sale-row">
-                  <div><strong>Agrawal Marketing, Ramnagar</strong><br /><small>Ramnagar · Dealer</small></div>
-                  <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹21,675</div>
-                </div>
-                <div class="sale-row">
-                  <div><strong>Kundan Agency</strong><br /><small>Gudhiyari · Dealer</small></div>
+                <div class="sale-row has-avatar" data-cust-name="Kundan Agency">
+                  <div><strong>Kundan Agency</strong><br /><small>Route B · Dealer</small></div>
                   <div style="text-align:right;color:var(--partial);font-size:0.8rem">₹16,958</div>
                 </div>
-                <div class="sale-row">
-                  <div><strong>Komal Ji, Shivanand nagar</strong><br /><small>Shivanandnagar · Retail · 9713738999</small></div>
-                  <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
-                </div>
-                <div class="sale-row">
-                  <div><strong>Sanjay kumar ji, RPF</strong><br /><small>RPF Colony · Institution · 7225009844</small></div>
-                  <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
-                </div>
-                <div class="sale-row">
-                  <div><strong>Sahil tiwari, saraswati nagar</strong><br /><small>Kota · Retail · 8770783809</small></div>
-                  <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
-                </div>
-                <div class="sale-row">
-                  <div><strong>Shanti Kiraya Bhandar</strong><br /><small>Gudhiyari · Dealer</small></div>
+                <div class="sale-row has-avatar" data-cust-name="Komal Ji, Shivanand nagar">
+                  <div><strong>Komal Ji, Shivanand nagar</strong><br /><small>Ad-hoc · Clear</small></div>
                   <div style="text-align:right;font-size:0.8rem;color:var(--muted)" data-i18n="clear">Clear</div>
                 </div>
               </div>
             </div>
 
-            <!-- M7 ADD / EDIT CUSTOMER -->
+            <!-- M7 FORM -->
             <div class="screen" id="screen-customer-form">
               <button type="button" class="back-link" onclick="showScreen('customers')">← <span data-i18n="customers">Customers</span></button>
               <h2 class="screen-title" data-i18n="customerFormTitle">Add customer</h2>
-              <div class="field">
-                <label data-i18n="name">Name</label>
-                <input type="text" placeholder="Dealer / shop name" />
+              <p class="form-banner-error" id="mobileCustFormBanner" role="alert"></p>
+              <div class="field form-field" id="mobileCustNameField">
+                <label for="mobileCustName"><span data-i18n="name">Name</span> <span class="req" aria-hidden="true">*</span></label>
+                <input id="mobileCustName" type="text" placeholder="Shop / stop name" aria-required="true" aria-describedby="mobileCustNameErr" oninput="refreshMobileCustomerPhotoPreview(); clearMobileFieldError('mobileCustName')" onblur="validateMobileCustomerField('mobileCustName')" />
+                <p class="field-error" id="mobileCustNameErr">Enter customer name</p>
+              </div>
+              <div class="field form-field" id="mobileCustPhoneField">
+                <label for="mobileCustPhone" data-i18n="phone">Phone</label>
+                <input id="mobileCustPhone" type="tel" placeholder="10-digit mobile" inputmode="tel" aria-describedby="mobileCustPhoneErr" oninput="clearMobileFieldError('mobileCustPhone')" onblur="validateMobileCustomerField('mobileCustPhone')" />
+                <p class="field-error" id="mobileCustPhoneErr">Enter a valid 10-digit phone</p>
               </div>
               <div class="field">
-                <label data-i18n="phone">Phone</label>
-                <input type="tel" placeholder="10-digit mobile" />
-              </div>
-              <div class="field">
-                <label data-i18n="city">City</label>
-                <input type="text" placeholder="Raipur" />
+                <label for="mobileCustCity" data-i18n="city">Area</label>
+                <input id="mobileCustCity" type="text" placeholder="Shankar Nagar" />
               </div>
               <div class="field">
                 <label data-i18n="type">Type</label>
-                <select>
-                  <option>Dealer</option>
-                  <option>Retail</option>
-                  <option>Institution</option>
-                </select>
+                <select id="mobileCustType"><option>Dealer</option><option>Retail</option><option>Institution</option></select>
               </div>
-              <button type="button" class="full-btn" style="background:var(--deep)" onclick="showScreen('customers')" data-i18n="saveCustomer">Save customer</button>
+              <div class="profile-photo-field">
+                <label data-i18n="profilePhoto">Profile picture</label>
+                <div class="profile-photo-row">
+                  <div class="profile-photo-preview" id="mobileCustPhotoPreview" aria-hidden="true">?</div>
+                  <div class="profile-photo-actions">
+                    <p class="muted" data-i18n="profilePhotoHint">Optional · shown on visits &amp; lists</p>
+                    <input id="mobileCustPhotoFile" type="file" accept="image/*" hidden onchange="onMobileCustomerPhoto(event)" />
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('mobileCustPhotoFile').click()" data-i18n="choosePhoto">Choose photo</button>
+                    <button type="button" class="btn btn-ghost btn-sm" id="mobileCustPhotoClear" hidden onclick="clearMobileCustomerPhoto()" data-i18n="removePhoto">Remove</button>
+                  </div>
+                </div>
+              </div>
+              <div class="sticky-cta form-actions" style="border-top:0;padding-top:0;margin-top:0.35rem">
+                <button type="button" class="full-btn" onclick="saveMobileCustomer()" data-i18n="saveCustomer">Save customer</button>
+              </div>
             </div>
 
             <!-- M8 PRODUCTS -->
             <div class="screen" id="screen-products">
               <h2 class="screen-title" data-i18n="products">Products</h2>
               <p class="muted" style="margin:-0.35rem 0 0.65rem" data-i18n="productsHint">Rate reference · read-only</p>
-              <div class="field"><input type="search" placeholder="Search product" data-i18n-placeholder="searchProduct" /></div>
               <div class="list-card" style="margin-top:0">
-                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-jar-20l.png" alt="" /><div><strong>20 Ltr Jar</strong><br /><small>N / Jar · Stock 1,240</small></div></div><strong>₹40</strong></div>
-                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-jar-chilled.png" alt="" /><div><strong>Chilled Jar</strong><br /><small>CH / Chilled · Stock 860</small></div></div><strong>₹50</strong></div>
-                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-pouch.png" alt="" /><div><strong>Pouch</strong><br /><small>P / Bori · Stock 420</small></div></div><strong>₹35</strong></div>
-                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-bottle-1l.png" alt="" /><div><strong>1 Ltr</strong><br /><small>01l / 1LTR · Stock 180</small></div></div><strong>₹90</strong></div>
-                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-bottle-500ml.png" alt="" /><div><strong>500 ml</strong><br /><small>0.5L / 500ML · Stock 210</small></div></div><strong>₹120</strong></div>
-                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-bottle-250ml.png" alt="" /><div><strong>250 ml</strong><br /><small>0.25L / 250Ml · Stock 260</small></div></div><strong>₹120</strong></div>
-                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-dispenser.png" alt="" /><div><strong>Dispenser</strong><br /><small>Accessory · Stock 45</small></div></div><strong>₹0</strong></div>
+                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-jar-20l.png" alt="" /><div><strong>20 Ltr Jar</strong><br /><small>Stock 1,240</small></div></div><strong>₹40</strong></div>
+                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-jar-chilled.png" alt="" /><div><strong>Chilled Jar</strong><br /><small>Stock 860</small></div></div><strong>₹50</strong></div>
+                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-pouch.png" alt="" /><div><strong>Pouch</strong><br /><small>Stock 420</small></div></div><strong>₹35</strong></div>
+                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-bottle-2l.png" alt="" /><div><strong>2 Ltr</strong><br /><small>Stock 95</small></div></div><strong>₹50</strong></div>
+                <div class="sale-row has-icon"><div><img class="mobile-prod-icon" src="assets/products/icon-bottle-250ml.png" alt="" /><div><strong>250 ml</strong><br /><small>Stock 260</small></div></div><strong>₹120</strong></div>
+              </div>
+            </div>
+
+            <!-- M10 SYNC / MORE -->
+            <div class="screen" id="screen-more">
+              <h2 class="screen-title" data-i18n="more">More</h2>
+              <div class="list-card" style="margin-top:0">
+                <div class="sale-row tap-row" onclick="showScreen('plant-out')"><div><strong data-i18n="plantOutTitle">Load from plant</strong><br /><small data-i18n="stepLoad">Load</small></div><span>→</span></div>
+                <div class="sale-row tap-row" onclick="showScreen('plant-in')"><div><strong data-i18n="plantInTitle">Return to plant</strong><br /><small data-i18n="stepReturn">Return</small></div><span>→</span></div>
+                <div class="sale-row tap-row" onclick="showScreen('customers')"><div><strong data-i18n="customers">Customers</strong><br /><small data-i18n="customersHint">Dues + empty jars</small></div><span>→</span></div>
+                <div class="sale-row tap-row" onclick="showScreen('products')"><div><strong data-i18n="products">Products</strong><br /><small data-i18n="productsHint">Rate reference · read-only</small></div><span>→</span></div>
+                <div class="sale-row">
+                  <div><strong data-i18n="syncStatus">Sync status</strong><br /><small data-i18n="syncDetail">1 visit waiting · last sync 4:18 pm</small></div>
+                  <button type="button" class="btn-mini" data-i18n="retrySync">Retry</button>
+                </div>
               </div>
             </div>
           </div>
 
-          <nav class="phone-nav" id="phoneNav">
-            <button type="button" class="active" onclick="navTo('home', this)" data-i18n="home">Home</button>
-            <button type="button" onclick="navTo('sales', this)" data-i18n="mySales">My Sales</button>
-            <button type="button" onclick="navTo('customers', this)" data-i18n="customers">Customers</button>
-            <button type="button" onclick="navTo('products', this)" data-i18n="products">Products</button>
+          <div class="glass-toast" id="glassToast" hidden>
+            <div>
+              <strong id="glassToastTitle">Saved</strong>
+              <small id="glassToastSub">Synced to shop PC</small>
+            </div>
+          </div>
+
+          <div class="bottom-sheet" id="bottomSheet" hidden>
+            <div class="bottom-sheet-backdrop" onclick="closeBottomSheet()"></div>
+            <div class="bottom-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="bottomSheetTitle">
+              <div class="bottom-sheet-handle" aria-hidden="true"></div>
+              <h3 id="bottomSheetTitle">Notice</h3>
+              <p id="bottomSheetMsg"></p>
+              <div class="bottom-sheet-actions">
+                <button type="button" class="full-btn" id="bottomSheetConfirm" onclick="closeBottomSheet()">OK</button>
+                <button type="button" class="ghost-full" id="bottomSheetCancel" hidden onclick="closeBottomSheet()">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <nav class="phone-nav phone-nav-glass phone-nav-5" id="phoneNav" aria-label="Main">
+            <button type="button" class="active" data-nav="home" onclick="navTo('home', this)">
+              <span class="nav-ico-wrap">
+                <svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.5 10.8 12 4.5l7.5 6.3V20a1 1 0 0 1-1 1h-4.2v-5.2h-4.6V21H5.5a1 1 0 0 1-1-1v-9.2Z"/></svg>
+                <span class="nav-dot" id="navDotHome" hidden></span>
+              </span>
+              <span class="nav-label" data-i18n="home">Home</span>
+            </button>
+            <button type="button" data-nav="new" onclick="navTo('new', this)">
+              <span class="nav-ico-wrap">
+                <svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-width="2.4" stroke="currentColor" fill="none" stroke-linecap="round"/></svg>
+                <span class="nav-dot" id="navDotVisit" hidden></span>
+              </span>
+              <span class="nav-label" data-i18n="visitNav">Visit</span>
+            </button>
+            <button type="button" data-nav="visits" onclick="navTo('visits', this)">
+              <span class="nav-ico-wrap">
+                <svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7h11M8 12h11M8 17h11M5 7h.01M5 12h.01M5 17h.01" stroke-width="2.2" stroke="currentColor" fill="none" stroke-linecap="round"/></svg>
+                <span class="nav-dot" id="navDotVisits" hidden></span>
+              </span>
+              <span class="nav-label" data-i18n="myVisits">Visits</span>
+            </button>
+            <button type="button" data-nav="orders" onclick="navTo('orders', this)">
+              <span class="nav-ico-wrap">
+                <svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l-.8 10.2a1.2 1.2 0 0 1-1.2 1.1H8.5a1.2 1.2 0 0 1-1.2-1.1L6.5 8.5Z" fill="currentColor" opacity=".2"/><path d="M8 8.5V7a4 4 0 0 1 8 0v1.5M6.5 8.5h11l-.8 10.2a1.2 1.2 0 0 1-1.2 1.1H8.5a1.2 1.2 0 0 1-1.2-1.1L6.5 8.5Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+                <span class="nav-dot" id="navDotOrders" hidden></span>
+              </span>
+              <span class="nav-label" data-i18n="orders">Orders</span>
+            </button>
+            <button type="button" data-nav="more" onclick="navTo('more', this)">
+              <span class="nav-ico-wrap">
+                <svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="17.5" cy="12" r="1.7" fill="currentColor"/></svg>
+                <span class="nav-dot" id="navDotMore" hidden></span>
+              </span>
+              <span class="nav-label" data-i18n="more">More</span>
+            </button>
           </nav>
         </div>
       </div>
-
-      <div class="help card">
-        <h2 style="margin-top:0">How to try it</h2>
-        <ol>
-          <li>Optional: open Login via reset below, then Login → Home.</li>
-          <li>Toggle हिंदी / EN in the phone header (UC-11).</li>
-          <li>Tap <strong>New Sale</strong> → multi-line invoice → <strong>Save sale</strong> → WhatsApp share.</li>
-          <li>From My Sales, open a Partial sale → <strong>Record payment</strong>.</li>
-          <li>Customers → <strong>+ Add</strong> for quick-add form (UC-03).</li>
-        </ol>
-        <p class="row-actions">
-          <button type="button" class="btn btn-ghost" onclick="showLogin()">Show login (M0)</button>
-        </p>
-        <p class="note" style="margin-bottom:0">
-          Persona: <strong>Rahul</strong> (Sales Executive). Screens map to PRD M0–M9 /
-          UC-01–05, UC-11. See <a href="prd.html">PRD</a>.
-        </p>
       </div>
+
+      <aside class="mock-side">
+        <p class="eyebrow">Mockup · PRD v0.3 · Day trip</p>
+        <h1>Mobile field app</h1>
+        <p class="lede">
+          One seamless day trip: <strong>Load at plant</strong> → deliver / collect empties &amp; money →
+          <strong>Return to plant</strong> (unsold + empties). Visits run only while a trip is open.
+        </p>
+
+        <div class="help card">
+          <h2 style="margin-top:0">How to try it</h2>
+          <ol>
+            <li>Tap <strong>Reset trip</strong> below → Home shows <em>Load at plant</em>.</li>
+            <li><strong>Load from plant</strong> → set qtys → Start trip.</li>
+            <li><strong>New Visit</strong> → Given / Empty back → money → Save (van stock updates).</li>
+            <li>Home → <strong>Return</strong> → confirm unsold + empties → close trip.</li>
+          </ol>
+          <p class="row-actions">
+            <button type="button" class="btn btn-ghost" onclick="showLogin()">Show login</button>
+            <button type="button" class="btn btn-ghost" onclick="resetTrip()">Reset trip (demo)</button>
+          </p>
+          <p class="note" style="margin-bottom:0">
+            Persona: <strong>Tikesh</strong>. Day trip = Load → Deliver → Return.
+            See <a href="prd.html">PRD</a>.
+          </p>
+        </div>
+      </aside>
     </div>
   </main>
 
   <script>
     const copy = {
       en: {
-        greeting: "Namaste, Rahul",
+        greeting: "Namaste, Tikesh",
         langBtn: "हिंदी",
-        sales: "Sales",
+        visits: "Visits",
         collected: "Collected",
         pending: "Pending",
-        today: "Today",
-        newSale: "+ New Sale",
-        newSaleTitle: "New Sale",
-        mySales: "My Sales",
-        recentSales: "Recent sales",
+        empties: "Empty jars",
+        newVisit: "+ New billing",
+        newVisitTitle: "New billing",
+        openOrders: "Open orders",
+        recentVisits: "Recent visits",
         home: "Home",
-        customer: "Customer",
-        addCustomer: "+ Add",
-        addLine: "Line items",
-        addProduct: "+ Product",
+        visitNav: "Visit",
+        myVisits: "Visits",
+        orders: "Orders",
+        ordersHint: "New from admin · start visit",
+        ordersNewCount: "{n} new",
+        newOrderToast: "New order",
+        viewOrder: "View",
+        orderFromAdmin: "Admin assigned",
+        orderEta: "ETA {n} hrs",
+        orderStartVisit: "Start visit",
+        orderDismiss: "Dismiss",
+        orderUrgent: "Urgent",
+        orderNormal: "Normal",
+        orderDelayed: "Delayed",
+        noOrders: "No open orders",
+        more: "More",
+        todayTrip: "Today’s trip",
+        stepLoad: "Load",
+        stepDeliver: "Deliver",
+        stepReturn: "Return",
+        vanFull: "Van full left",
+        vanEmpty: "Empties in van",
+        vanCash: "Cash in hand",
+        plantOutTitle: "Load from plant",
+        plantOutHint: "Step 1 · What did you take on the vehicle? (प्लांट से कितना लिया)",
+        loadProducts: "Products loaded",
+        qtyLoaded: "Qty loaded",
+        plantWitness: "Plant person / note",
+        startTrip: "Start trip · van loaded",
+        loadRule: "Visits unlock only after load is saved",
+        plantInTitle: "Return to plant",
+        plantInHint: "Step 3 · App already calculated what should come back",
+        tripSummary: "Trip summary",
+        sumLoaded: "Loaded at plant",
+        sumGiven: "Given to customers",
+        sumEmpty: "Empties collected",
+        sumCash: "Cash / UPI collected",
+        returnUnsold: "Return unsold (full) · नहीं बिका माल",
+        expected: "Expected 18",
+        expectedCh: "Expected 7",
+        adjustHint: "adjust if different",
+        returnEmpty: "Submit empty jars · खाली जार जमा",
+        emptyMatch: "Matches empties collected on visits",
+        varianceNote: "If numbers differ · reason",
+        closeTrip: "Submit to plant · close trip",
+        vanNow: "Van",
+        tripOnRoute: "On route · Trip #12",
+        tripNeedLoad: "Not started · load at plant first",
+        tripClosed: "Trip closed · see you tomorrow",
+        tripReturnBtn: "Return",
+        tripLoadBtn: "Load",
+        tripNewBtn: "New trip",
+        needLoadAlert: "First load products from plant, then start visits.",
+        routeCustomers: "Customer",
+        searchOther: "Search",
+        routeHint: "Route A · 25 stops · no search needed",
+        checkBalance: "More",
+        checkBalanceTitle: "Check Balance / Dues",
+        moneyDue: "Due",
+        emptyJars: "Empty",
+        balanceNote: "Last visit: 24 Nov · ₹200 pending — collect before new delivery.",
+        productsDiyaMila: "Given / Empty",
+        dmLegend: "Given = jars you left · Empty back = empty jars you collected",
+        diyaLabel: "<strong>Given</strong><small>दिया</small>",
+        milaLabel: "<strong>Empty</strong><small>मिला</small>",
+        billable: "Bill",
         payment: "Payment mode",
-        amountPaid: "Amount paid",
-        statusHint: "Status → Partial (₹300 balance)",
+        amountPaid: "Collected ₹",
+        statusHint: "Includes prior ₹200 due · Status → Paid",
         remarks: "Remarks",
-        total: "Total",
-        save: "Save sale",
-        successTitle: "Sale saved",
-        share: "Share on WhatsApp",
+        saveVisit: "Save visit",
+        offlineHint: "No signal? Saves on phone · syncs later",
+        successTitle: "Visit saved",
+        queuedSync: "Queued · will sync",
+        nextVisit: "Next visit",
         backHome: "Back to Home",
-        customers: "Customers",
-        products: "Products",
-        productsHint: "Rate reference · read-only",
-        loginTitle: "Sign in",
-        loginSub: "Sales executive · mobile",
-        phoneEmail: "Phone or email",
-        password: "Password",
-        loginCta: "Login",
-        langHint: "Language: use हिंदी / EN after login",
-        filterToday: "Today",
-        filterWeek: "Week",
-        filterAll: "All",
-        filterAllStatus: "All",
-        city: "City",
-        mode: "Mode",
+        customer: "Customer",
         status: "Status",
-        balance: "Balance",
+        balance: "Money due",
+        total: "Total",
         recordPayment: "Record payment",
         savePayment: "Save payment",
         fullyPaid: "Fully paid — no balance left.",
+        customers: "Customers",
+        customersHint: "Dues + empty jars",
+        addCustomer: "+ Add",
+        products: "Products",
+        productsHint: "Rate reference · read-only",
+        syncStatus: "Sync status",
+        syncDetail: "1 visit waiting · last sync 4:18 pm",
+        retrySync: "Retry",
+        loginTitle: "Sign in",
+        loginSub: "Helper · mobile",
+        phoneEmail: "Phone or email",
+        password: "Password",
+        loginCta: "Login",
+        filterToday: "Today",
+        filterWeek: "Week",
+        filterAll: "All",
         clear: "Clear",
         customerFormTitle: "Add customer",
         name: "Name",
         phone: "Phone",
+        city: "Area",
         type: "Type",
         saveCustomer: "Save customer",
+        profilePhoto: "Profile picture",
+        profilePhotoHint: "Optional · shown on visits & lists",
+        choosePhoto: "Choose photo",
+        removePhoto: "Remove",
+        orderMeta1: "Admin · 10 jars · ASAP",
+        orderMeta2: "Admin · 5 chilled",
       },
       hi: {
-        greeting: "नमस्ते, राहुल",
+        greeting: "नमस्ते, तिकेश",
         langBtn: "EN",
-        sales: "बिक्री",
+        visits: "विज़िट",
         collected: "वसूली",
         pending: "बाकी",
-        today: "आज",
-        newSale: "+ नई बिक्री",
-        newSaleTitle: "नई बिक्री",
-        mySales: "मेरी बिक्री",
-        recentSales: "हाल की बिक्री",
+        empties: "खाली जार",
+        newVisit: "+ नया बिलिंग",
+        newVisitTitle: "नया बिलिंग",
+        openOrders: "ओपन ऑर्डर",
+        recentVisits: "हाल की विज़िट",
         home: "होम",
-        customer: "ग्राहक",
-        addCustomer: "+ जोड़ें",
-        addLine: "प्रोडक्ट लाइन",
-        addProduct: "+ प्रोडक्ट",
-        payment: "पेमेंट मोड",
-        amountPaid: "जमा राशि",
-        statusHint: "स्थिति → आंशिक (₹300 बाकी)",
+        visitNav: "विज़िट",
+        myVisits: "विज़िट्स",
+        orders: "ऑर्डर",
+        ordersHint: "एडमिन से नया · विज़िट शुरू करें",
+        ordersNewCount: "{n} नए",
+        newOrderToast: "नया ऑर्डर",
+        viewOrder: "देखें",
+        orderFromAdmin: "एडमिन ने भेजा",
+        orderEta: "ETA {n} घंटे",
+        orderStartVisit: "विज़िट शुरू",
+        orderDismiss: "हटाएँ",
+        orderUrgent: "जरूरी",
+        orderNormal: "सामान्य",
+        orderDelayed: "लेट",
+        noOrders: "कोई ओपन ऑर्डर नहीं",
+        more: "और",
+        todayTrip: "आज की ट्रिप",
+        stepLoad: "लोड",
+        stepDeliver: "डिलीवर",
+        stepReturn: "वापसी",
+        vanFull: "वैन में बचा माल",
+        vanEmpty: "वैन में खाली",
+        vanCash: "हाथ में कैश",
+        plantOutTitle: "प्लांट से लोड",
+        plantOutHint: "स्टेप 1 · गाड़ी में कितना माल लिया?",
+        loadProducts: "लोड किया माल",
+        qtyLoaded: "मात्रा",
+        plantWitness: "प्लांट वाला / नोट",
+        startTrip: "ट्रिप शुरू · वैन लोड",
+        loadRule: "लोड सेव के बाद ही विज़िट खुलेगी",
+        plantInTitle: "प्लांट वापसी",
+        plantInHint: "स्टेप 3 · ऐप ने हिसाब लगा रखा है",
+        tripSummary: "ट्रिप सारांश",
+        sumLoaded: "प्लांट से लिया",
+        sumGiven: "ग्राहक को दिया",
+        sumEmpty: "खाली जमा",
+        sumCash: "कैश / UPI",
+        returnUnsold: "नहीं बिका माल वापस",
+        expected: "अपेक्षित 18",
+        expectedCh: "अपेक्षित 7",
+        adjustHint: "अलग हो तो बदलें",
+        returnEmpty: "खाली जार जमा",
+        emptyMatch: "विज़िट में मिले खाली से मैच",
+        varianceNote: "अगर संख्या अलग · वजह",
+        closeTrip: "प्लांट में जमा · ट्रिप बंद",
+        vanNow: "वैन",
+        tripOnRoute: "रूट पर · ट्रिप #12",
+        tripNeedLoad: "शुरू नहीं · पहले प्लांट लोड",
+        tripClosed: "ट्रिप बंद · कल मिलते हैं",
+        tripReturnBtn: "वापसी",
+        tripLoadBtn: "लोड",
+        tripNewBtn: "नई ट्रिप",
+        needLoadAlert: "पहले प्लांट से माल लोड करें, फिर विज़िट करें।",
+        routeCustomers: "ग्राहक",
+        searchOther: "खोजें",
+        routeHint: "रूट A · 25 स्टॉप · सर्च की ज़रूरत नहीं",
+        checkBalance: "और",
+        checkBalanceTitle: "बैलेंस / बकाया देखें",
+        moneyDue: "बाकी",
+        emptyJars: "खाली",
+        balanceNote: "पिछली विज़िट: 24 Nov · ₹200 बाकी — पहले वसूलें।",
+        productsDiyaMila: "दिया / मिला",
+        dmLegend: "दिया = जो जार दिए · मिला = जो खाली जार वापस लिए",
+        diyaLabel: "<strong>दिया</strong><small>Given</small>",
+        milaLabel: "<strong>मिला</strong><small>Empty</small>",
+        billable: "बिल",
+        payment: "पेमेंट",
+        amountPaid: "जमा ₹",
+        statusHint: "पुराना ₹200 शामिल · स्थिति → Paid",
         remarks: "नोट",
-        total: "कुल",
-        save: "सेव करें",
-        successTitle: "बिक्री सेव हो गई",
-        share: "WhatsApp पर भेजें",
+        saveVisit: "विज़िट सेव",
+        offlineHint: "नेट नहीं? फोन पर सेव · बाद में सिंक",
+        successTitle: "विज़िट सेव हो गई",
+        queuedSync: "कतार में · सिंक होगा",
+        nextVisit: "अगली विज़िट",
         backHome: "होम पर जाएँ",
+        customer: "ग्राहक",
+        status: "स्थिति",
+        balance: "पैसे बाकी",
+        total: "कुल",
+        recordPayment: "पेमेंट दर्ज करें",
+        savePayment: "पेमेंट सेव",
+        fullyPaid: "पूरा भुगतान हो गया।",
         customers: "ग्राहक",
+        customersHint: "बकाया + खाली जार",
+        addCustomer: "+ जोड़ें",
         products: "प्रोडक्ट",
         productsHint: "रेट लिस्ट · केवल देखने के लिए",
+        syncStatus: "सिंक स्थिति",
+        syncDetail: "1 विज़िट बाकी · आखिरी सिंक 4:18 pm",
+        retrySync: "फिर से",
         loginTitle: "साइन इन",
-        loginSub: "सेल्स एग्जीक्यूटिव · मोबाइल",
+        loginSub: "हेल्पर · मोबाइल",
         phoneEmail: "फोन या ईमेल",
         password: "पासवर्ड",
         loginCta: "लॉगिन",
-        langHint: "भाषा: लॉगिन के बाद हिंदी / EN",
         filterToday: "आज",
         filterWeek: "सप्ताह",
         filterAll: "सभी",
-        filterAllStatus: "सभी",
-        city: "शहर",
-        mode: "मोड",
-        status: "स्थिति",
-        balance: "बाकी",
-        recordPayment: "पेमेंट दर्ज करें",
-        savePayment: "पेमेंट सेव",
-        fullyPaid: "पूरा भुगतान हो गया — कोई बाकी नहीं।",
         clear: "क्लियर",
         customerFormTitle: "ग्राहक जोड़ें",
         name: "नाम",
         phone: "फोन",
+        city: "एरिया",
         type: "प्रकार",
         saveCustomer: "ग्राहक सेव",
+        profilePhoto: "प्रोफाइल फोटो",
+        profilePhotoHint: "वैकल्पिक · विज़िट और लिस्ट में दिखेगा",
+        choosePhoto: "फोटो चुनें",
+        removePhoto: "हटाएँ",
+        orderMeta1: "एडमिन · 10 जार · जल्दी",
+        orderMeta2: "एडमिन · 5 चिल्ड",
       },
+    };
+
+    const AVATAR_TONE_COUNT = 12;
+
+    function personInitials(name) {
+      const parts = String(name || "")
+        .replace(/[,\-·]/g, " ")
+        .split(/\s+/)
+        .filter(Boolean)
+        .filter((p) => !/^(ji|pvt|ltd|ltd\.|co|co\.|&|and|the)$/i.test(p));
+      if (!parts.length) return "?";
+      const a = parts[0][0] || "";
+      const b = parts.length > 1 ? parts[parts.length - 1][0] || "" : parts[0][1] || "";
+      return (a + b).toUpperCase();
+    }
+
+    function avatarTone(seed) {
+      const s = String(seed || "").trim().toLowerCase();
+      if (!s) return 11;
+      let h = 0;
+      for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+      return Math.abs(h) % AVATAR_TONE_COUNT;
+    }
+
+    function escapeAttr(v) {
+      return String(v || "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;");
+    }
+
+    function avatarHtml(name, photo, size) {
+      const sz = size || "sm";
+      if (photo) {
+        return `<span class="pa-avatar pa-av-${sz} has-img" title="${escapeAttr(name)}"><img src="${escapeAttr(photo)}" alt="" /></span>`;
+      }
+      return `<span class="pa-avatar pa-av-${sz} pa-tone-${avatarTone(name)}" aria-hidden="true">${personInitials(name)}</span>`;
+    }
+
+    function paintAvatarEl(el, name, photo) {
+      if (!el) return;
+      el.classList.remove("has-img");
+      for (let i = 0; i < AVATAR_TONE_COUNT; i++) el.classList.remove("pa-tone-" + i);
+      if (photo) {
+        el.classList.add("has-img");
+        el.innerHTML = `<img src="${escapeAttr(photo)}" alt="" />`;
+      } else {
+        el.classList.add("pa-tone-" + avatarTone(name));
+        el.textContent = personInitials(name);
+      }
+    }
+
+    let mobileCustPhoto = "";
+    const customerPhotos = {};
+
+    const customerBalances = {
+      gr: { name: "G R Electrical", money: "₹200", jars: "2", note: { en: "Last visit: 24 Nov · ₹200 pending not in WhatsApp — collect before new delivery.", hi: "पिछली विज़िट: 24 Nov · ₹200 WhatsApp में नहीं — पहले वसूलें।" } },
+      ved: { name: "Vedprakash Pandey ji", money: "₹1,11,675", jars: "12", note: { en: "Heavy dues · confirm empties before delivery.", hi: "बड़ा बकाया · डिलीवरी से पहले खाली जार चेक करें।" } },
+      ros: { name: "Rosmerta Digital", money: "₹0", jars: "2", note: { en: "Clear money · 2 empty jars with customer.", hi: "पैसे क्लियर · 2 खाली जार ग्राहक के पास।" } },
+      vishal: { name: "Vishal Herbal", money: "₹0", jars: "0", note: { en: "No dues · regular exchange stop.", hi: "कोई बकाया नहीं · नियमित स्टॉप।" } },
+      venk: { name: "Venkatesh Ent.", money: "₹350", jars: "5", note: { en: "₹350 + 5 empties pending.", hi: "₹350 + 5 खाली जार बाकी।" } },
+      kal: { name: "Kalpatru", money: "₹140", jars: "1", note: { en: "Chilled pending from yesterday.", hi: "कल का चिल्ड बकाया।" } },
     };
 
     const details = {
       paid: {
-        invoice: "PA-1142",
-        customer: "A R Traders, Shrinagar",
-        city: "Shrinagar, Raipur",
-        mode: "Cash",
-        status: "Paid",
-        statusClass: "badge badge-paid",
-        total: "₹400",
-        paid: "₹400",
-        balance: "₹0",
-        balanceColor: "var(--paid)",
-        canPay: false,
-        lines: [
-          ["20 Ltr Jar", "16 × ₹25", "₹400"],
-        ],
-      },
-      paid2: {
-        invoice: "PA-1140",
-        customer: "Kundan Agency",
-        city: "Gudhiyari, Raipur",
-        mode: "UPI",
-        status: "Paid",
-        statusClass: "badge badge-paid",
-        total: "₹640",
-        paid: "₹640",
-        balance: "₹0",
-        balanceColor: "var(--paid)",
-        canPay: false,
-        lines: [
-          ["20 Ltr Jar", "8 × ₹40", "₹320"],
-          ["Chilled Jar", "8 × ₹40", "₹320"],
-        ],
+        invoice: "PA-1142", customer: "G R Electrical", status: "Paid", statusClass: "badge badge-paid",
+        empties: "0", total: "₹400", paid: "₹400", balance: "₹0", balanceColor: "var(--paid)", canPay: false,
+        lines: [["20 L Jar", "Given 5 · Empty 5 · ₹40", "₹200"], ["Prior due cleared", "Collected with visit", "₹200"]],
       },
       partial: {
-        invoice: "PA-1141",
-        customer: "Vedprakash Pandey ji",
-        city: "Kota, Raipur",
-        mode: "Credit",
-        status: "Partial",
-        statusClass: "badge badge-partial",
-        total: "₹1,200",
-        paid: "₹500",
-        balance: "₹700",
-        balanceColor: "var(--partial)",
-        canPay: true,
-        lines: [
-          ["20 Ltr Jar", "20 × ₹40", "₹800"],
-          ["Chilled Jar", "8 × ₹50", "₹400"],
-        ],
+        invoice: "PA-1141", customer: "Vedprakash Pandey ji", status: "Partial", statusClass: "badge badge-partial",
+        empties: "12", total: "₹1,200", paid: "₹500", balance: "₹700", balanceColor: "var(--partial)", canPay: true,
+        lines: [["20 L Jar", "Given 20 · Empty 8 · ₹40", "₹800"], ["Chilled", "Given 8 · Empty 0 · ₹50", "₹400"]],
       },
-      pending: {
-        invoice: "PA-1139",
-        customer: "Yogesh traders, Gudhiyari",
-        city: "Gudhiyari, Raipur",
-        mode: "Credit",
-        status: "Pending",
-        statusClass: "badge badge-pending",
-        total: "₹940",
-        paid: "₹0",
-        balance: "₹940",
-        balanceColor: "var(--pending)",
-        canPay: true,
-        lines: [
-          ["Chilled Jar", "21 × ₹45", "₹945"],
-        ],
+      offline: {
+        invoice: "PA-1143", customer: "Rosmerta Digital", status: "Offline", statusClass: "badge badge-sync",
+        empties: "2", total: "₹200", paid: "₹200", balance: "₹0", balanceColor: "var(--paid)", canPay: false,
+        lines: [["20 L Jar", "Given 2 · Empty 2 · ₹40", "₹80"], ["Collected", "Cash on delivery", "₹200"]],
       },
     };
 
     let lang = "en";
-    let loggedIn = true;
+    // none | loaded | closed — start at plant load so helpers see where to begin
+    let tripState = "none";
+    let visitsPendingSync = 1;
+
+    let mobileOrders = [
+      {
+        id: "mo1",
+        customer: "G R Electrical",
+        products: "10 × 20 Ltr",
+        priority: "urgent",
+        etaHours: 2,
+        delayed: true,
+        unread: true,
+        when: { en: "Just now", hi: "अभी" },
+        notes: { en: "Deliver today", hi: "आज डिलीवर करें" },
+      },
+      {
+        id: "mo2",
+        customer: "Vedprakash Pandey ji",
+        products: "20 × 20 Ltr · 5 × Chilled",
+        priority: "normal",
+        etaHours: 4,
+        delayed: false,
+        unread: true,
+        when: { en: "1 hr ago", hi: "1 घंटे पहले" },
+        notes: { en: "", hi: "" },
+      },
+      {
+        id: "mo3",
+        customer: "A R Traders, Shrinagar",
+        products: "12 × Pouch",
+        priority: "normal",
+        etaHours: 2,
+        delayed: false,
+        unread: false,
+        when: { en: "Today · 10:02 am", hi: "आज · 10:02 am" },
+        notes: { en: "", hi: "" },
+      },
+    ];
+
+    function unreadOrderCount() {
+      return mobileOrders.filter((o) => o.unread).length;
+    }
+
+    function setNavDot(id, on) {
+      const el = document.getElementById(id);
+      if (el) el.hidden = !on;
+    }
+
+    function updateNavDots() {
+      const unread = unreadOrderCount();
+      setNavDot("navDotOrders", unread > 0);
+      setNavDot("navDotHome", unread > 0 || visitsPendingSync > 0);
+      setNavDot("navDotVisits", visitsPendingSync > 0);
+      setNavDot("navDotMore", visitsPendingSync > 0);
+      setNavDot("navDotVisit", tripState === "none");
+      const homeBadge = document.getElementById("homeOrdersBadge");
+      if (homeBadge) {
+        const open = mobileOrders.length;
+        homeBadge.textContent = String(open);
+        homeBadge.hidden = open === 0;
+      }
+      const countEl = document.getElementById("ordersNewCount");
+      if (countEl) {
+        if (unread > 0) {
+          countEl.hidden = false;
+          countEl.textContent = copy[lang].ordersNewCount.replace("{n}", String(unread));
+        } else {
+          countEl.hidden = true;
+        }
+      }
+      updateHomeOrderToast();
+    }
+
+    function updateHomeOrderToast() {
+      const toast = document.getElementById("homeOrderToast");
+      if (!toast) return;
+      const newest = mobileOrders.find((o) => o.unread);
+      if (!newest) {
+        toast.hidden = true;
+        return;
+      }
+      toast.hidden = false;
+      const title = document.getElementById("homeOrderToastTitle");
+      const meta = document.getElementById("homeOrderToastMeta");
+      if (title) title.textContent = copy[lang].newOrderToast;
+      if (meta) {
+        const pri = newest.priority === "urgent" ? copy[lang].orderUrgent : copy[lang].orderNormal;
+        meta.textContent = newest.customer + " · " + newest.products + " · " + pri;
+      }
+    }
+
+    function renderOrderNotifications() {
+      const list = document.getElementById("orderNotifList");
+      if (!list) return;
+      const t = copy[lang];
+      if (!mobileOrders.length) {
+        list.innerHTML = `<p class="muted" style="text-align:center;padding:1.2rem 0.5rem">${t.noOrders}</p>`;
+        updateNavDots();
+        return;
+      }
+      list.innerHTML = mobileOrders
+        .map((o) => {
+          const pri =
+            o.delayed
+              ? `<span class="badge badge-delayed">${t.orderDelayed}</span>`
+              : o.priority === "urgent"
+                ? `<span class="badge badge-urgent">${t.orderUrgent}</span>`
+                : `<span class="badge badge-normal">${t.orderNormal}</span>`;
+          const newBadge = o.unread ? `<span class="badge badge-pending">${lang === "hi" ? "नया" : "New"}</span>` : "";
+          const note = o.notes[lang] ? `<p class="order-notif-note">${o.notes[lang]}</p>` : "";
+          return `<article class="order-notif${o.unread ? " is-unread" : ""}${o.delayed ? " is-delayed" : ""}" data-id="${o.id}">
+            <div class="order-notif-top">
+              <div class="name-with-av">
+                ${avatarHtml(o.customer, customerPhotos[o.customer] || "", "sm")}
+                <span class="name-with-av-text">
+                  <strong>${o.customer}</strong>
+                  <small>${t.orderFromAdmin} · ${o.when[lang]}</small>
+                </span>
+              </div>
+              <div class="order-notif-badges">${newBadge}${pri}</div>
+            </div>
+            <p class="order-notif-products">${o.products}</p>
+            <p class="order-notif-eta">${t.orderEta.replace("{n}", String(o.etaHours))}</p>
+            ${note}
+            <div class="order-notif-actions">
+              <button type="button" class="btn-mini btn-mini-primary" onclick="startOrderVisit('${o.id}')">${t.orderStartVisit}</button>
+              <button type="button" class="btn-mini" onclick="dismissMobileOrder('${o.id}')">${t.orderDismiss}</button>
+            </div>
+          </article>`;
+        })
+        .join("");
+      updateNavDots();
+    }
+
+    function markOrdersSeen() {
+      mobileOrders.forEach((o) => {
+        o.unread = false;
+      });
+      renderOrderNotifications();
+    }
+
+    function startOrderVisit(id) {
+      const o = mobileOrders.find((x) => x.id === id);
+      if (o) o.unread = false;
+      updateNavDots();
+      startVisit();
+    }
+
+    function dismissMobileOrder(id) {
+      mobileOrders = mobileOrders.filter((o) => o.id !== id);
+      renderOrderNotifications();
+    }
 
     function applyLang() {
       const t = copy[lang];
@@ -572,14 +1164,136 @@
         const key = el.getAttribute("data-i18n");
         if (t[key]) el.textContent = t[key];
       });
+      document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-html");
+        if (t[key]) el.innerHTML = t[key];
+      });
       document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
-        const key = el.getAttribute("data-i18n-placeholder");
         const map = {
-          en: { searchCustomer: "Search name, phone, city", searchProduct: "Search product", remarksPh: "Optional note" },
-          hi: { searchCustomer: "नाम, फोन, शहर खोजें", searchProduct: "प्रोडक्ट खोजें", remarksPh: "वैकल्पिक नोट" },
+          en: {
+            searchCustomer: "Search any customer…",
+            remarksPh: "Optional note",
+            plantWitnessPh: "Optional · who issued stock",
+            variancePh: "Breakage / leftover at customer / recount",
+          },
+          hi: {
+            searchCustomer: "कोई भी ग्राहक खोजें…",
+            remarksPh: "वैकल्पिक नोट",
+            plantWitnessPh: "वैकल्पिक · किसने माल दिया",
+            variancePh: "टूटा / ग्राहक पर बचा / दोबारा गिनती",
+          },
         };
+        const key = el.getAttribute("data-i18n-placeholder");
         if (map[lang][key]) el.placeholder = map[lang][key];
       });
+      const active = document.querySelector(".route-chip.active");
+      if (active) {
+        const m = (active.getAttribute("onclick") || "").match(/'(\w+)'/);
+        if (m) selectCustomer(active, m[1], true);
+      }
+      renderTripCard();
+      renderOrderNotifications();
+    }
+
+    function renderTripCard() {
+      const t = copy[lang];
+      const label = document.getElementById("tripStatusLabel");
+      const btn = document.getElementById("tripActionBtn");
+      const steps = [
+        document.getElementById("stepLoadBtn"),
+        document.getElementById("stepDeliverBtn"),
+        document.getElementById("stepReturnBtn"),
+      ];
+      const van = document.getElementById("vanStockMini");
+      steps.forEach((s) => s.classList.remove("done", "active"));
+      if (tripState === "none") {
+        label.textContent = t.tripNeedLoad;
+        btn.textContent = t.tripLoadBtn;
+        steps[0].classList.add("active");
+        van.style.opacity = "0.45";
+      } else if (tripState === "loaded") {
+        label.textContent = t.tripOnRoute;
+        btn.textContent = t.tripReturnBtn;
+        steps[0].classList.add("done");
+        steps[1].classList.add("active");
+        van.style.opacity = "1";
+      } else {
+        label.textContent = t.tripClosed;
+        btn.textContent = t.tripNewBtn;
+        steps.forEach((s) => s.classList.add("done"));
+        van.style.opacity = "0.45";
+      }
+    }
+
+    function tripAction() {
+      if (tripState === "none") showScreen("plant-out");
+      else if (tripState === "loaded") showScreen("plant-in");
+      else {
+        tripState = "none";
+        renderTripCard();
+        showScreen("plant-out");
+      }
+    }
+
+    function confirmLoad() {
+      tripState = "loaded";
+      renderTripCard();
+      showScreen("home");
+      showGlassToast(copy[lang].startTrip || "Trip started", copy[lang].loadRule || "Van loaded", "success");
+    }
+
+    function confirmReturn() {
+      tripState = "closed";
+      renderTripCard();
+      showScreen("home");
+      showGlassToast(copy[lang].closeTrip || "Trip closed", copy[lang].tripSummary || "Returned to plant", "success");
+    }
+
+    function resetTrip() {
+      tripState = "none";
+      renderTripCard();
+      showScreen("home");
+    }
+
+    function openBottomSheet(title, message, opts) {
+      const sheet = document.getElementById("bottomSheet");
+      const confirmBtn = document.getElementById("bottomSheetConfirm");
+      const cancelBtn = document.getElementById("bottomSheetCancel");
+      document.getElementById("bottomSheetTitle").textContent = title || "Notice";
+      document.getElementById("bottomSheetMsg").textContent = message || "";
+      confirmBtn.textContent = (opts && opts.confirmLabel) || "OK";
+      cancelBtn.hidden = !(opts && opts.showCancel);
+      confirmBtn.onclick = function () {
+        closeBottomSheet();
+        if (opts && typeof opts.onConfirm === "function") opts.onConfirm();
+      };
+      sheet.hidden = false;
+    }
+
+    function closeBottomSheet() {
+      document.getElementById("bottomSheet").hidden = true;
+    }
+
+    function showGlassToast(title, sub, kind) {
+      const toast = document.getElementById("glassToast");
+      document.getElementById("glassToastTitle").textContent = title || "Done";
+      document.getElementById("glassToastSub").textContent = sub || "";
+      toast.classList.toggle("is-success", kind === "success");
+      toast.classList.toggle("is-error", kind === "error");
+      toast.hidden = false;
+      clearTimeout(showGlassToast._t);
+      showGlassToast._t = setTimeout(function () { toast.hidden = true; }, 2400);
+    }
+
+    function startVisit() {
+      if (tripState !== "loaded") {
+        openBottomSheet(copy[lang].todayTrip || "Today’s trip", copy[lang].needLoadAlert, {
+          confirmLabel: copy[lang].stepLoad || "Load",
+          onConfirm: function () { showScreen("plant-out"); }
+        });
+        return;
+      }
+      showScreen("new");
     }
 
     function toggleLang() {
@@ -592,33 +1306,37 @@
       const nav = document.getElementById("phoneNav");
       const isLogin = name === "login";
       header.style.display = isLogin ? "none" : "flex";
-      const hideNav = ["login", "success", "new", "detail", "customer-form"].includes(name);
-      nav.style.display = hideNav ? "none" : "grid";
+      const hideNav = ["login", "success", "detail", "customer-form", "plant-out", "plant-in"].includes(name);
+      nav.hidden = hideNav;
+      nav.style.display = hideNav ? "none" : "";
+      document.querySelector(".phone-inner")?.classList.toggle("nav-hidden", hideNav);
       if (!hideNav) {
         [...nav.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
-        const map = { home: 0, sales: 1, customers: 2, products: 3 };
-        if (map[name] !== undefined) nav.children[map[name]].classList.add("active");
+        const map = { home: "home", new: "new", visits: "visits", orders: "orders", more: "more", customers: "more", products: "more" };
+        const key = map[name];
+        if (key) {
+          const btn = nav.querySelector(`button[data-nav="${key}"]`);
+          if (btn) btn.classList.add("active");
+        }
       }
     }
 
     function showScreen(name) {
-      document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+      document.querySelectorAll(".phone-body .screen").forEach((s) => s.classList.remove("active"));
       document.getElementById("screen-" + name).classList.add("active");
       setChrome(name);
+      if (name === "orders") markOrdersSeen();
     }
 
-    function showLogin() {
-      loggedIn = false;
-      showScreen("login");
-    }
-
-    function enterApp() {
-      loggedIn = true;
-      showScreen("home");
-    }
+    function showLogin() { showScreen("login"); }
+    function enterApp() { showScreen("home"); }
 
     function navTo(name, btn) {
-      showScreen(name);
+      if (name === "new") {
+        startVisit();
+      } else {
+        showScreen(name);
+      }
       [...btn.parentElement.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
     }
@@ -628,25 +1346,188 @@
       btn.classList.add("active");
     }
 
+    function toggleSearch() {
+      const box = document.getElementById("searchBox");
+      box.style.display = box.style.display === "none" ? "block" : "none";
+    }
+
+    function toggleBalance() {
+      document.getElementById("balanceBody").classList.toggle("open");
+    }
+
+    function selectCustomer(btn, key, keepOpen) {
+      document.querySelectorAll(".route-chip").forEach((c) => c.classList.remove("active"));
+      btn.classList.add("active");
+      const c = customerBalances[key];
+      document.getElementById("selCustomer").textContent = c.name;
+      paintAvatarEl(document.getElementById("selCustomerAvatar"), c.name, customerPhotos[c.name] || "");
+      document.getElementById("balMoney").textContent = c.money;
+      document.getElementById("balJars").textContent = c.jars;
+      const body = document.getElementById("balanceBody");
+      const note = body.querySelector("p");
+      if (note) note.textContent = c.note[lang];
+      if (!keepOpen) body.classList.remove("open");
+    }
+
+    function refreshMobileCustomerPhotoPreview() {
+      const preview = document.getElementById("mobileCustPhotoPreview");
+      const clearBtn = document.getElementById("mobileCustPhotoClear");
+      const name = document.getElementById("mobileCustName")?.value || "";
+      if (clearBtn) clearBtn.hidden = !mobileCustPhoto;
+      paintAvatarEl(preview, name || "?", mobileCustPhoto);
+      if (preview) preview.classList.add("profile-photo-preview");
+    }
+
+    function onMobileCustomerPhoto(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (mobileCustPhoto && String(mobileCustPhoto).startsWith("blob:")) {
+        try { URL.revokeObjectURL(mobileCustPhoto); } catch (_) {}
+      }
+      mobileCustPhoto = URL.createObjectURL(file);
+      refreshMobileCustomerPhotoPreview();
+    }
+
+    function clearMobileCustomerPhoto() {
+      if (mobileCustPhoto && String(mobileCustPhoto).startsWith("blob:")) {
+        try { URL.revokeObjectURL(mobileCustPhoto); } catch (_) {}
+      }
+      mobileCustPhoto = "";
+      const file = document.getElementById("mobileCustPhotoFile");
+      if (file) file.value = "";
+      refreshMobileCustomerPhotoPreview();
+    }
+
+    function clearMobileFieldError(inputId) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const field = input.closest(".form-field") || input.closest(".field");
+      if (field) field.classList.remove("is-invalid");
+      input.classList.remove("is-invalid");
+      const err = document.getElementById(inputId + "Err");
+      if (err) err.classList.remove("is-visible");
+    }
+
+    function setMobileFieldError(inputId, message) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const field = input.closest(".form-field") || input.closest(".field");
+      if (field) field.classList.add("is-invalid");
+      input.classList.add("is-invalid");
+      const err = document.getElementById(inputId + "Err");
+      if (err) {
+        if (message) err.textContent = message;
+        err.classList.add("is-visible");
+      }
+    }
+
+    function validateMobileCustomerField(id) {
+      if (id === "mobileCustName") {
+        const v = (document.getElementById("mobileCustName")?.value || "").trim();
+        if (!v) setMobileFieldError("mobileCustName", "Enter customer name");
+        else clearMobileFieldError("mobileCustName");
+        return !!v;
+      }
+      if (id === "mobileCustPhone") {
+        const v = document.getElementById("mobileCustPhone")?.value || "";
+        const d = String(v).replace(/\D/g, "");
+        const ok = !d.length || d.length === 10;
+        if (!ok) setMobileFieldError("mobileCustPhone", "Enter a valid 10-digit phone");
+        else clearMobileFieldError("mobileCustPhone");
+        return ok;
+      }
+      return true;
+    }
+
+    function openMobileCustomerForm() {
+      mobileCustPhoto = "";
+      const file = document.getElementById("mobileCustPhotoFile");
+      if (file) file.value = "";
+      ["mobileCustName", "mobileCustPhone", "mobileCustCity"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+        clearMobileFieldError(id);
+      });
+      const banner = document.getElementById("mobileCustFormBanner");
+      if (banner) {
+        banner.classList.remove("is-visible");
+        banner.textContent = "";
+      }
+      refreshMobileCustomerPhotoPreview();
+      showScreen("customer-form");
+    }
+
+    function saveMobileCustomer() {
+      const nameOk = validateMobileCustomerField("mobileCustName");
+      const phoneOk = validateMobileCustomerField("mobileCustPhone");
+      if (!nameOk || !phoneOk) {
+        const banner = document.getElementById("mobileCustFormBanner");
+        if (banner) {
+          banner.textContent = "Fix the highlighted fields to continue.";
+          banner.classList.add("is-visible");
+        }
+        document.querySelector("#screen-customer-form .is-invalid input")?.focus();
+        return;
+      }
+      const name = (document.getElementById("mobileCustName")?.value || "").trim();
+      if (name && mobileCustPhoto) customerPhotos[name] = mobileCustPhoto;
+      if (name) {
+        const list = document.getElementById("mobileCustomerList");
+        if (list && ![...list.querySelectorAll("[data-cust-name]")].some((r) => r.getAttribute("data-cust-name") === name)) {
+          const row = document.createElement("div");
+          row.className = "sale-row has-avatar";
+          row.setAttribute("data-cust-name", name);
+          row.innerHTML = `<div><strong>${escapeAttr(name)}</strong><br /><small>New · Clear</small></div><div style="text-align:right;font-size:0.8rem;color:var(--muted)">Clear</div>`;
+          list.prepend(row);
+        }
+      }
+      mobileCustPhoto = "";
+      const file = document.getElementById("mobileCustPhotoFile");
+      if (file) file.value = "";
+      if (document.getElementById("mobileCustName")) document.getElementById("mobileCustName").value = "";
+      refreshMobileCustomerPhotoPreview();
+      showScreen("customers");
+      paintMobileCustomerLists();
+    }
+
+    function paintMobileCustomerLists() {
+      document.querySelectorAll(".sale-row.has-avatar[data-cust-name]").forEach((row) => {
+        if (row.querySelector(".pa-avatar")) return;
+        const name = row.getAttribute("data-cust-name") || "";
+        const first = row.children[0];
+        if (!first) return;
+        const html = first.innerHTML;
+        first.innerHTML = `${avatarHtml(name, customerPhotos[name] || "", "sm")}<div>${html}</div>`;
+      });
+      document.querySelectorAll("#routeList .route-chip[data-cust]").forEach((chip) => {
+        const key = chip.getAttribute("data-cust");
+        const c = customerBalances[key];
+        if (!c) return;
+        chip.innerHTML = `${avatarHtml(c.name, customerPhotos[c.name] || "", "xs")}<span>${c.name}</span>`;
+      });
+    }
+
+    function step(id, delta) {
+      const el = document.getElementById(id);
+      el.value = Math.max(0, (parseInt(el.value || "0", 10) + delta));
+    }
+
     function openDetail(key) {
       const d = details[key];
       document.getElementById("detailInvoice").textContent = d.invoice;
       document.getElementById("detailCustomer").textContent = d.customer;
-      document.getElementById("detailCity").textContent = d.city;
-      document.getElementById("detailMode").textContent = d.mode;
+      paintAvatarEl(document.getElementById("detailCustomerAvatar"), d.customer, customerPhotos[d.customer] || "");
       const st = document.getElementById("detailStatus");
       st.className = d.statusClass;
       st.textContent = d.status;
+      document.getElementById("detailEmpties").textContent = d.empties;
       document.getElementById("detailTotal").textContent = d.total;
       document.getElementById("detailPaid").textContent = d.paid;
       const bal = document.getElementById("detailBalance");
       bal.textContent = d.balance;
       bal.style.color = d.balanceColor;
       document.getElementById("detailLines").innerHTML = d.lines
-        .map(
-          ([n, m, a]) =>
-            `<div class="line-item"><div><strong>${n}</strong><div class="line-meta">${m}</div></div><strong>${a}</strong></div>`
-        )
+        .map(([n, m, a]) => `<div class="line-item"><div><strong>${n}</strong><div class="line-meta">${m}</div></div><strong>${a}</strong></div>`)
         .join("");
       document.getElementById("paymentPanel").style.display = d.canPay ? "block" : "none";
       document.getElementById("paidNote").style.display = d.canPay ? "none" : "block";
@@ -666,12 +1547,9 @@
     }
 
     document.querySelectorAll(".modes").forEach((group) => {
-      group.querySelectorAll("button").forEach((btn) => {
-        btn.addEventListener("click", () => setMode(btn));
-      });
+      group.querySelectorAll("button").forEach((btn) => btn.addEventListener("click", () => setMode(btn)));
     });
-
-    document.querySelectorAll("#rangeChips, #statusChips").forEach((group) => {
+    document.querySelectorAll("#rangeChips").forEach((group) => {
       group.querySelectorAll("button").forEach((btn) => {
         btn.addEventListener("click", () => {
           [...group.querySelectorAll("button")].forEach((b) => b.classList.remove("active"));
@@ -680,7 +1558,12 @@
       });
     });
 
-    // Start on home (logged-in demo); use "Show login" to demo M0
+    renderTripCard();
+    renderOrderNotifications();
+    paintMobileCustomerLists();
+    refreshMobileCustomerPhotoPreview();
+    const firstChip = document.querySelector("#routeList .route-chip.active");
+    if (firstChip) selectCustomer(firstChip, firstChip.getAttribute("data-cust") || "gr", true);
     showScreen("home");
   </script>
 </body>

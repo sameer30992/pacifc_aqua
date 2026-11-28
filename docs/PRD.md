@@ -2,26 +2,30 @@
 
 | | |
 | --- | --- |
-| **Version** | 0.2 |
-| **Date** | 22 Nov 2026 (Asia/Calcutta) |
+| **Version** | 0.3 |
+| **Date** | 27 Nov 2026 (Asia/Calcutta) |
 | **Owner** | Sameer Roy / Pacific Aqua |
-| **Status** | Draft for review |
-| **Apps** | (1) Mobile sales web app (2) Backend admin web app |
+| **Status** | Draft — locked from client call `R&B 2.m4a` |
+| **Apps** | (1) Mobile field app (2) Backend admin (laptop / shop PC) |
 
-> **Source note:** Kickoff referenced `R&B.m4a` (Hindi meeting) and `Pacific Aqua.xlsx` (sales sheet). Those files were not available in this environment. Personas, fields, and flows below are inferred from the stated goal (replace Excel sales tracking). Re-attach the recording and sheet to lock exact columns, Hindi terms, and credit rules.
+> **Sources:** Client call `R&B 2.m4a` (~56 min) → `docs/transcripts/rb2_call_summary.md`; Excel `39. Pacific Aqua.xlsx`; WhatsApp group delivery logs (diya / mila / liye).
 
 ---
 
 ## 1. Problem statement
 
-Pacific Aqua records each sale in a shared Excel workbook. That works for one person at a desk, but fails when:
+Pacific Aqua runs field ops on a **WhatsApp group** and office books on **Excel**. That fails when:
 
-- Field staff need to enter sales from a phone
-- More than one person edits the same sheet (conflicts, lost rows)
-- Payment status, outstanding balances, and daily collections are hard to see
-- Reports by city, salesperson, product, or payment mode need manual pivots
+- Helpers type free-text deliveries (`diya` / `mila` / payment) and pending dues get missed
+- Next day’s helper gets told “already paid” because ₹ pending was never logged
+- Owner spends **1–2 hours/day** re-entering WhatsApp into Excel
+- Empty jars with customers and money udhari are not visible in one place
+- Multi-helper routes mix customer lists; search/typing slows every stop
+- Factory stock, attendance, expenses, and bills live in separate messy sheets
 
-**Goal:** Make a shared digital sales ledger the system of record, with a phone-first app for the field and a desktop backend for the office.
+**Goal:** Replace WhatsApp+Excel with a **phone app for helpers** and a **laptop admin** on one shared ledger. Excel becomes export-only.
+
+**Phased build (agreed on call):** Ship v1 around the biggest time sink first; add rolling/route advanced features later. Keep UX simple enough to resell to other water businesses later.
 
 ---
 
@@ -29,25 +33,27 @@ Pacific Aqua records each sale in a shared Excel workbook. That works for one pe
 
 | App | Audience | Device | Purpose |
 | --- | --- | --- | --- |
-| **Mobile sales app** | Sales executives | Phone browser (web) | Capture sales, look up rates/customers, see today’s numbers |
-| **Backend admin** | Owner / office admin | Laptop / desktop browser | Full ledger, dues, masters, reports, users |
+| **Mobile field app** | Helpers | Android phone (web) | Replace WhatsApp entries: visit → diya/mila → collection; see dues & empty jars |
+| **Backend admin** | Owner / office | Laptop / shop PC browser | Ledger, bills, inventory, attendance, expenses, orders → helper notify |
 
-Both apps read/write the **same sales database**. Excel becomes an **export**, not the live register.
+**Deployment (agreed):** Local shop PC (~₹10–15k) acts as always-on server; mobiles sync to it; ~500 GB enough for years of text data; **daily backup**.
+
+Both apps read/write the **same database**. Owner prefers **big-screen admin** for ledger/bills/inventory; helpers use **mobile** only.
 
 ---
 
 ## 3. Personas
 
-### P1 — Rahul · Field Sales Executive
+### P1 — Field helper (e.g. Tikesh, Himanshu, Deepak)
 
 | | |
 | --- | --- |
-| **Role** | Sales Executive |
-| **Device** | Android phone, often on 4G, sometimes weak signal |
-| **Language** | Hindi primary; can read simple English |
-| **Day** | Visits dealers/retailers; books orders; collects cash/UPI; needs speed |
-| **Pain today** | Calls office to note sale, or waits until evening to update Excel; forgets rates; loses track of credit |
-| **Goals** | Enter a sale in under a minute; see today’s collection; share bill summary on WhatsApp |
+| **Role** | Helper |
+| **Device** | Android phone, 4G, sometimes offline |
+| **Language** | Hindi / Hinglish primary |
+| **Day** | Takes stock from plant → follows route customers → diya/mila jars → collects cash → posts in WhatsApp today |
+| **Pain today** | Free-text WhatsApp; no view of prior pending; next boy gets lied to; slow typing |
+| **Goals** | Select customer → see dues/empties → log visit in &lt;1 min; work offline |
 | **Primary app** | Mobile |
 
 ### P2 — Sameer · Owner / Admin
@@ -55,506 +61,442 @@ Both apps read/write the **same sales database**. Excel becomes an **export**, n
 | | |
 | --- | --- |
 | **Role** | Admin / Owner |
-| **Device** | Laptop in office |
+| **Device** | Laptop in office / shop |
 | **Language** | English + Hindi |
-| **Day** | Reviews all sales, follows dues, manages products/prices, month-end export |
-| **Pain today** | Excel is messy; cannot see who sold what live; dues chase is manual |
-| **Goals** | One clean ledger; dues list; export like today’s sheet; control who can edit |
-| **Primary app** | Backend |
+| **Day** | Reviews sales, dues, stock, bills; assigns ad-hoc orders to helpers |
+| **Pain today** | Re-typing WhatsApp into Excel; no live outstanding; bill prep manual |
+| **Goals** | One clean ledger; customer-wise monthly lekhajokha + bill; factory inventory; order → helper notify |
+| **Primary app** | Backend (mobile optional for history) |
 
-### P3 — Priya · Office Accountant *(phase 2 optional)*
+### P3 — Office accountant *(phase 2 optional)*
 
 | | |
 | --- | --- |
 | **Role** | Accountant |
 | **Device** | Desktop |
-| **Day** | Marks collections, reconciles pending, prepares monthly sheet |
-| **Goals** | Update payments without changing product masters; export for accounts |
+| **Goals** | Payments, month export without changing masters |
 | **Primary app** | Backend (limited) |
 
-### P4 — Dealer / Customer *(indirect — not a login user in MVP)*
+### P4 — Customer / dealer *(no login in v1)*
 
-| | |
-| --- | --- |
-| **Role** | Buyer (Dealer / Retail / Institution) |
-| **Touchpoint** | Receives WhatsApp sale summary / verbal invoice from executive |
-| **Need** | Correct qty, rate, balance due |
+Receives delivery + verbal/printed bill; needs correct qty, empties, and balance.
 
 ---
 
 ## 4. Users, roles & permissions
 
-| Role | Login app | Create sale | Edit any sale | Manage products | Manage users | Export | Record dues |
+| Role | App | Create visit/sale | Edit | Manage masters | Place order → notify | Bills / export | Inventory |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Sales Executive | Mobile | Own only | Own, same day* | Read | No | Own sales (optional) | Own sales |
-| Admin / Owner | Backend (+ mobile optional) | Yes | Yes | Yes | Yes | All | Yes |
-| Accountant | Backend | No | Payments only | Read | No | All | Yes |
+| Helper | Mobile | Own visits | Own, same day* | Read customers/products | Receive only | Own history | Log lift from plant (v1 lite / P2 rolling) |
+| Admin / Owner | Backend (+ mobile optional) | Yes | Any | Yes | Yes | Yes | Yes |
+| Accountant | Backend | No | Payments only | Read | No | Yes | Read |
 
-\*Same-day edit policy is a default assumption — confirm after reviewing the meeting recording.
+\*Same-day edit default — confirm if owner wants stricter lock.
 
 ---
 
 ## 5. Use cases
 
 ### UC-01 — Login
+Any user → phone/email + password → role-correct home.
 
-**Actor:** Any user  
-**Precondition:** Active account  
-**Flow:** Open app → enter phone/email + password (or OTP later) → land on Home/Dashboard  
-**Success:** Session started; role-correct home screen  
-**Errors:** Invalid credentials; inactive user
-
-### UC-02 — Create field sale (happy path)
-
-**Actor:** Sales Executive (Rahul)  
-**Precondition:** Logged into mobile  
+### UC-02 — Field visit / New Sale (replaces WhatsApp) — **v1 core**
+**Actor:** Helper  
 **Flow:**
 
-1. Tap **New Sale**
-2. Select or quick-add customer
-3. Add one or more products + qty (rate prefilled, editable)
-4. Choose payment mode; enter amount paid
-5. Save → system assigns invoice `PA-####`
-6. See success screen; optionally share WhatsApp text
+1. Open **New Sale / Visit**
+2. Pick customer from **route list** (default) or **search** ad-hoc
+3. Tap **Check Balance / Check Dues** → see money udhari + empty jars with customer
+4. Add one or more products: qty **diya** (given) and/or **mila** (empty/taken)
+5. Enter **amount collected**; optional remarks
+6. Save → syncs to backend (or queues if offline)
 
-**Success:** Sale appears in My Sales and in Backend ledger  
-**Errors:** No customer; qty ≤ 0; no lines; amount paid > total
+**Success:** Visit appears in helper history + admin ledger; customer outstanding & empty-jar balance update.  
+**Errors:** No customer; no lines; qty ≤ 0; amount paid &gt; billable total (if priced).
 
-### UC-03 — Quick-add customer while selling
+### UC-03 — Check Balance / Check Dues — **v1 core**
+**Actor:** Helper  
+**Flow:** After selecting customer → Check Balance → see remaining money + empty jars + recent hisaab (even if no bill generated).  
+**Success:** Helper knows what to collect before delivering.  
+**Pain solved:** Missed WhatsApp ₹200 pending → next boy told “already paid”.
 
-**Actor:** Sales Executive  
-**Flow:** On New Sale → Add customer → name, phone, city, type → save → selected on sale  
-**Success:** Customer available system-wide
+### UC-04 — Route customers without search — **v1**
+**Actor:** Helper  
+**Flow:** On New Sale, default list shows ~fixed route customers (~25) for that helper/vehicle; search still available for others.  
+**Success:** Daily stops appear without typing.
 
-### UC-04 — View today’s performance
+### UC-05 — Offline save + sync — **v1**
+**Actor:** Helper  
+**Flow:** Save visit with no/poor network → stored on phone → auto-sync when online.  
+**Success:** No data loss; admin sees visits after sync.
 
-**Actor:** Sales Executive  
-**Flow:** Open Home → see sales count, collected, pending for today  
-**Success:** Numbers match own sales for today
-
-### UC-05 — Collect balance on a credit sale
-
-**Actor:** Sales Executive or Admin  
-**Flow:** Open sale (Partial/Pending) → Record payment → enter amount → status recalculates (Partial/Paid)  
-**Success:** Outstanding reduced; dues list updates
-
-### UC-06 — Chase dues from office
-
+### UC-06 — Admin New Order → helper notification — **v1**
 **Actor:** Admin  
-**Flow:** Backend → Dues → filter by city/salesperson → open sale → record payment or call customer  
-**Success:** Pending balance list shrinks; audit of payment kept
+**Flow:** Backend → New Order → select customer → select helper → save.  
+**Success:** That helper’s mobile gets a **notification** to deliver to that customer.
 
-### UC-07 — Maintain product rates
-
+### UC-07 — Customer-wise monthly bill / lekhajokha — **v1**
 **Actor:** Admin  
-**Flow:** Products → add/edit name, category, unit, default rate, stock → save  
-**Success:** Mobile shows updated rates on next New Sale
+**Flow:** Pick customer + month → see jars given, jars taken/empties, money pending, payments → **Generate Bill** (template overlay) → download / print (B/W OK).  
+**Success:** Printable bill matches monthly summary.
 
-### UC-08 — Replace Excel month close
-
-**Actor:** Admin / Accountant  
-**Flow:** Sales ledger → filter date range → Export CSV/XLSX  
-**Success:** File usable like current `Pacific Aqua.xlsx` layout (column parity TBD)
-
-### UC-09 — Onboard a salesperson
-
+### UC-08 — Sales ledger + outstanding drill-down — **v1**
 **Actor:** Admin  
-**Flow:** Users → invite → name, phone, role=Executive → active  
-**Success:** Executive can log into mobile
+**Flow:** Month ledger → customer list with outstanding → click customer → full detail.  
+**Success:** Replaces Excel P&S browsing.
 
-### UC-10 — Void / correct a wrong sale
+### UC-09 — Factory / plant inventory — **v1**
+**Actor:** Admin (+ helper lift log)  
+**Flow:** Track product lifted from plant, delivered, payment collected (helper chittha); remaining factory stock (e.g. cartons/petis).  
+**Success:** Owner knows stock left without Excel.
 
-**Actor:** Admin (Executive same-day only if allowed)  
-**Flow:** Open sale → Edit lines/payment **or** Void with reason  
-**Success:** Ledger reflects correction; void retained in audit (not hard-deleted)
+### UC-10 — Attendance, expenses, purchases — **v1 modules**
+**Actor:** Admin  
+**Flow:** Separate tabs (not one sheet): Attendance/Salary, Daily Expenses, Outside Purchases — Excel coverage, cleaner UX.
 
-### UC-11 — Switch language (HI / EN)
+### UC-11 — Day trip (plant → route → plant) — **v1 core**
+**Actor:** Helper  
+**Seamless flow (one trip object for the day):**
 
-**Actor:** Sales Executive  
-**Flow:** Toggle हिंदी / EN on mobile  
-**Success:** Primary labels switch; numbers/currency stay `en-IN`
+1. **Load at plant** — enter qty of each product taken onto the van → Start trip (van stock = loaded)
+2. **Deliver on route** — visits: Given / Empty back / money; each Given reduces van full stock; Empty back increases van empties; cash tallies
+3. **Return to plant** — app pre-fills expected **unsold full** (= loaded − given) and **empties collected**; helper confirms or adjusts with reason → Submit → trip closed; plant inventory updated
+
+**Rules that make it seamless:**
+- New Visit blocked until trip is loaded
+- Home always shows trip step (Load → Deliver → Return) + live van stock + cash in hand
+- No separate “remember what to return” — return screen is calculated from the same trip
+- Variance (breakage / recount) requires a note; admin sees variance on backend Inventory
+
+**Multi-helper:** each helper has their own open trip; routes stay separate.
+
+### UC-12 — Language toggle (HI / EN)
+Mobile primary labels switch; INR stays `en-IN`.
+
+### UC-13 — Void / correct visit
+Admin (helper same-day if allowed) → edit or void with reason; audit retained.
 
 ---
 
 ## 6. Functionalities (by area)
 
 ### 6.1 Authentication & access
-
-- Login with phone or email + password (MVP)
+- Login phone/email + password (v1)
 - Role-based routing (mobile vs backend)
-- Logout; session expiry
-- Active/inactive user flag
-- *(Later)* OTP login, password reset
+- Logout; session expiry; active/inactive users
+- *(Later)* OTP login
 
-### 6.2 Sales
+### 6.2 Field visits / sales *(WhatsApp replacement)* — **v1**
+- Customer-first New Sale / Visit
+- Multi-product lines per visit
+- Qty per product with bilingual labels: **Given** (दिया) = full jars left at customer; **Empty back** (मिला) = empty jars collected. Always show English + Hindi on the control so non-English helpers understand.
+- Amount collected + payment mode (Cash / UPI / Bank / Credit)
+- Payment status: Paid / Partial / Pending
+- Remarks / extra detail
+- Auto visit/invoice id (`PA-####`)
+- Snapshot product name/rate on line
+- List / filter own visits; detail + record further payment
+- Share text optional (WhatsApp share still useful for customer SMS)
 
-- Create multi-line sale
-- Auto invoice number (`PA-####`)
-- Default date = today; editable by Admin
-- Snapshot product name/rate on line (history safe if rate changes later)
-- Payment modes: Cash, UPI, Bank, Credit
-- Payment status auto: Paid / Partial / Pending from amount paid vs total
-- Remarks / notes
-- List, filter, search sales
-- Sale detail view
-- Edit / void (permission-based)
-- WhatsApp-friendly share text after save
+### 6.3 Check Balance / Dues on mobile — **v1**
+- After customer select: outstanding **money** + **empty jars** (and other empties if tracked)
+- Explicit **Check Balance / Check Dues** control
+- Prior hisaab visible even when bill not yet generated
 
-### 6.3 Customers
+### 6.4 Route customer list — **v1**
+- Assign customers to helper/route/vehicle
+- Default New Sale list = route customers (no search required)
+- Search / quick-add for ad-hoc customers
 
-- Create, search, edit customer
-- Fields: name, phone, city, type (Dealer / Retail / Institution)
-- Outstanding balance (computed from unpaid sales)
-- Customer history (list of sales) — Backend MVP; Mobile nice-to-have
+### 6.5 Offline sync — **v1**
+- Queue creates/edits on device when offline
+- Sync to local shop server when online
+- Clear sync status on mobile (pending / synced / failed)
 
-### 6.4 Products
+### 6.6 Orders & notifications — **v1**
+- Admin: New Order (customer + assigned helper + optional products/notes)
+- Push / in-app notification to assigned helper’s mobile
+- Helper opens notification → customer preselected for visit
 
-- CRUD catalog (Admin)
-- Fields: name, category, unit, default rate, stock
-- Mobile: read-only browse/search for rate reference
-- Soft stock warning if qty > stock (optional MVP)
+### 6.7 Customers
+- CRUD; fields: name, phone, city/area, type, **route assignment**, notes
+- Computed: money outstanding, empty-jar balance
+- Customer statement / history (backend v1; mobile history nice-to-have)
 
-### 6.5 Payments & dues
+### 6.8 Products
+- Admin CRUD: name, category, unit, default rate, stock, active
+- Products from Excel reality: Jar, Chilled, Pouch, bottles, Dispenser, etc.
+- Mobile: select from catalog on visit
 
-- Record payment against a sale
-- Dues queue: all Partial + Pending
-- Filter dues by salesperson, city, date
+### 6.9 Payments & dues (admin)
+- Dues queue: Partial + Pending
+- Record payment against visit/sale
+- Filter by helper, route, city, date
 - Running outstanding per customer
 
-### 6.6 Dashboards & reports
+### 6.10 Sales ledger & dashboard — **v1**
+- Backend: month ledger; KPIs; charts
+- Customer list with outstanding → drill-down
+- Mobile Home: today’s own visits, collected, pending
 
-- Mobile Home: today KPIs (own sales)
-- Backend Dashboard: month revenue, collected, pending, invoice count, top city/product
-- Export filtered ledger to CSV/XLSX
-- *(Later)* GST summary, salesperson leaderboard
+### 6.11 Billing / lekhajokha — **v1**
+- Customer + month summary: jars given, jars taken, money pending, payments
+- **Bill Generate** from blank bill+seal/stamp template (client photo/scan)
+- Overlay: name, phone, amounts, date, line details
+- Download + print (B/W fine); optional download without print styling
 
-### 6.7 Users & admin
+### 6.12 Inventory / plant stock — **v1**
+- Stock lifted from plant/godown
+- Delivered vs collected (helper chittha rollup)
+- Factory remaining stock
+- Soft warnings optional
 
-- Invite/deactivate users
-- Assign role
-- Audit: createdBy / updatedBy / timestamps on sales
+### 6.13 Attendance & salary *(Excel `ATT.`)* — **v1**
+- Daily Present / Absent / Leave + wage/advance
+- Month: days present, total paid, remaining payable
+- Seed employees from sheet (Prakash, Deepak, Himanshu, Tikesh, Pankaj, Khillu, …)
 
-### 6.8 Attendance & salary *(from Excel `ATT.`)*
+### 6.14 Expenses & purchases — **v1**
+- Daily expenses cash book (EMI, diesel, electric, office, …)
+- Outside purchases (OTH PURCH + P&S purchase side)
 
-- Daily attendance mark per field/plant worker (Present / Absent / Leave)
-- Record same-day wage / advance (`PAY` column in sheet)
-- Month summary: days present, total paid, remaining payable
-- Employees seeded from sheet: Prakash, Deepak, Himanshu, Tikesh, Pankaj, Khillu (+ invite more)
+### 6.15 Day trip / van stock — **v1**
+- Trip lifecycle: `none` → `loaded` → `closed` (optionally reopen next morning)
+- Plant load entry (per product qty + optional issuer note)
+- Live **van stock**: full left, empties in van, cash/UPI in hand
+- Visits require an open loaded trip; Given cannot exceed van full left (warn or hard block)
+- Plant return: expected unsold + empties prefilled; adjust + variance reason; close trip
+- Admin Inventory: lift / given / return / variance per trip
+- *(Later polish)* multiple load top-ups mid-day; barcode/scan of jar crates
 
-### 6.9 Expenses & cash book *(from Excel `Daily Expenses`)*
+### 6.16 Local server & backup — **v1 infra**
+- Shop PC as local server; mobiles point to it (LAN / VPN / tunnel TBD)
+- Daily automated backup
+- Text-heavy data; ~500 GB disk guidance from call
 
-- Log issue/receive (EMI, diesel, electric, office exp, purchases)
-- Filter by date / category; month total for dashboard
+### 6.17 Users & audit
+- Invite/deactivate; assign role + route
+- Audit: createdBy / updatedBy / timestamps on visits & payments
 
-### 6.10 Purchases *(from Excel `OTH, PURCH` + P&S purchase side)*
-
-- Outside water / jar / chilled purchase entries
-- Amount, paid, balance; plant/vendor optional
-
-### 6.11 Localization
-
-- HI / EN string packs on mobile primary screens
+### 6.18 Localization
+- HI / EN on mobile primary screens
 - Backend English-first (Hindi optional later)
 
 ---
 
 ## 7. Pages & screen specifications
 
-### 7.1 Mobile sales app
+### 7.1 Mobile field app
 
 #### M0 — Login
-
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Authenticate executive |
-| **Elements** | Logo, phone/email, password, Login CTA, language hint |
-| **Actions** | Submit → Home |
-| **Empty/error** | Inline invalid login message |
+Logo, phone/email, password, Login; language hint.
 
 #### M1 — Home
+Greeting; HI/EN; **Today’s trip** card (Load → Deliver → Return) with live van stock; today KPIs; **New Visit** (blocked if not loaded); recent visits; **Orders** badge.
 
+#### M1b — Load from plant
+Product steppers for qty loaded; optional plant witness; **Start trip · van loaded**.
+
+#### M1c — Return to plant
+Trip summary (loaded / given / empties / cash); return unsold (expected prefilled); submit empties; variance note; **Submit to plant · close trip**.
+
+#### M2 — New Sale / Visit — **redesigned for call**
 | Item | Detail |
 | --- | --- |
-| **Purpose** | Today snapshot + primary CTA |
-| **Elements** | Greeting, HI/EN toggle, KPI cards (Sales, Collected, Pending, Date), **New Sale** button, recent 3 sales |
-| **Actions** | New Sale; tap sale → Detail; bottom nav |
-| **States** | Loading skeleton; empty “No sales today” |
+| **Purpose** | Replace WhatsApp diya/mila entry |
+| **Elements** | Route customer list (default) + search; selected customer summary; **Check Balance / Check Dues** button/panel; product lines with **Given (दिया)** + **Empty back (मिला)** steppers; amount collected; payment mode; remarks; Save |
+| **Actions** | Save (online or offline queue); Back |
+| **Validation** | Customer required; ≥1 line; qtys ≥ 0 with at least one &gt; 0; amount ≥ 0 |
 
-#### M2 — New Sale
+#### M3 — Check Balance / Dues panel
+Money outstanding; empty jars outstanding; last few visits; “Record collection only” shortcut optional.
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Capture a full invoice |
-| **Elements** | Customer select/search + Add; line list (product, qty, rate, amount); Add product; Total; Payment mode chips; Amount paid; Remarks; Save |
-| **Actions** | Save → Success; Back |
-| **Validation** | Customer required; ≥1 line; qty > 0; amount paid ≥ 0 and ≤ total |
-| **States** | Saving spinner; validation errors under fields |
+#### M4 — Sale success
+Visit id, customer, totals, sync status; optional share; Back to Home.
 
-#### M3 — Sale success
+#### M5 — My Visits / Sales
+Today / Week / All; status chips; open detail → record payment / view dues.
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Confirm save + share |
-| **Elements** | Invoice no, customer, total, status; Share WhatsApp; Back to Home |
-| **Actions** | Share copies/opens text summary |
+#### M6 — Orders inbox
+List of admin-assigned orders; tap → open New Sale with customer prefilled.
 
-#### M4 — My Sales
+#### M7 — Customers
+Search + route filter; outstanding + empties; add/edit (if allowed).
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Browse own sales |
-| **Elements** | Filters: Today / Week / All; status chips; list rows (customer, invoice, amount, status) |
-| **Actions** | Open detail |
-| **States** | Empty list message |
+#### M8 — Products (read-only browse)
+Rate/stock reference.
 
-#### M5 — Sale detail
+#### M9 — Bottom nav (v1)
+Home · New Sale · My Visits · Orders · More (Customers / Products)
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | View lines + collect balance |
-| **Elements** | Header fields; line table; paid/balance; Record payment (if not Paid) |
-| **Actions** | Record payment; *(if allowed)* Edit |
-
-#### M6 — Customers
-
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Find / add customers |
-| **Elements** | Search; list (name, city, phone, outstanding); Add customer |
-| **Actions** | Open/edit; Add |
-
-#### M7 — Add / Edit customer
-
-| Item | Detail |
-| --- | --- |
-| **Elements** | Name, phone, city, type |
-| **Validation** | Name + phone required |
-
-#### M8 — Products (read-only)
-
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Rate reference in field |
-| **Elements** | Search; list name, category, rate, stock |
-
-#### M9 — Bottom navigation
-
-Home · My Sales · Customers · Products
+#### M10 — Sync status (More)
+Pending queue count; last sync; retry failed.
 
 ---
 
 ### 7.2 Backend admin
 
-#### B0 — Login
-
-Same as mobile; routes Admin/Accountant to Dashboard.
+#### B0 — Login → Dashboard
 
 #### B1 — Dashboard
+Month revenue, collected, pending, visit count; top product/route; charts; wages/expenses snapshots.
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Month health at a glance |
-| **Elements** | KPIs: Revenue, Collected, Pending dues, Invoice count; Top city; Top product; Recent sales table |
-| **Actions** | Click recent sale → editor; nav to ledger/dues |
+#### B2 — Sales ledger
+Dense table: date, visit/invoice, customer, helper, products (diya/mila summary), total, paid, balance, mode, status, remarks.  
+Filters: date, status, helper, route, search. Export CSV/XLSX.
 
-#### B2 — Sales ledger *(Excel replacement)*
+#### B3 — Customer outstanding
+List customers with outstanding amount + empty jars; click → statement (month lines + payments).
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Full searchable register |
-| **Columns (proposed)** | Date, Invoice, Customer, Phone, City, Salesperson, Products summary / lines, Total, Paid, Balance, Mode, Status, Remarks |
-| **Filters** | Date range, status, city, salesperson, search text |
-| **Actions** | New sale; open row; Export |
-| **States** | Empty; loading; no filter matches |
+#### B4 — New Order
+Customer, helper assignee, notes/products, Save → notify helper.
 
-#### B3 — Sale create / edit
+#### B5 — Billing
+Customer + month picker → lekhajokha summary → Generate Bill → preview / download / print.  
+Template management: upload blank bill+seal image.
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Desktop invoice form |
-| **Elements** | Same fields as mobile + salesperson selector + void control |
-| **Actions** | Save; Void with reason; Cancel |
+#### B6 — Inventory / plant stock
+Lift entries, deliveries vs collections, remaining stock by product.
 
-#### B4 — Dues / collections
+#### B7 — Dues / collections
+Partial/Pending work queue; record payment.
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Work queue for unpaid balances |
-| **Elements** | List of Partial/Pending; balance; customer phone; Record payment CTA |
-| **Filters** | City, salesperson, ageing (optional) |
+#### B8 — Customers / Products masters
+CRUD; route assignment on customer; rates/stock on product.
 
-#### B5 — Customers
+#### B9 — Attendance
+Daily P/A + pay (Excel ATT.).
 
-| Item | Detail |
-| --- | --- |
-| **Elements** | Table: name, phone, city, type, outstanding; search; Add/Edit |
-| **Actions** | Open customer statement (sales list) |
+#### B10 — Salary
+Month wage cards from attendance pays.
 
-#### B6 — Products
+#### B11 — Expenses
+Cash issue/receive book.
 
-| Item | Detail |
-| --- | --- |
-| **Elements** | Table/cards: name, category, unit, rate, stock; Add/Edit/Deactivate |
+#### B12 — Purchases
+Outside purchase register.
 
-#### B7 — Reports / export
+#### B13 — Reports / export
+Date range; Excel-parity presets; download.
 
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Month close & sharing |
-| **Elements** | Date range; columns preset “Excel parity”; Download CSV/XLSX |
-| **Success** | File opens in Excel with expected headers |
+#### B14 — Users & roles
+Invite; role; route/helper mapping; active toggle.
 
-#### B8 — Users & roles
-
-| Item | Detail |
-| --- | --- |
-| **Elements** | User list; invite form (name, phone, role); active toggle |
-| **Actions** | Create; deactivate |
-
-#### B9 — Sidebar navigation
-
-Dashboard · Sales ledger · Dues · Customers · Products · Attendance · Salary · Expenses · Purchases · Reports · Users
-
-#### B10 — Attendance
-
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Replace Excel `ATT.` daily grid |
-| **Elements** | Date picker; employee rows with Present/Absent + pay amount; Save day |
-| **Actions** | Mark attendance; record wage/advance |
-
-#### B11 — Salary / payroll
-
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Month wage view from attendance pays |
-| **Elements** | Employee cards/table: days present, total paid this month, notes |
-| **Actions** | Open day detail; export month pays |
-
-#### B12 — Expenses
-
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Cash issue/receive book |
-| **Elements** | Date, category, amount, remark; list + month total |
-
-#### B13 — Purchases
-
-| Item | Detail |
-| --- | --- |
-| **Purpose** | Outside purchase register |
-| **Elements** | Product qty columns or lines; amount/paid/balance |
+#### B15 — Sidebar (v1 modules)
+Dashboard · Sales ledger · Customers / Outstanding · Orders · Billing · Inventory · Dues · Products · Attendance · Salary · Expenses · Purchases · Reports · Users
 
 ---
 
 ## 8. Key end-to-end workflows
 
-### Flow A — Field sale → office visibility
+### Flow A — Field visit replaces WhatsApp
+1. Helper opens New Sale → picks route customer  
+2. Check Balance → sees ₹200 + 2 empty jars pending  
+3. Logs 5 jar diya / 5 mila + collects ₹800  
+4. Saves (offline OK) → syncs to shop server  
+5. Owner sees visit on ledger; customer outstanding updates  
 
-1. Rahul logs into mobile  
-2. Creates sale for dealer (multi-line, UPI partial)  
-3. Saves → `PA-1143`  
-4. Sameer opens Backend ledger → sees sale immediately  
-5. Dues shows remaining balance until paid  
+### Flow B — Admin order → helper notify
+1. Owner creates New Order for “G R Electrical”, assigns Tikesh  
+2. Tikesh gets mobile notification  
+3. Opens → customer prefilled → completes visit  
 
-### Flow B — Credit collection
+### Flow C — Month bill
+1. Owner opens Billing → customer + November  
+2. Reviews jars given/taken, payments, pending  
+3. Generate Bill from seal template → print B/W  
 
-1. Sameer opens Dues → Green Valley Farm balance  
-2. Records bank payment  
-3. Status → Paid; customer outstanding updates  
-4. Rahul sees updated status on My Sales  
+### Flow D — Day trip (seamless)
+1. Tikesh at plant → Load 40 jar / 25 chilled → Start trip  
+2. On route visits: Given reduces van; Empty back + cash accumulate on Home  
+3. Back at plant → Return screen shows Expected unsold 18 jar + 22 empties  
+4. Confirms submit → trip closed; plant stock + empties updated; admin sees chittha  
 
-### Flow C — Month close
+### Flow E — Blocked visit without load
+1. Helper taps New Visit with no open trip  
+2. App prompts Load from plant first  
+3. After load, visits unlock  
 
-1. Sameer filters November sales  
-2. Exports Excel  
-3. Reviews Pending list before filing  
+
 
 ---
 
-## 9. Data model (Excel replacement)
+## 9. Data model (high level)
 
-### Sale
+### Visit / Sale
+date, visitNo (`PA-####`), customerId (+ snapshot), helperId, routeId, paymentMode, paymentStatus, amountPaid, remarks, syncStatus, status (Active/Void), audit fields
 
-| Field | Type | Notes |
-| --- | --- | --- |
-| date | date | Default today |
-| invoiceNo | string | Auto `PA-####` |
-| customerId | ref | + name/phone snapshot |
-| city | string | From customer or override |
-| salespersonId | ref | Default = logged-in user |
-| paymentMode | enum | Cash / UPI / Bank / Credit |
-| paymentStatus | enum | Paid / Partial / Pending |
-| amountPaid | number | |
-| remarks | text | Optional |
-| status | enum | Active / Void |
-| createdAt / updatedAt / createdBy | audit | |
-
-### Sale line
-
-| Field | Type |
-| --- | --- |
-| productId | ref |
-| productName / category | snapshot |
-| qty | number |
-| rate | number |
-| amount | qty × rate |
+### Visit line
+productId, productName snapshot, qtyDiya, qtyMila, rate, amount
 
 ### Customer
-
-name, phone, city, type (Dealer / Retail / Institution), notes
+name, phone, city/area, type, routeId, notes → computed moneyDue, emptyJarsDue
 
 ### Product
-
 name, category, unit, defaultRate, stock, active
 
+### Order (admin → helper)
+customerId, helperId, notes, status (Open/Done/Cancelled), createdAt
+
+### Payment entry
+visitId, amount, mode, paidAt, recordedBy
+
+### Stock lift / inventory movement
+date, productId, qty, from (Plant/Godown), helperId/rollingId, notes
+
+### Attendance / Expense / Purchase
+As in Excel ATT., Daily Expenses, OTH PURCH
+
 ### User
-
-name, phone, email, role, active
-
-### Payment entry *(recommended)*
-
-saleId, amount, mode, paidAt, recordedBy — keeps collection history
+name, phone, email, role, routeIds, active
 
 ---
 
 ## 10. Business rules
 
-1. Invoice numbers are unique and monotonic.  
-2. `paymentStatus` is derived:  
-   - paid = 0 → Pending  
-   - 0 < paid < total → Partial  
-   - paid = total → Paid  
+1. Visit/invoice numbers unique and monotonic.  
+2. `paymentStatus` from amount paid vs total (Pending / Partial / Paid).  
 3. Amount paid cannot exceed total.  
-4. Voided sales excluded from revenue KPIs; retained for audit.  
-5. Executives see only their sales on mobile (Admin sees all).  
-6. Product rate changes do not alter past sale lines.  
-7. Currency display: INR (`en-IN`).  
+4. Empty-jar balance: prior empties + diya − mila (confirm exact jar cycle with owner).  
+5. Money outstanding: prior due + billable − collected.  
+6. Voided visits excluded from revenue KPIs; kept for audit.  
+7. Helpers see own visits (+ assigned orders); Admin sees all.  
+8. Rate changes do not alter past lines.  
+9. Offline saves must sync exactly once (idempotent visit ids).  
+10. Currency: INR (`en-IN`).  
+11. Bill template overlays must not invent seal/stamp — use client-provided blank bill image.
 
 ---
 
 ## 11. Scope
 
-### In scope (MVP)
+### In scope — **v1 (call priority)**
+- Mobile + Backend web apps on **local shop server**
+- **Day trip:** load at plant → visits → return unsold + empties to plant
+- WhatsApp-replacement visit entry (Given / Empty back + collection)
+- Check Balance / empty jars + money dues
+- Route customer default list + search
+- Offline queue + sync
+- Admin New Order → helper notification
+- Sales ledger + customer outstanding drill-down
+- Customer-wise monthly bill generate (template) + print/download
+- Plant/factory inventory tied to trips
+- Attendance, salary, expenses, purchases modules
+- Roles: Helper + Admin
+- HI/EN on mobile
+- Daily backup
 
-- Mobile + Backend web apps  
-- Sales, customers, products, dues, dashboard (with charts), export  
-- Attendance + salary/payroll (Excel `ATT.`)  
-- Expenses cash book + outside purchases  
-- Roles: Executive + Admin  
-- HI/EN on mobile  
-- Password login  
+### Phase 2
+- Mid-day plant top-up loads; multi-vehicle advanced isolation UX
+- Native iOS/Android wrappers
+- Full GST / e-invoice
+- Customer self-service portal
+- Accountant role build-out
+- Personal loan / EMI “Challenge” tracker (owner finance)
 
-### Out of scope (MVP)
-
-- Native iOS/Android wrappers  
-- Full GST filing / e-invoice  
-- Multi-warehouse inventory  
-- Delivery tracking  
-- Customer self-service portal  
-- Offline-first sync  
-- Personal loan / EMI “Challenge” tracker (`Sheet1`) — owner finance, not operations  
-- Accountant role (design now, build next)
+### Out of scope
+- Exact Excel clone UI (coverage yes, UX cleaner)
+- AI parsing of WhatsApp chat as primary input (optional later; call preferred structured app)
 
 ---
 
@@ -562,13 +504,15 @@ saleId, amount, mode, paidAt, recordedBy — keeps collection history
 
 | Area | Target |
 | --- | --- |
-| Performance | Mobile save < 2s on 4G |
-| Security | HTTPS, role checks on every API |
-| Availability | Daily backup; single region OK for MVP |
-| Localization | HI/EN mobile strings |
-| Audit | Who created/edited each sale & payment |
+| Performance | Mobile save &lt; 2s on 4G when online; offline save instant |
+| Sync | Reliable queue; conflict policy = last-write with audit (confirm) |
+| Security | HTTPS if exposed; role checks on every API; LAN lock-down for shop PC |
+| Availability | Shop PC always-on; daily backup |
+| Localization | HI/EN mobile |
+| Audit | Who created/edited each visit & payment |
 | Browsers | Chrome/Safari mobile; Chrome/Edge desktop |
-| Accessibility | Large tap targets on mobile (≥44px) |
+| Accessibility | Large tap targets (≥44px) |
+| Disk | ~500 GB guidance sufficient for years of text data |
 
 ---
 
@@ -576,36 +520,44 @@ saleId, amount, mode, paidAt, recordedBy — keeps collection history
 
 | Milestone | Deliverable |
 | --- | --- |
-| **M0** | Discovery lock — interpret `Pacific Aqua.xlsx` + `R&B.m4a` |
-| **M1** | PRD + static HTML mockups |
-| **M2** | Vertical slice — auth, create sale, ledger |
-| **M3** | MVP — dues, export, bilingual, roles |
-| **M4** | Harden — Excel import history, backups, accountant role |
+| **M0** | Discovery lock — Excel + `R&B 2.m4a` summary ✅ |
+| **M1** | PRD v0.3 + static HTML mockups (update for Check Balance, Orders, Billing) |
+| **M2** | Vertical slice — auth, visit create (diya/mila), ledger on local server |
+| **M3** | v1 — dues/empties, route list, offline sync, order notify, bill generate, inventory lite |
+| **M4** | Harden — backups, Excel import history, rolling (P2), accountant role |
 
 ---
 
 ## 14. Open questions
 
-1. Exact columns/names from `Pacific Aqua.xlsx`  
-2. Decisions from Hindi `R&B.m4a` (credit policy, invoice format, who may edit)  
-3. Dealer vs retail pricing?  
-4. GST / HSN on MVP invoices?  
-5. Stock decrement on sale in MVP?  
-6. Login: password vs phone OTP?  
-7. Can executives edit yesterday’s sales?  
+1. Exact empty-jar formula (diya/mila/chilled/pouch variants)?  
+2. Bill template: one blank image for all, or per product type?  
+3. Local server access from field: same Wi‑Fi only, or public tunnel/VPN?  
+4. Push notifications: FCM/web push vs polling while shop PC is LAN-only?  
+5. Can helpers edit yesterday’s visits?  
+6. GST / HSN on v1 bills?  
+7. Dealer vs retail pricing lists?  
+8. Stock decrement on each diya in v1 — hard block or warning only?  
 
 ---
 
-## 15. Acceptance criteria (MVP)
+## 15. Acceptance criteria (v1)
 
-- [ ] Executive creates a multi-line sale on phone in under 60 seconds  
-- [ ] Admin sees that sale on backend ledger without using Excel  
-- [ ] Dues total equals sum of balances on Partial/Pending sales  
-- [ ] Export downloads a usable spreadsheet of the filtered ledger  
+- [ ] Helper must Load at plant before New Visit unlocks  
+- [ ] Visits update live van stock (full left / empties / cash)  
+- [ ] Return screen prefills unsold + empties from the same trip; close updates plant inventory  
+- [ ] Helper creates a multi-product visit (Given / Empty back + collection) in under 60 seconds  
+- [ ] Check Balance shows correct money + empty jars before save  
+- [ ] Route customers appear without search; search finds non-route customers  
+- [ ] Offline save syncs later and appears once on admin ledger  
+- [ ] Admin New Order notifies assigned helper; visit can complete from that order  
+- [ ] Admin sees visit on ledger without Excel/WhatsApp  
+- [ ] Customer monthly lekhajokha → Generate Bill → download/print  
+- [ ] Inventory shows plant lift vs remaining stock  
+- [ ] Attendance / expenses / purchases usable as separate modules  
+- [ ] Helper cannot access Users or other helpers’ private data  
 - [ ] HI/EN toggle works on mobile Home and New Sale  
-- [ ] Executive cannot access Users or other executives’ sales  
-- [ ] Admin can invite/deactivate an executive  
-- [ ] Voided sale no longer counts in revenue KPI  
+- [ ] Daily backup job documented and runnable on shop PC  
 
 ---
 
@@ -614,8 +566,9 @@ saleId, amount, mode, paidAt, recordedBy — keeps collection history
 | Ver | Date (IST) | Notes |
 | --- | --- | --- |
 | 0.1 | 22 Nov 2026 | Initial draft from kickoff intent |
-| 0.2 | 22 Nov 2026 | Added personas, use cases, page specs, functionality map, permissions, business rules |
+| 0.2 | 22 Nov 2026 | Personas, use cases, page specs, Excel ATT/expenses/purchases |
+| 0.3 | 27 Nov 2026 | Locked from `R&B 2.m4a` / `rb2_call_summary.md`: WhatsApp replace, Check Balance, route list, offline, order notify, local server, billing template, inventory, phased v1 vs rolling P2 |
 
 ---
 
-*Mockups: static HTML pages in this repo (`index.html`, `mobile.html`, `backend.html`, `prd.html`).*
+*Mockups: `index.html`, `mobile.html`, `backend.html`, `prd.html`. Call summary: `docs/transcripts/rb2_call_summary.md`.*

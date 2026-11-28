@@ -9,10 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="site-overview">
   <header class="topnav">
     <a class="brand" href="index.html">
-      <div class="brand-mark">PA</div>
+      <img class="brand-logo" src="assets/brand/pacific-aqua-logo.png" alt="Pacific Aqua" width="36" height="36" />
       <div>
         <strong>Pacific Aqua</strong>
         <span>Sales System · Mockups</span>
@@ -22,32 +22,35 @@
       <a href="index.html">Overview</a>
       <a class="active" href="prd.html">PRD</a>
       <a href="mobile.html">Mobile mockup</a>
-      <a href="backend.html">Backend mockup</a>
+      <a href="backend.html">Admin Control</a>
     </nav>
   </header>
 
   <main class="wrap">
     <p>
-      <span class="pill">PRD v0.2</span>
-      <span class="pill pill-outline">22 Nov 2026 IST</span>
+      <span class="pill">PRD v0.3</span>
+      <span class="pill pill-outline">27 Nov 2026 IST</span>
+      <span class="pill pill-outline">From R&amp;B 2 call</span>
     </p>
     <h1>Pacific Aqua Sales System</h1>
     <p class="lede">
-      Full requirements: personas, users, use cases, page details, and functionalities for the
-      mobile sales app and backend admin.
+      Requirements locked from the client call: replace WhatsApp + Excel with a mobile field app
+      and laptop admin on a local shop server. Phased v1 first; rolling/advanced routes later.
     </p>
     <div class="actions">
       <a class="btn btn-primary" href="mobile.html">Mobile mockup</a>
-      <a class="btn btn-ghost" href="backend.html">Backend mockup</a>
+      <a class="btn btn-ghost" href="backend.html">Admin Control</a>
       <a class="btn btn-ghost" href="docs/PRD.md">Raw markdown</a>
+      <a class="btn btn-ghost" href="docs/transcripts/rb2_call_summary.md">Call summary</a>
     </div>
 
     <section class="prd-section">
-      <h2>1. Problem & goal</h2>
+      <h2>1. Problem &amp; goal</h2>
       <p>
-        Sales live in Excel today. Field entry, multi-user edits, dues, and reporting are painful.
-        Ship two web apps on one ledger: <strong>mobile</strong> for executives,
-        <strong>backend</strong> for owner/office. Excel becomes export-only.
+        Field helpers log <strong>diya / mila / payment</strong> in WhatsApp; owner re-enters Excel
+        (1–2 hrs/day). Pending dues and empty jars get missed. Ship two web apps on one ledger:
+        <strong>mobile</strong> for helpers, <strong>backend</strong> on a shop PC for the owner.
+        Excel becomes export-only.
       </p>
     </section>
 
@@ -66,32 +69,32 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>Rahul</strong></td>
-              <td>Field Sales Executive</td>
-              <td>Android phone (4G)</td>
-              <td>Fast sale entry, today’s collection, WhatsApp share</td>
+              <td><strong>Helper</strong></td>
+              <td>Field (Tikesh, Himanshu, …)</td>
+              <td>Android phone (4G / offline)</td>
+              <td>Route list, Check Balance, diya/mila visit in &lt;1 min</td>
               <td>Mobile</td>
             </tr>
             <tr>
               <td><strong>Sameer</strong></td>
               <td>Owner / Admin</td>
-              <td>Laptop</td>
-              <td>Live ledger, dues chase, export, user control</td>
+              <td>Laptop / shop PC</td>
+              <td>Ledger, bills, inventory, order → notify helper</td>
               <td>Backend</td>
             </tr>
             <tr>
-              <td><strong>Priya</strong> (later)</td>
-              <td>Accountant</td>
+              <td><strong>Accountant</strong> (later)</td>
+              <td>Office</td>
               <td>Desktop</td>
-              <td>Record collections, month export</td>
+              <td>Collections + month export</td>
               <td>Backend (limited)</td>
             </tr>
             <tr>
-              <td><strong>Dealer</strong> (indirect)</td>
-              <td>Customer</td>
+              <td><strong>Customer</strong> (indirect)</td>
+              <td>Dealer / stop</td>
               <td>—</td>
-              <td>Correct qty/rate/balance via WhatsApp summary</td>
-              <td>No login (MVP)</td>
+              <td>Correct qty, empties, balance / printed bill</td>
+              <td>No login (v1)</td>
             </tr>
           </tbody>
         </table>
@@ -99,59 +102,60 @@
     </section>
 
     <section class="prd-section">
-      <h2>3. Roles & permissions</h2>
+      <h2>3. Roles &amp; permissions</h2>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Capability</th>
-              <th>Executive</th>
+              <th>Helper</th>
               <th>Admin</th>
               <th>Accountant</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Create sale</td><td>Own</td><td>Yes</td><td>No</td></tr>
-            <tr><td>Edit sale</td><td>Own, same day*</td><td>Any</td><td>Payments only</td></tr>
-            <tr><td>Manage products</td><td>Read</td><td>Yes</td><td>Read</td></tr>
-            <tr><td>Manage users</td><td>No</td><td>Yes</td><td>No</td></tr>
-            <tr><td>Export ledger</td><td>Optional own</td><td>All</td><td>All</td></tr>
-            <tr><td>Record dues</td><td>Own sales</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Create visit (diya/mila)</td><td>Own</td><td>Yes</td><td>No</td></tr>
+            <tr><td>Check Balance / empties</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Edit visit</td><td>Own, same day*</td><td>Any</td><td>Payments only</td></tr>
+            <tr><td>New Order → notify</td><td>Receive</td><td>Yes</td><td>No</td></tr>
+            <tr><td>Bills / export / inventory</td><td>No</td><td>Yes</td><td>Export / read</td></tr>
+            <tr><td>Manage users / masters</td><td>Read customers</td><td>Yes</td><td>Read</td></tr>
           </tbody>
         </table>
       </div>
-      <p>*Same-day edit policy is an assumption — confirm from meeting recording.</p>
+      <p>*Same-day edit default — confirm with owner if stricter lock needed.</p>
     </section>
 
     <section class="prd-section">
-      <h2>4. Use cases</h2>
+      <h2>4. Use cases (v1)</h2>
       <ol>
-        <li><strong>UC-01 Login</strong> — any user signs in and lands on role-correct home.</li>
-        <li><strong>UC-02 Create field sale</strong> — executive captures multi-line invoice + payment on phone.</li>
-        <li><strong>UC-03 Quick-add customer</strong> — create dealer/retailer while booking a sale.</li>
-        <li><strong>UC-04 Today’s performance</strong> — home KPIs for own sales/collected/pending.</li>
-        <li><strong>UC-05 Collect balance</strong> — record payment on Partial/Pending sale.</li>
-        <li><strong>UC-06 Chase dues (office)</strong> — admin works dues queue by city/salesperson.</li>
-        <li><strong>UC-07 Maintain product rates</strong> — admin updates catalog; mobile reads new rates.</li>
-        <li><strong>UC-08 Month close export</strong> — filter + download CSV/XLSX like current Excel.</li>
-        <li><strong>UC-09 Onboard salesperson</strong> — admin invites executive user.</li>
-        <li><strong>UC-10 Void / correct sale</strong> — admin voids with reason; audit retained.</li>
-        <li><strong>UC-11 Language toggle</strong> — HI/EN labels on mobile.</li>
+        <li><strong>UC-02 Field visit</strong> — customer → Check Balance → diya/mila + collection → save (offline OK).</li>
+        <li><strong>UC-03 Check Balance</strong> — money udhari + empty jars before delivery.</li>
+        <li><strong>UC-04 Route list</strong> — ~25 fixed stops by default; search for ad-hoc.</li>
+        <li><strong>UC-05 Offline sync</strong> — queue on phone → sync to shop server.</li>
+        <li><strong>UC-06 Admin order</strong> — pick customer + helper → mobile notification.</li>
+        <li><strong>UC-07 Monthly bill</strong> — customer lekhajokha → generate from seal template → print.</li>
+        <li><strong>UC-08 Ledger</strong> — month view + outstanding drill-down.</li>
+        <li><strong>UC-09 Inventory</strong> — plant lift, delivered, remaining stock.</li>
+        <li><strong>UC-10 Modules</strong> — Attendance, Expenses, Purchases as separate tabs.</li>
+        <li><strong>UC-11 Day trip</strong> — Load at plant → deliver → return unsold + empties (v1).</li>
       </ol>
     </section>
 
     <section class="prd-section">
       <h2>5. Functionalities</h2>
       <ul>
-        <li><strong>Auth</strong> — login, logout, roles, active flag</li>
-        <li><strong>Sales</strong> — multi-line invoice, auto <code>PA-####</code>, payment mode/status, share text</li>
-        <li><strong>Customers</strong> — create/search/edit; outstanding computed</li>
-        <li><strong>Products</strong> — admin CRUD; mobile rate reference</li>
-        <li><strong>Dues</strong> — pending/partial queue; record payment history</li>
-        <li><strong>Dashboards</strong> — mobile today KPIs; backend month KPIs</li>
-        <li><strong>Reports</strong> — filtered Excel/CSV export</li>
-        <li><strong>Users</strong> — invite/deactivate executives</li>
-        <li><strong>Localization</strong> — Hindi + English on mobile</li>
+        <li><strong>Visits / sales</strong> — WhatsApp replace: multi-product diya/mila, collection, remarks, <code>PA-####</code></li>
+        <li><strong>Check Balance</strong> — money dues + empty jars on one screen</li>
+        <li><strong>Route customers</strong> — default list per helper; search for others</li>
+        <li><strong>Offline sync</strong> — save on phone; sync to local shop PC</li>
+        <li><strong>Orders</strong> — admin assigns helper; mobile notification inbox</li>
+        <li><strong>Billing</strong> — customer-month jars given/taken, payments, pending → bill template</li>
+        <li><strong>Ledger / dues</strong> — month register; outstanding; record payment</li>
+        <li><strong>Inventory</strong> — plant lift, chittha, factory remaining</li>
+        <li><strong>Attendance / Salary / Expenses / Purchases</strong> — Excel coverage, cleaner UX</li>
+        <li><strong>Infra</strong> — local server + daily backup; HI/EN on mobile</li>
+        <li><strong>Phase 2</strong> — full Rolling start + advanced multi-vehicle isolation</li>
       </ul>
     </section>
 
@@ -163,14 +167,14 @@
             <tr><th>Page</th><th>Purpose</th><th>Key elements</th></tr>
           </thead>
           <tbody>
-            <tr><td>M0 Login</td><td>Authenticate</td><td>Phone/email, password, CTA — <a href="mobile.html">mockup</a></td></tr>
-            <tr><td>M1 Home</td><td>Today snapshot</td><td>KPIs, New Sale, recent sales, HI/EN</td></tr>
-            <tr><td>M2 New Sale</td><td>Capture invoice</td><td>Customer + Add, multi-line, payment, remarks</td></tr>
-            <tr><td>M3 Success</td><td>Confirm + share</td><td>Invoice no, WhatsApp share</td></tr>
-            <tr><td>M4 My Sales</td><td>Browse own sales</td><td>Today/Week/All + status chips</td></tr>
-            <tr><td>M5 Sale detail</td><td>View + collect</td><td>Lines, balance, Record payment</td></tr>
-            <tr><td>M6–M7 Customers</td><td>Directory + form</td><td>Search, outstanding, add/edit</td></tr>
-            <tr><td>M8 Products</td><td>Rate list</td><td>Search, rate, stock (read-only)</td></tr>
+            <tr><td>M0 Login</td><td>Authenticate</td><td>Phone/email, password — <a href="mobile.html">mockup</a></td></tr>
+            <tr><td>M1 Home</td><td>Today snapshot</td><td>KPIs, New Sale, orders badge, HI/EN</td></tr>
+            <tr><td>M2 New Sale</td><td>Visit entry</td><td>Route list + search, Check Balance, diya/mila lines, collection</td></tr>
+            <tr><td>M3 Check Balance</td><td>Pre-delivery dues</td><td>Money + empty jars + recent hisaab</td></tr>
+            <tr><td>M4 Success</td><td>Confirm</td><td>Visit id, sync status, optional share</td></tr>
+            <tr><td>M5 My Visits</td><td>History</td><td>Today/Week/All + collect balance</td></tr>
+            <tr><td>M6 Orders</td><td>Admin assigns</td><td>Inbox → open visit with customer prefilled</td></tr>
+            <tr><td>M7–M8</td><td>Customers / Products</td><td>Outstanding + empties; rate reference</td></tr>
           </tbody>
         </table>
       </div>
@@ -184,12 +188,14 @@
             <tr><th>Page</th><th>Purpose</th><th>Key elements</th></tr>
           </thead>
           <tbody>
-            <tr><td>Dashboard</td><td>Charts + KPIs</td><td>Bars, pie charts, wages/expenses — <a href="backend.html">mockup</a></td></tr>
-            <tr><td>Sales ledger</td><td>Dense table</td><td>Sticky header, tinted rows, product icons, pager</td></tr>
-            <tr><td>New sale</td><td>3-step wizard</td><td>Customer → qty cards → payment</td></tr>
-            <tr><td>Attendance / Salary</td><td>Excel ATT.</td><td>Daily P/A + pay; month wage cards</td></tr>
-            <tr><td>Expenses / Purchases</td><td>Cash &amp; stock in</td><td>Daily Expenses + OTH PURCH</td></tr>
-            <tr><td>Dues / Customers / Products</td><td>Masters</td><td>As before</td></tr>
+            <tr><td>Dashboard</td><td>Month health</td><td>KPIs + charts — <a href="backend.html">mockup</a></td></tr>
+            <tr><td>Sales ledger</td><td>Register</td><td>Diya/mila summary, filters, export</td></tr>
+            <tr><td>Outstanding</td><td>Customer dues</td><td>Money + empties → drill-down</td></tr>
+            <tr><td>Orders</td><td>Dispatch</td><td>Customer + helper → notify</td></tr>
+            <tr><td>Billing</td><td>Monthly bill</td><td>Lekhajokha + seal template → print</td></tr>
+            <tr><td>Inventory</td><td>Plant stock</td><td>Lift, delivered, remaining</td></tr>
+            <tr><td>Attendance / Salary</td><td>Excel ATT.</td><td>Daily P/A + month wages</td></tr>
+            <tr><td>Expenses / Purchases</td><td>Cash &amp; stock in</td><td>Separate modules</td></tr>
             <tr><td>Reports / Users</td><td>Export &amp; access</td><td>Excel parity + invite</td></tr>
           </tbody>
         </table>
@@ -199,28 +205,42 @@
     <section class="prd-section">
       <h2>8. Business rules</h2>
       <ul>
-        <li>Invoice numbers unique (<code>PA-####</code>)</li>
-        <li>Status derived from amount paid vs total (Pending / Partial / Paid)</li>
-        <li>Amount paid cannot exceed total</li>
-        <li>Voided sales kept for audit; excluded from revenue KPIs</li>
-        <li>Executives see only their sales on mobile</li>
-        <li>Past sale lines keep rate snapshot if product price changes later</li>
+        <li>Visit numbers unique (<code>PA-####</code>); offline ids sync once (idempotent)</li>
+        <li>Status from amount paid vs total (Pending / Partial / Paid)</li>
+        <li>Empty-jar + money outstanding update after every visit</li>
+        <li>Voided visits kept for audit; excluded from revenue KPIs</li>
+        <li>Helpers see own visits + assigned orders; Admin sees all</li>
+        <li>Bill overlay uses client blank bill + seal image (no invented stamp)</li>
       </ul>
+    </section>
+
+    <section class="prd-section">
+      <h2>9. v1 vs phase 2</h2>
+      <p>
+        <strong>v1:</strong> WhatsApp replace, Check Balance, route list, offline sync, order notify,
+        ledger, bill generate, inventory lite, attendance/expenses/purchases, local server + backup.
+      </p>
+      <p>
+        <strong>Phase 2:</strong> Full Rolling start (mandatory godown lift), advanced multi-vehicle
+        isolation, GST/e-invoice, native apps, accountant role build-out.
+      </p>
     </section>
 
     <section class="prd-section warn">
-      <h2>9. Open questions</h2>
+      <h2>10. Open questions</h2>
       <ul>
-        <li>Exact columns from <code>Pacific Aqua.xlsx</code></li>
-        <li>Decisions from Hindi <code>R&amp;B.m4a</code> (credit, edit policy)</li>
-        <li>Dealer vs retail pricing?</li>
-        <li>GST / HSN in MVP?</li>
-        <li>Stock decrement on sale?</li>
-        <li>Password vs OTP login?</li>
+        <li>Exact empty-jar formula across Jar / Chilled / Pouch?</li>
+        <li>Field access to shop PC: LAN only vs VPN / tunnel?</li>
+        <li>Push while LAN-only: FCM/web push vs polling?</li>
+        <li>Helpers edit yesterday’s visits?</li>
+        <li>GST / HSN on v1 bills? Dealer vs retail rates?</li>
       </ul>
     </section>
 
-    <p class="note">Full markdown with all sections: <a href="docs/PRD.md">docs/PRD.md</a></p>
+    <p class="note">
+      Full markdown: <a href="docs/PRD.md">docs/PRD.md</a> ·
+      Call notes: <a href="docs/transcripts/rb2_call_summary.md">rb2_call_summary.md</a>
+    </p>
   </main>
 </body>
 </html>
